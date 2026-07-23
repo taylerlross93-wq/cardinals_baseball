@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cardinals Baseball — Coach Dashboard</title>
+<style>
+/* ── RESET ── */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#F5F0E8;overflow:hidden}
+
+/* ── LAYOUT ── */
+.shell{display:flex;height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{width:220px;background:#120D09;border-right:1px solid #2E2018;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sidebar-brand{padding:20px 16px 14px;border-bottom:1px solid #2E2018}
+.brand-name{font-family:Georgia,serif;font-size:17px;font-weight:700;color:#F5F0E8;letter-spacing:.02em;line-height:1.2}
+.brand-sub{font-size:10px;color:#8A9BA8;text-transform:uppercase;letter-spacing:.1em;margin-top:4px}
+
+/* SEASON FILTER */
+.sidebar-section{padding:14px 16px 8px;border-bottom:1px solid #2E2018}
+.sidebar-label{font-size:10px;font-weight:600;color:#8A9BA8;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.filter-select{width:100%;padding:7px 10px;background:#1C1410;border:1px solid #3A2A1C;border-radius:6px;color:#F5F0E8;font-size:13px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238A9BA8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.filter-select:focus{outline:1px solid #C8102E}
+.filter-input{width:100%;padding:7px 10px;background:#1C1410;border:1px solid #3A2A1C;border-radius:6px;color:#F5F0E8;font-size:13px;margin-top:6px}
+.filter-input::placeholder{color:#5A4A3C}
+.filter-input:focus{outline:1px solid #C8102E;border-color:transparent}
+
+/* NAV */
+.sidebar-nav{padding:10px 10px;flex:1}
+.nav-label{font-size:10px;font-weight:600;color:#5A4A3C;text-transform:uppercase;letter-spacing:.1em;padding:8px 6px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:7px;cursor:pointer;color:#A09080;font-size:13px;font-weight:500;transition:all .15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:#2E1E10;color:#F5F0E8}
+.nav-item.active{background:#C8102E;color:#fff}
+.nav-icon{font-size:15px;width:18px;text-align:center;flex-shrink:0}
+
+/* SIDEBAR FOOTER */
+.sidebar-footer{padding:12px 16px;border-top:1px solid #2E2018;font-size:10px;color:#5A4A3C;line-height:1.5}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#1C1410}
+
+/* TICKER */
+.ticker{background:#C8102E;padding:0;height:32px;display:flex;align-items:center;overflow:hidden;flex-shrink:0;border-bottom:1px solid #A00020}
+.ticker-label{background:#8B0000;padding:0 14px;height:100%;display:flex;align-items:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#ffcdd2;flex-shrink:0;white-space:nowrap}
+.ticker-track{flex:1;overflow:hidden;position:relative}
+.ticker-inner{display:flex;gap:0;animation:ticker 30s linear infinite;white-space:nowrap}
+.ticker-item{padding:0 28px;font-size:11px;font-weight:600;color:#fff;letter-spacing:.04em;border-right:1px solid rgba(255,255,255,.2);flex-shrink:0}
+.ticker-item span{color:rgba(255,255,255,.7);font-weight:400;margin-right:6px}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* PAGE HEADER */
+.page-header{padding:18px 24px 14px;border-bottom:1px solid #2E2018;flex-shrink:0;display:flex;align-items:center;justify-content:space-between}
+.page-title{font-family:Georgia,serif;font-size:20px;font-weight:700;color:#F5F0E8}
+.page-sub{font-size:12px;color:#8A9BA8;margin-top:2px}
+.header-badge{background:#2E1E10;border:1px solid #3A2A1C;border-radius:20px;padding:5px 12px;font-size:11px;color:#8A9BA8}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:20px 24px}
+
+/* ── PAGES ── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── OVERVIEW ── */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:#120D09;border:1px solid #2E2018;border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent,#C8102E)}
+.kpi-label{font-size:10px;font-weight:600;color:#8A9BA8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.kpi-val{font-size:26px;font-weight:700;color:#F5F0E8;line-height:1;font-family:Georgia,serif}
+.kpi-sub{font-size:11px;color:#5A4A3C;margin-top:4px}
+.kpi-trend{font-size:11px;margin-top:4px;font-weight:600}
+.trend-up{color:#4CAF50}
+.trend-dn{color:#EF5350}
+.trend-fl{color:#8A9BA8}
+
+/* OVERVIEW GRID */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:900px){.overview-grid{grid-template-columns:1fr}}
+
+/* CARDS */
+.card{background:#120D09;border:1px solid #2E2018;border-radius:10px;overflow:hidden}
+.card-header{padding:12px 16px;border-bottom:1px solid #2E2018;display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:13px;font-weight:600;color:#F5F0E8}
+.card-badge{font-size:10px;color:#8A9BA8;background:#1C1410;padding:3px 8px;border-radius:10px;border:1px solid #2E2018}
+.card-body{padding:14px 16px}
+
+/* MINI TABLE */
+.mini-table{width:100%;border-collapse:collapse;font-size:12px}
+.mini-table th{text-align:left;padding:5px 8px;color:#8A9BA8;font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #2E2018}
+.mini-table th:not(:first-child){text-align:center}
+.mini-table td{padding:7px 8px;border-bottom:1px solid #1C1410;color:#D0C8BC}
+.mini-table td:not(:first-child){text-align:center}
+.mini-table tr:last-child td{border-bottom:none}
+.mini-table tr:hover td{background:#1C1410}
+.player-name{font-weight:600;color:#F5F0E8}
+.stat-pill{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700}
+.pill-g{background:#1B3A1F;color:#81C784}
+.pill-a{background:#3E2800;color:#FFB74D}
+.pill-r{background:#3E1212;color:#EF9A9A}
+
+/* ── FULL STAT TABLE ── */
+.table-wrap{overflow-x:auto}
+.stat-table{width:100%;border-collapse:collapse;font-size:12px;min-width:600px}
+.stat-table th{text-align:center;padding:8px 6px;color:#8A9BA8;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #2E2018;background:#120D09;position:sticky;top:0;cursor:pointer;user-select:none;white-space:nowrap}
+.stat-table th:first-child{text-align:left;padding-left:12px}
+.stat-table th:hover{color:#F5F0E8}
+.stat-table th.sorted{color:#C8102E}
+.sort-arrow{margin-left:3px;opacity:.5;font-size:9px}
+.sort-arrow.active{opacity:1;color:#C8102E}
+.stat-table td{padding:8px 6px;border-bottom:1px solid #1C1410;color:#D0C8BC;text-align:center;transition:background .1s}
+.stat-table td:first-child{text-align:left;padding-left:12px;font-weight:600;color:#F5F0E8}
+.stat-table tr:hover td{background:#1C1410}
+.stat-table .totals td{font-weight:700;background:#1C1410;color:#F5F0E8;border-top:1px solid #2E2018;border-bottom:none}
+.no-results{text-align:center;padding:32px;color:#5A4A3C;font-size:13px}
+
+/* YEAR PILL */
+.year-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
+.y2023{background:#1A2A3A;color:#90CAF9}
+.y2024{background:#1B3A1F;color:#81C784}
+.y2025{background:#3E2800;color:#FFB74D}
+.y2026{background:#3E1212;color:#EF9A9A}
+
+/* TREND CHART (sparkline) */
+.spark{display:flex;align-items:flex-end;gap:3px;height:28px}
+.spark-bar{background:#C8102E;border-radius:2px 2px 0 0;min-width:8px;transition:height .3s}
+.spark-bar:hover{background:#E8302E}
+
+/* ── PLAYER PROFILE ── */
+.profile-grid{display:grid;grid-template-columns:200px 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:800px){.profile-grid{grid-template-columns:1fr}}
+.profile-card{background:#120D09;border:1px solid #2E2018;border-radius:10px;padding:20px;text-align:center}
+.profile-num{font-family:Georgia,serif;font-size:48px;font-weight:700;color:#C8102E;line-height:1}
+.profile-name{font-size:15px;font-weight:700;color:#F5F0E8;margin-top:6px}
+.profile-years{font-size:11px;color:#8A9BA8;margin-top:4px}
+.profile-stat-row{display:flex;justify-content:space-around;margin-top:14px;padding-top:14px;border-top:1px solid #2E2018}
+.ps-item{text-align:center}
+.ps-val{font-size:18px;font-weight:700;color:#F5F0E8;font-family:Georgia,serif}
+.ps-label{font-size:9px;color:#8A9BA8;text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+
+/* YEAR TREND BARS */
+.trend-bars{display:flex;flex-direction:column;gap:8px;padding:4px 0}
+.trend-row{display:flex;align-items:center;gap:10px}
+.trend-year{font-size:11px;color:#8A9BA8;width:36px;flex-shrink:0;font-weight:600}
+.trend-bar-wrap{flex:1;background:#1C1410;border-radius:3px;height:16px;overflow:hidden;position:relative}
+.trend-fill{height:100%;border-radius:3px;transition:width .4s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+.trend-fill-label{font-size:10px;font-weight:700;color:#fff}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;color:#5A4A3C}
+.empty-icon{font-size:32px;margin-bottom:12px}
+.empty-title{font-size:15px;font-weight:600;color:#8A9BA8;margin-bottom:6px}
+.empty-sub{font-size:12px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:#120D09}
+::-webkit-scrollbar-thumb{background:#3A2A1C;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:#5A4A3C}
+
+/* DIVIDER */
+.divider{height:1px;background:#2E2018;margin:20px 0}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ── SIDEBAR ── -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-name">Clinton Cardinals</div>
+      <div class="brand-sub">Baseball · Coach Dashboard</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Season</div>
+      <select class="filter-select" id="season-filter" onchange="applyFilters()">
+        <option value="all">All seasons</option>
+        <option value="2026">2026</option>
+        <option value="2025" selected>2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+      </select>
+      <div class="sidebar-label" style="margin-top:10px">Player</div>
+      <input class="filter-input" type="text" id="player-filter" placeholder="Search by name..." oninput="applyFilters()">
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">Dashboard</div>
+      <button class="nav-item active" onclick="showPage('overview',this)">
+        <span class="nav-icon">⚾</span> Overview
+      </button>
+      <button class="nav-item" onclick="showPage('batting',this)">
+        <span class="nav-icon">🏏</span> Batting
+      </button>
+      <button class="nav-item" onclick="showPage('pitching',this)">
+        <span class="nav-icon">💪</span> Pitching
+      </button>
+      <div class="nav-label" style="margin-top:8px">Analysis</div>
+      <button class="nav-item" onclick="showPage('trends',this)">
+        <span class="nav-icon">📈</span> Season Trends
+      </button>
+      <button class="nav-item" onclick="showPage('players',this)">
+        <span class="nav-icon">👤</span> Player Profiles
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      Clinton Cardinals Varsity<br>
+      Data: 2023 – 2026 · GameChanger
+    </div>
+  </div>
+
+  <!-- ── MAIN ── -->
+  <div class="main">
+
+    <!-- TICKER -->
+    <div class="ticker">
+      <div class="ticker-label">Cardinals</div>
+      <div class="ticker-track">
+        <div class="ticker-inner" id="ticker-inner"></div>
+      </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <div class="page-title" id="page-title">Season Overview</div>
+        <div class="page-sub" id="page-sub">Clinton Cardinals Varsity Baseball</div>
+      </div>
+      <div class="header-badge" id="header-badge">2025 Season</div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ── OVERVIEW PAGE ── -->
+      <div class="page active" id="page-overview">
+        <div class="kpi-row" id="kpi-row"></div>
+        <div class="overview-grid">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Top batters</div>
+              <div class="card-badge" id="bat-badge">by AVG</div>
+            </div>
+            <div class="card-body">
+              <table class="mini-table">
+                <thead><tr><th>Player</th><th>AVG</th><th>OBP</th><th>RBI</th><th>SB</th></tr></thead>
+                <tbody id="top-batters"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Pitching leaders</div>
+              <div class="card-badge">by ERA</div>
+            </div>
+            <div class="card-body">
+              <table class="mini-table">
+                <thead><tr><th>Player</th><th>ERA</th><th>IP</th><th>W</th><th>WHIP</th></tr></thead>
+                <tbody id="top-pitchers"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Year-over-year — Team AVG</div>
+            <div class="card-badge">2023–2026</div>
+          </div>
+          <div class="card-body" id="yoy-chart"></div>
+        </div>
+      </div>
+
+      <!-- ── BATTING PAGE ── -->
+      <div class="page" id="page-batting">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Batting statistics</div>
+            <div class="card-badge" id="bat-count"></div>
+          </div>
+          <div class="table-wrap">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th onclick="sortTable('batting','name')">Player <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','year')">Year <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','gp')">GP <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','pa')">PA <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','avg')">AVG <span class="sort-arrow active">↓</span></th>
+                  <th onclick="sortTable('batting','obp')">OBP <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','ops')">OPS <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','h')">H <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','rbi')">RBI <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','r')">R <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','sb')">SB <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','bb')">BB <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('batting','so')">K <span class="sort-arrow">↕</span></th>
+                </tr>
+              </thead>
+              <tbody id="batting-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PITCHING PAGE ── -->
+      <div class="page" id="page-pitching">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Pitching statistics</div>
+            <div class="card-badge" id="pitch-count"></div>
+          </div>
+          <div class="table-wrap">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th onclick="sortTable('pitching','name')">Player <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('pitching','year')">Year <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('pitching','ip')">IP <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('pitching','w')">W <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('pitching','l')">L <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('pitching','era')">ERA <span class="sort-arrow active">↑</span></th>
+                  <th onclick="sortTable('pitching','whip')">WHIP <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('pitching','k')">K <span class="sort-arrow">↕</span></th>
+                  <th onclick="sortTable('pitching','bb')">BB <span class="sort-arrow">↕</span></th>
+                </tr>
+              </thead>
+              <tbody id="pitching-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TRENDS PAGE ── -->
+      <div class="page" id="page-trends">
+        <div class="kpi-row" id="trends-kpi"></div>
+        <div class="overview-grid">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Team batting AVG by season</div></div>
+            <div class="card-body" id="trend-avg-chart"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Team ERA by season</div></div>
+            <div class="card-body" id="trend-era-chart"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Stolen bases by season</div></div>
+            <div class="card-body" id="trend-sb-chart"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Strikeouts (pitching) by season</div></div>
+            <div class="card-body" id="trend-k-chart"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PLAYER PROFILES PAGE ── -->
+      <div class="page" id="page-players">
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-body" style="padding:10px 16px">
+            <select class="filter-select" style="width:auto;min-width:200px" id="profile-select" onchange="renderProfile()">
+              <option value="">Select a player...</option>
+            </select>
+          </div>
+        </div>
+        <div id="profile-area">
+          <div class="empty-state">
+            <div class="empty-icon">👤</div>
+            <div class="empty-title">Select a player above</div>
+            <div class="empty-sub">See their full career stats across all seasons</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end content -->
+  </div><!-- end main -->
+</div><!-- end shell -->
+
+<script>
+// ── DATA ──────────────────────────────────────────────────
+// This is where your real season data lives.
+// Each entry is one player-season combination.
+// To add a new season: copy the pattern and add more rows.
+// To connect this to live CSV exports in the future,
+// this section gets replaced by a Python-generated data file.
+
+const RAW = [
+  // 2026
+  {year:2026,name:'Mitchell, C.',num:'3',gp:22,pa:108,ab:88,avg:.352,obp:.430,ops:.820,h:31,rbi:38,r:28,sb:12,bb:16,so:8,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2026,name:'Martin, M.',num:'5',gp:22,pa:109,ab:92,avg:.306,obp:.390,ops:.740,h:28,rbi:32,r:22,sb:15,bb:12,so:14,ip:24.1,era:3.16,whip:1.21,w:3,l:1,k:18},
+  {year:2026,name:'Lowe, R.',num:'11',gp:22,pa:101,ab:83,avg:.289,obp:.360,ops:.700,h:24,rbi:30,r:20,sb:10,bb:14,so:12,ip:34.2,era:3.43,whip:1.35,w:4,l:2,k:28},
+  {year:2026,name:'English, J.',num:'14',gp:22,pa:78,ab:66,avg:.263,obp:.340,ops:.650,h:17,rbi:20,r:15,sb:3,bb:9,so:10,ip:28.1,era:2.72,whip:1.18,w:4,l:1,k:22},
+  {year:2026,name:'Townsend, K.',num:'22',gp:22,pa:114,ab:95,avg:.261,obp:.330,ops:.650,h:25,rbi:28,r:18,sb:14,bb:12,so:18,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2026,name:'Gardner, T.',num:'33',gp:22,pa:78,ab:69,avg:.203,obp:.282,ops:.530,h:14,rbi:14,r:12,sb:6,bb:7,so:16,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2026,name:'Petry, Ad.',num:'4',gp:18,pa:42,ab:38,avg:.158,obp:.238,ops:.420,h:6,rbi:8,r:6,sb:2,bb:4,so:10,ip:27.2,era:1.27,whip:0.94,w:5,l:0,k:30},
+  {year:2026,name:'Uribe, K.',num:'25',gp:20,pa:90,ab:76,avg:.224,obp:.300,ops:.580,h:17,rbi:22,r:14,sb:5,bb:10,so:14,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2026,name:'Day, K.',num:'5',gp:18,pa:88,ab:76,avg:.225,obp:.300,ops:.600,h:17,rbi:18,r:14,sb:8,bb:9,so:16,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2026,name:'Stephens, G.',num:'42',gp:14,pa:22,ab:18,avg:.167,obp:.227,ops:.440,h:3,rbi:4,r:3,sb:0,bb:2,so:6,ip:20.0,era:7.00,whip:1.95,w:2,l:2,k:14},
+  {year:2026,name:'Memphis, M.',num:'7',gp:16,pa:35,ab:30,avg:.200,obp:.286,ops:.520,h:6,rbi:8,r:5,sb:2,bb:4,so:8,ip:27.1,era:3.33,whip:1.28,w:3,l:2,k:20},
+  // 2025
+  {year:2025,name:'Mitchell, C.',num:'3',gp:22,pa:85,ab:66,avg:.532,obp:.598,ops:1.130,h:35,rbi:42,r:30,sb:14,bb:15,so:4,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2025,name:'Martin, M.',num:'5',gp:20,pa:79,ab:73,avg:.233,obp:.329,ops:.620,h:17,rbi:18,r:14,sb:10,bb:5,so:16,ip:14.1,era:9.77,whip:2.10,w:1,l:2,k:8},
+  {year:2025,name:'Lowe, R.',num:'11',gp:20,pa:65,ab:56,avg:.286,obp:.369,ops:.700,h:16,rbi:20,r:14,sb:8,bb:7,so:10,ip:29.1,era:3.10,whip:1.26,w:3,l:1,k:24},
+  {year:2025,name:'English, J.',num:'14',gp:20,pa:83,ab:78,avg:.269,obp:.361,ops:.660,h:21,rbi:19,r:16,sb:4,bb:5,so:12,ip:6.2,era:5.25,whip:1.65,w:0,l:1,k:4},
+  {year:2025,name:'Townsend, K.',num:'22',gp:22,pa:76,ab:74,avg:.311,obp:.382,ops:.730,h:23,rbi:22,r:16,sb:10,bb:2,so:10,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2025,name:'Schmedding, J.',num:'36',gp:22,pa:85,ab:77,avg:.234,obp:.271,ops:.530,h:18,rbi:16,r:13,sb:2,bb:3,so:7,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2025,name:'LaFarge, K.',num:'8',gp:22,pa:87,ab:76,avg:.355,obp:.437,ops:.840,h:27,rbi:28,r:22,sb:18,bb:9,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2025,name:'Stephens, G.',num:'42',gp:10,pa:8,ab:7,avg:.143,obp:.250,ops:.390,h:1,rbi:1,r:2,sb:0,bb:1,so:2,ip:15.0,era:3.73,whip:1.13,w:4,l:0,k:21},
+  {year:2025,name:'Petry, Ad.',num:'4',gp:12,pa:5,ab:5,avg:.000,obp:.200,ops:.200,h:0,rbi:0,r:5,sb:3,bb:0,so:1,ip:12.1,era:3.97,whip:1.38,w:1,l:1,k:4},
+  // 2024
+  {year:2024,name:'Golder, W.',num:'2',gp:22,pa:83,ab:68,avg:.441,obp:.506,ops:.980,h:30,rbi:35,r:28,sb:6,bb:12,so:5,ip:41.0,era:4.27,whip:1.44,w:5,l:2,k:32},
+  {year:2024,name:'Mitchell, C.',num:'3',gp:22,pa:60,ab:50,avg:.380,obp:.450,ops:.830,h:19,rbi:28,r:22,sb:8,bb:8,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2024,name:'Martin, M.',num:'5',gp:22,pa:85,ab:79,avg:.379,obp:.447,ops:.860,h:30,rbi:30,r:24,sb:18,bb:5,so:8,ip:26.2,era:4.46,whip:1.54,w:3,l:3,k:18},
+  {year:2024,name:'English, J.',num:'14',gp:22,pa:83,ab:76,avg:.329,obp:.410,ops:.790,h:25,rbi:22,r:20,sb:5,bb:6,so:8,ip:3.1,era:10.5,whip:2.40,w:0,l:1,k:2},
+  {year:2024,name:'Townsend, K.',num:'22',gp:22,pa:81,ab:76,avg:.238,obp:.321,ops:.650,h:18,rbi:20,r:16,sb:8,bb:4,so:14,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2024,name:'LaFarge, K.',num:'8',gp:22,pa:85,ab:77,avg:.364,obp:.447,ops:.850,h:28,rbi:32,r:26,sb:22,bb:6,so:5,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2024,name:'Schmedding, J.',num:'36',gp:22,pa:64,ab:58,avg:.327,obp:.391,ops:.740,h:19,rbi:28,r:18,sb:2,bb:4,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2024,name:'Lowe, R.',num:'11',gp:10,pa:14,ab:13,avg:.231,obp:.286,ops:.570,h:3,rbi:4,r:4,sb:1,bb:1,so:3,ip:22.1,era:4.70,whip:1.52,w:2,l:2,k:14},
+  // 2023
+  {year:2023,name:'Golder, W.',num:'2',gp:21,pa:78,ab:64,avg:.406,obp:.474,ops:.920,h:26,rbi:30,r:24,sb:4,bb:10,so:4,ip:38.0,era:3.90,whip:1.38,w:5,l:1,k:28},
+  {year:2023,name:'LaFarge, K.',num:'8',gp:21,pa:80,ab:72,avg:.347,obp:.425,ops:.820,h:25,rbi:28,r:22,sb:20,bb:7,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2023,name:'Martin, M.',num:'5',gp:21,pa:76,ab:70,avg:.314,obp:.382,ops:.760,h:22,rbi:24,r:18,sb:14,bb:5,so:10,ip:20.0,era:3.60,whip:1.30,w:3,l:2,k:16},
+  {year:2023,name:'Schmedding, J.',num:'36',gp:21,pa:70,ab:64,avg:.297,obp:.371,ops:.710,h:19,rbi:22,r:16,sb:3,bb:5,so:8,ip:0,era:0,whip:0,w:0,l:0,k:0},
+];
+
+// TEAM TOTALS BY YEAR
+const TEAM = {
+  2023:{avg:.298,obp:.390,ops:.752,era:4.20,whip:1.58,r:158,sb:62,k:88,ip:132},
+  2024:{avg:.303,obp:.413,ops:.776,era:5.12,whip:1.65,r:171,sb:68,k:95,ip:138},
+  2025:{avg:.316,obp:.412,ops:.791,era:4.69,whip:1.70,r:173,sb:71,k:110,ip:146},
+  2026:{avg:.271,obp:.382,ops:.720,era:3.89,whip:1.42,r:162,sb:60,k:130,ip:152},
+};
+const YEARS_ALL = [2023,2024,2025,2026];
+
+// ── STATE ──────────────────────────────────────────────
+let currentPage = 'overview';
+let sortState = {batting:{col:'avg',dir:-1}, pitching:{col:'era',dir:1}};
+let activeSeason = '2025';
+let playerFilter = '';
+
+// ── FILTERS ───────────────────────────────────────────
+function applyFilters(){
+  activeSeason = document.getElementById('season-filter').value;
+  playerFilter = document.getElementById('player-filter').value.toLowerCase().trim();
+  const badge = activeSeason==='all' ? 'All seasons' : `${activeSeason} Season`;
+  document.getElementById('header-badge').textContent = badge;
+  renderAll();
+}
+
+function filtered(){
+  return RAW.filter(r=>{
+    const seasonOk = activeSeason==='all' || r.year===+activeSeason;
+    const playerOk = !playerFilter || r.name.toLowerCase().includes(playerFilter);
+    return seasonOk && playerOk;
+  });
+}
+
+function batters(data){ return data.filter(r=>r.pa>0); }
+function pitchers(data){ return data.filter(r=>r.ip>0); }
+
+// ── NAVIGATION ────────────────────────────────────────
+function showPage(name, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  currentPage = name;
+  const titles = {
+    overview:'Season Overview', batting:'Batting Statistics',
+    pitching:'Pitching Statistics', trends:'Season Trends', players:'Player Profiles'
+  };
+  document.getElementById('page-title').textContent = titles[name];
+  renderAll();
+}
+
+// ── RENDER ALL ────────────────────────────────────────
+function renderAll(){
+  renderTicker();
+  renderOverview();
+  renderBatting();
+  renderPitching();
+  renderTrends();
+  renderProfileSelect();
+}
+
+// ── TICKER ────────────────────────────────────────────
+function renderTicker(){
+  const data = filtered();
+  const b = batters(data);
+  const p = pitchers(data);
+  const items = [];
+  if(b.length){
+    const best = b.reduce((a,c)=>c.avg>a.avg?c:a);
+    items.push(`<span>Top AVG</span>${best.name} — .${Math.round(best.avg*1000).toString().padStart(3,'0')}`);
+    const rbi = b.reduce((a,c)=>c.rbi>a.rbi?c:a);
+    items.push(`<span>RBI leader</span>${rbi.name} — ${rbi.rbi}`);
+    const sb = b.reduce((a,c)=>c.sb>a.sb?c:a);
+    items.push(`<span>SB leader</span>${sb.name} — ${sb.sb}`);
+  }
+  if(p.length){
+    const qp = p.filter(x=>x.ip>=5);
+    if(qp.length){
+      const era = qp.reduce((a,c)=>c.era<a.era?c:a);
+      items.push(`<span>Best ERA (5+ IP)</span>${era.name} — ${era.era.toFixed(2)}`);
+    }
+    items.push(`<span>Total K's</span>${p.reduce((a,c)=>a+c.k,0)} strikeouts`);
+  }
+  const season = activeSeason==='all'?'2023–2026':activeSeason;
+  items.push(`<span>Season</span>Clinton Cardinals ${season}`);
+  // duplicate for seamless loop
+  const html = [...items,...items].map(t=>`<div class="ticker-item">${t}</div>`).join('');
+  document.getElementById('ticker-inner').innerHTML = html;
+}
+
+// ── OVERVIEW ──────────────────────────────────────────
+function renderOverview(){
+  const data = filtered();
+  const b = batters(data);
+  const p = pitchers(data);
+
+  // KPIs
+  let teamAvg = 0, teamOBP = 0, totalR = 0, totalSB = 0, teamERA = 0, totalK = 0;
+  if(b.length){
+    const totalH = b.reduce((a,c)=>a+c.h,0);
+    const totalAB = b.reduce((a,c)=>a+c.ab,0);
+    teamAvg = totalAB>0 ? totalH/totalAB : 0;
+    teamOBP = b.reduce((a,c)=>a+c.obp,0)/b.length;
+    totalR = b.reduce((a,c)=>a+c.r,0);
+    totalSB = b.reduce((a,c)=>a+c.sb,0);
+  }
+  if(p.length){
+    teamERA = p.reduce((a,c)=>a+c.era,0)/p.length;
+    totalK = p.reduce((a,c)=>a+c.k,0);
+  }
+
+  // Compare to previous year for trend
+  const yr = +activeSeason;
+  const prevYr = yr-1;
+  const prev = TEAM[prevYr];
+  const curr = TEAM[yr];
+
+  function trendHtml(curr, prev, higher=true){
+    if(!prev||!curr) return '';
+    const better = higher ? curr>prev : curr<prev;
+    const same = Math.abs(curr-prev)<0.005;
+    if(same) return '<span class="trend-fl">→ flat</span>';
+    return better ?
+      '<span class="trend-up">▲ improved</span>' :
+      '<span class="trend-dn">▼ declined</span>';
+  }
+
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi" style="--accent:#C8102E">
+      <div class="kpi-label">Team AVG</div>
+      <div class="kpi-val">${teamAvg>0?'.'+Math.round(teamAvg*1000).toString().padStart(3,'0'):'—'}</div>
+      <div class="kpi-sub">Team batting average</div>
+      <div class="kpi-trend">${activeSeason!=='all'&&prev?trendHtml(curr?.avg,prev?.avg):''}</div>
+    </div>
+    <div class="kpi" style="--accent:#8A9BA8">
+      <div class="kpi-label">Team OBP</div>
+      <div class="kpi-val">${teamOBP>0?'.'+Math.round(teamOBP*1000).toString().padStart(3,'0'):'—'}</div>
+      <div class="kpi-sub">On base percentage</div>
+    </div>
+    <div class="kpi" style="--accent:#4CAF50">
+      <div class="kpi-label">Runs scored</div>
+      <div class="kpi-val">${totalR||'—'}</div>
+      <div class="kpi-sub">Total runs</div>
+      <div class="kpi-trend">${activeSeason!=='all'&&prev?trendHtml(curr?.r,prev?.r):''}</div>
+    </div>
+    <div class="kpi" style="--accent:#FF9800">
+      <div class="kpi-label">Stolen bases</div>
+      <div class="kpi-val">${totalSB||'—'}</div>
+      <div class="kpi-sub">Total SB</div>
+    </div>
+    <div class="kpi" style="--accent:#2196F3">
+      <div class="kpi-label">Team ERA</div>
+      <div class="kpi-val">${teamERA>0?teamERA.toFixed(2):'—'}</div>
+      <div class="kpi-sub">Earned run average</div>
+      <div class="kpi-trend">${activeSeason!=='all'&&prev?trendHtml(curr?.era,prev?.era,false):''}</div>
+    </div>
+    <div class="kpi" style="--accent:#9C27B0">
+      <div class="kpi-label">Strikeouts</div>
+      <div class="kpi-val">${totalK||'—'}</div>
+      <div class="kpi-sub">Pitching K's</div>
+      <div class="kpi-trend">${activeSeason!=='all'&&prev?trendHtml(curr?.k,prev?.k):''}</div>
+    </div>`;
+
+  // Top batters
+  const topBat = [...b].sort((a,z)=>z.avg-a.avg).slice(0,6);
+  document.getElementById('top-batters').innerHTML = topBat.length ?
+    topBat.map(p=>`<tr>
+      <td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${avgPill(p.avg)}</td>
+      <td>${p.obp.toFixed(3)}</td>
+      <td>${p.rbi}</td>
+      <td>${p.sb}</td>
+    </tr>`).join('') :
+    `<tr><td colspan="5" class="no-results">No data for current filter</td></tr>`;
+
+  // Top pitchers
+  const topPitch = [...pitchers(data)].filter(x=>x.ip>=3).sort((a,z)=>a.era-z.era).slice(0,6);
+  document.getElementById('top-pitchers').innerHTML = topPitch.length ?
+    topPitch.map(p=>`<tr>
+      <td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${eraPill(p.era)}</td>
+      <td>${p.ip.toFixed(1)}</td>
+      <td>${p.w}</td>
+      <td>${p.whip.toFixed(3)}</td>
+    </tr>`).join('') :
+    `<tr><td colspan="5" class="no-results">No data for current filter</td></tr>`;
+
+  // YOY chart
+  const yoyData = YEARS_ALL.map(y=>({year:y,avg:TEAM[y].avg}));
+  const maxAvg = Math.max(...yoyData.map(d=>d.avg));
+  document.getElementById('yoy-chart').innerHTML = `
+    <div class="trend-bars">
+      ${yoyData.map(d=>`
+        <div class="trend-row">
+          <div class="trend-year">${d.year}</div>
+          <div class="trend-bar-wrap">
+            <div class="trend-fill" style="width:${(d.avg/maxAvg*100).toFixed(1)}%;background:${d.year===yr?'#C8102E':'#3A2A1C'}">
+              <span class="trend-fill-label">.${Math.round(d.avg*1000).toString().padStart(3,'0')}</span>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── BATTING TABLE ─────────────────────────────────────
+function renderBatting(){
+  const data = batters(filtered());
+  const s = sortState.batting;
+  const sorted = [...data].sort((a,b)=>{
+    const av = a[s.col]??0, bv = b[s.col]??0;
+    return typeof av==='string' ? av.localeCompare(bv)*s.dir : (av-bv)*s.dir;
+  });
+  document.getElementById('bat-count').textContent = `${sorted.length} players`;
+  document.getElementById('batting-body').innerHTML = sorted.length ?
+    sorted.map(p=>`<tr>
+      <td>${p.name}</td>
+      <td><span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${p.gp}</td><td>${p.pa}</td>
+      <td>${avgPill(p.avg)}</td>
+      <td>${p.obp.toFixed(3)}</td>
+      <td>${p.ops.toFixed(3)}</td>
+      <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+      <td>${p.sb}</td><td>${p.bb}</td><td>${p.so}</td>
+    </tr>`).join('') :
+    `<tr><td colspan="13" class="no-results">No players match the current filter</td></tr>`;
+}
+
+function sortTable(table, col){
+  const s = sortState[table];
+  if(s.col===col) s.dir*=-1;
+  else{s.col=col;s.dir=-1;}
+  table==='batting' ? renderBatting() : renderPitching();
+}
+
+// ── PITCHING TABLE ────────────────────────────────────
+function renderPitching(){
+  const data = pitchers(filtered());
+  const s = sortState.pitching;
+  const sorted = [...data].sort((a,b)=>{
+    const av=a[s.col]??0,bv=b[s.col]??0;
+    return typeof av==='string'?av.localeCompare(bv)*s.dir:(av-bv)*s.dir;
+  });
+  document.getElementById('pitch-count').textContent = `${sorted.length} pitchers`;
+  document.getElementById('pitching-body').innerHTML = sorted.length ?
+    sorted.map(p=>`<tr>
+      <td>${p.name}</td>
+      <td><span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${p.ip.toFixed(1)}</td>
+      <td>${p.w}</td><td>${p.l}</td>
+      <td>${eraPill(p.era)}</td>
+      <td>${p.whip.toFixed(3)}</td>
+      <td>${p.k}</td><td>${p.bb}</td>
+    </tr>`).join('') :
+    `<tr><td colspan="9" class="no-results">No pitchers match the current filter</td></tr>`;
+}
+
+// ── TRENDS ────────────────────────────────────────────
+function renderTrends(){
+  const kpis = YEARS_ALL.map(y=>TEAM[y]);
+  document.getElementById('trends-kpi').innerHTML = `
+    <div class="kpi" style="--accent:#C8102E">
+      <div class="kpi-label">Best team AVG</div>
+      <div class="kpi-val">.${Math.round(Math.max(...kpis.map(t=>t.avg))*1000).toString().padStart(3,'0')}</div>
+      <div class="kpi-sub">2025 season</div>
+    </div>
+    <div class="kpi" style="--accent:#2196F3">
+      <div class="kpi-label">Best team ERA</div>
+      <div class="kpi-val">${Math.min(...kpis.map(t=>t.era)).toFixed(2)}</div>
+      <div class="kpi-sub">2026 season</div>
+    </div>
+    <div class="kpi" style="--accent:#9C27B0">
+      <div class="kpi-label">Most K's (pitching)</div>
+      <div class="kpi-val">${Math.max(...kpis.map(t=>t.k))}</div>
+      <div class="kpi-sub">2026 season</div>
+    </div>
+    <div class="kpi" style="--accent:#FF9800">
+      <div class="kpi-label">Most SB</div>
+      <div class="kpi-val">${Math.max(...kpis.map(t=>t.sb))}</div>
+      <div class="kpi-sub">2025 season</div>
+    </div>`;
+
+  function barChart(containerId, values, labels, colors, fmt){
+    const max = Math.max(...values);
+    document.getElementById(containerId).innerHTML = `
+      <div class="trend-bars">
+        ${values.map((v,i)=>`
+          <div class="trend-row">
+            <div class="trend-year">${labels[i]}</div>
+            <div class="trend-bar-wrap">
+              <div class="trend-fill" style="width:${(v/max*100).toFixed(1)}%;background:${colors[i]}">
+                <span class="trend-fill-label">${fmt(v)}</span>
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  const barColors = ['#1B3A5C','#1B3A1F','#3E2800','#3E1212'];
+  barChart('trend-avg-chart',YEARS_ALL.map(y=>TEAM[y].avg),YEARS_ALL.map(String),barColors,v=>'.'+Math.round(v*1000).toString().padStart(3,'0'));
+  barChart('trend-era-chart',YEARS_ALL.map(y=>TEAM[y].era),YEARS_ALL.map(String),barColors,v=>v.toFixed(2));
+  barChart('trend-sb-chart', YEARS_ALL.map(y=>TEAM[y].sb), YEARS_ALL.map(String),barColors,v=>v);
+  barChart('trend-k-chart',  YEARS_ALL.map(y=>TEAM[y].k),  YEARS_ALL.map(String),barColors,v=>v);
+}
+
+// ── PLAYER PROFILES ───────────────────────────────────
+function renderProfileSelect(){
+  const names = [...new Set(RAW.map(r=>r.name))].sort();
+  const sel = document.getElementById('profile-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Select a player...</option>' +
+    names.map(n=>`<option value="${n}"${n===cur?' selected':''}>${n}</option>`).join('');
+  if(cur) renderProfile();
+}
+
+function renderProfile(){
+  const name = document.getElementById('profile-select').value;
+  if(!name){
+    document.getElementById('profile-area').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">👤</div>
+        <div class="empty-title">Select a player above</div>
+        <div class="empty-sub">See their full career stats across all seasons</div>
+      </div>`;
+    return;
+  }
+  const seasons = RAW.filter(r=>r.name===name).sort((a,b)=>a.year-b.year);
+  const p = seasons[seasons.length-1];
+  const careerPA = seasons.reduce((a,c)=>a+c.pa,0);
+  const careerH  = seasons.reduce((a,c)=>a+c.h,0);
+  const careerAB = seasons.reduce((a,c)=>a+c.ab,0);
+  const careerRBI= seasons.reduce((a,c)=>a+c.rbi,0);
+  const careerSB = seasons.reduce((a,c)=>a+c.sb,0);
+  const careerAvg= careerAB>0?(careerH/careerAB):0;
+
+  const isPitcher = seasons.some(s=>s.ip>0);
+  const careerIP  = seasons.reduce((a,c)=>a+c.ip,0);
+  const careerW   = seasons.reduce((a,c)=>a+c.w,0);
+  const careerK   = seasons.reduce((a,c)=>a+c.k,0);
+
+  const maxAvg = Math.max(...seasons.map(s=>s.avg));
+
+  document.getElementById('profile-area').innerHTML = `
+    <div class="profile-grid">
+      <div class="profile-card">
+        <div class="profile-num">#${p.num}</div>
+        <div class="profile-name">${name}</div>
+        <div class="profile-years">${seasons.map(s=>s.year).join(' · ')}</div>
+        <div class="profile-stat-row">
+          <div class="ps-item"><div class="ps-val">.${Math.round(careerAvg*1000).toString().padStart(3,'0')}</div><div class="ps-label">Career AVG</div></div>
+          <div class="ps-item"><div class="ps-val">${careerRBI}</div><div class="ps-label">Career RBI</div></div>
+          <div class="ps-item"><div class="ps-val">${careerSB}</div><div class="ps-label">Career SB</div></div>
+          ${isPitcher?`<div class="ps-item"><div class="ps-val">${careerIP.toFixed(0)}</div><div class="ps-label">Career IP</div></div>`:''}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Batting AVG by season</div></div>
+        <div class="card-body">
+          <div class="trend-bars">
+            ${seasons.map(s=>`
+              <div class="trend-row">
+                <div class="trend-year">${s.year}</div>
+                <div class="trend-bar-wrap">
+                  <div class="trend-fill" style="width:${(s.avg/Math.max(maxAvg,.001)*100).toFixed(1)}%;background:#C8102E">
+                    <span class="trend-fill-label">.${Math.round(s.avg*1000).toString().padStart(3,'0')}</span>
+                  </div>
+                </div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Season-by-season stats</div></div>
+      <div class="table-wrap">
+        <table class="stat-table">
+          <thead><tr>
+            <th>Year</th><th>GP</th><th>PA</th><th>AVG</th><th>OBP</th><th>OPS</th>
+            <th>H</th><th>RBI</th><th>R</th><th>SB</th><th>BB</th><th>K</th>
+            ${isPitcher?'<th>IP</th><th>W</th><th>L</th><th>ERA</th><th>WHIP</th>':''}
+          </tr></thead>
+          <tbody>
+            ${seasons.map(s=>`<tr>
+              <td><span class="year-tag y${s.year}">${s.year}</span></td>
+              <td>${s.gp}</td><td>${s.pa}</td>
+              <td>${avgPill(s.avg)}</td>
+              <td>${s.obp.toFixed(3)}</td><td>${s.ops.toFixed(3)}</td>
+              <td>${s.h}</td><td>${s.rbi}</td><td>${s.r}</td>
+              <td>${s.sb}</td><td>${s.bb}</td><td>${s.so}</td>
+              ${isPitcher?`<td>${s.ip>0?s.ip.toFixed(1):'—'}</td><td>${s.w||'—'}</td><td>${s.l||'—'}</td><td>${s.era>0?eraPill(s.era):'—'}</td><td>${s.whip>0?s.whip.toFixed(3):'—'}</td>`:''}
+            </tr>`).join('')}
+            <tr class="totals">
+              <td>Career</td><td>—</td><td>${careerPA}</td>
+              <td>${avgPill(careerAvg)}</td>
+              <td>—</td><td>—</td>
+              <td>${careerH}</td><td>${careerRBI}</td>
+              <td>${seasons.reduce((a,c)=>a+c.r,0)}</td>
+              <td>${careerSB}</td>
+              <td>${seasons.reduce((a,c)=>a+c.bb,0)}</td>
+              <td>${seasons.reduce((a,c)=>a+c.so,0)}</td>
+              ${isPitcher?`<td>${careerIP.toFixed(1)}</td><td>${careerW}</td><td>${seasons.reduce((a,c)=>a+c.l,0)}</td><td>—</td><td>—</td>`:''}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+}
+
+// ── HELPERS ───────────────────────────────────────────
+function avgPill(v){
+  if(!v&&v!==0) return '—';
+  const cls = v>=.350?'pill-g':v>=.250?'pill-a':'pill-r';
+  return `<span class="stat-pill ${cls}">.${Math.round(v*1000).toString().padStart(3,'0')}</span>`;
+}
+function eraPill(v){
+  if(!v&&v!==0) return '—';
+  const cls = v<=3.5?'pill-g':v<=5.5?'pill-a':'pill-r';
+  return `<span class="stat-pill ${cls}">${v.toFixed(2)}</span>`;
+}
+
+// ── INIT ──────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
