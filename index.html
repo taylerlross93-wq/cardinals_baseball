@@ -573,13 +573,7 @@ function parseGameChangerCSV(csvText) {
 
   // Try to detect the season year from the filename or data
   // GameChanger filenames usually contain the year
-  let year = new Date().getFullYear(); // default to current year
-
-  // Look for a 4-digit year in the first few lines
-  for (let i = 0; i < Math.min(5, lines.length); i++) {
-    const match = lines[i].match(/20(2[0-9])/);
-    if (match) { year = parseInt(match[0]); break; }
-  }
+  let year = new Date().getFullYear();
 
   // Ask the coach to confirm the year
   // prompt() opens a simple dialog box in the browser
