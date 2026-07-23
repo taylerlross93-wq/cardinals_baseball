@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clinton Cardinals — Coach Dashboard</title>
+<title>Cardinals Baseball — Coach Dashboard</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#F5F0E8;overflow:hidden}
@@ -29,7 +29,7 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#1C1410}
 .ticker{background:#C8102E;padding:0;height:32px;display:flex;align-items:center;overflow:hidden;flex-shrink:0;border-bottom:1px solid #A00020}
 .ticker-label{background:#8B0000;padding:0 14px;height:100%;display:flex;align-items:center;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#ffcdd2;flex-shrink:0;white-space:nowrap}
-.ticker-track{flex:1;overflow:hidden;position:relative}
+.ticker-track{flex:1;overflow:hidden}
 .ticker-inner{display:flex;animation:ticker 30s linear infinite;white-space:nowrap}
 .ticker-item{padding:0 28px;font-size:11px;font-weight:600;color:#fff;letter-spacing:.04em;border-right:1px solid rgba(255,255,255,.2);flex-shrink:0}
 .ticker-item span{color:rgba(255,255,255,.7);font-weight:400;margin-right:6px}
@@ -77,6 +77,7 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 .year-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
 .y2023{background:#1A2A3A;color:#90CAF9}.y2024{background:#1B3A1F;color:#81C784}
 .y2025{background:#3E2800;color:#FFB74D}.y2026{background:#3E1212;color:#EF9A9A}
+.y9999{background:#2A1A3A;color:#CE93D8}
 .trend-bars{display:flex;flex-direction:column;gap:8px;padding:4px 0}
 .trend-row{display:flex;align-items:center;gap:10px}
 .trend-year{font-size:11px;color:#8A9BA8;width:36px;flex-shrink:0;font-weight:600}
@@ -96,79 +97,253 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 .empty-icon{font-size:32px;margin-bottom:12px}
 .empty-title{font-size:15px;font-weight:600;color:#8A9BA8;margin-bottom:6px}
 .empty-sub{font-size:12px}
-.generated-note{font-size:10px;color:#3A2A1C;text-align:center;padding:6px}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:#120D09}
 ::-webkit-scrollbar-thumb{background:#3A2A1C;border-radius:3px}
+
+/* =====================================================
+   ★ NEW — CSV UPLOAD STYLES
+   Everything between these comment markers is new code
+   added for the CSV upload feature
+   ===================================================== */
+
+/* Upload button in sidebar */
+.upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  color: #FFB74D;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px dashed #5A4A3C;
+  background: #1C1410;
+  margin-top: 6px;
+  transition: all .15s;
+  text-align: left;
+}
+.upload-btn:hover {
+  border-color: #C8102E;
+  color: #F5F0E8;
+  background: #2E1E10;
+}
+
+/* Hidden file input — we trigger it from the button */
+.file-input-hidden {
+  display: none;
+}
+
+/* Upload status bar shown below the button */
+.upload-status {
+  font-size: 11px;
+  color: #8A9BA8;
+  padding: 6px 4px 0;
+  line-height: 1.4;
+}
+.upload-status.success { color: #81C784; }
+.upload-status.error   { color: #EF9A9A; }
+.upload-status.loading { color: #FFB74D; }
+
+/* Toast notification that slides up when upload completes */
+.toast {
+  position: fixed;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1B3A1F;
+  border: 1px solid #2E7D32;
+  color: #81C784;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: bottom .3s ease;
+  z-index: 9999;
+  white-space: nowrap;
+}
+.toast.show { bottom: 24px; }
+.toast.error-toast {
+  background: #3E1212;
+  border-color: #C62828;
+  color: #EF9A9A;
+}
+
+/* Uploaded seasons list in sidebar */
+.uploaded-tag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  background: #1C1410;
+  border: 1px solid #2E2018;
+  border-radius: 6px;
+  margin-top: 5px;
+  font-size:11px;
+  color: #D0C8BC;
+}
+.uploaded-tag-remove {
+  background: none;
+  border: none;
+  color: #5A4A3C;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0 2px;
+}
+.uploaded-tag-remove:hover { color: #EF9A9A; }
+
+/* =====================================================
+   ★ END NEW CSS
+   ===================================================== */
 </style>
 </head>
 <body>
 <div class="shell">
+
   <div class="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-name">Clinton Cardinals</div>
-      <div class="brand-sub">Varsity Baseball</div>
+      <div class="brand-name">Cardinals Baseball</div>
+      <div class="brand-sub">Coach Dashboard</div>
     </div>
+
     <div class="sidebar-section">
       <div class="sidebar-label">Season</div>
       <select class="filter-select" id="season-filter" onchange="applyFilters()">
         <option value="all">All seasons</option>
-        <option value="2023" selected>2023</option>
+        <option value="2026">2026</option>
+        <option value="2025" selected>2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
       </select>
       <div class="sidebar-label" style="margin-top:10px">Player</div>
-      <input class="filter-input" type="text" id="player-filter" placeholder="Search by name..." oninput="applyFilters()">
+      <input class="filter-input" type="text" id="player-filter"
+             placeholder="Search by name..." oninput="applyFilters()">
     </div>
+
+    <!-- =====================================================
+         ★ NEW — UPLOAD SECTION IN SIDEBAR
+         This whole sidebar-section block is new.
+         It contains the upload button, hidden file input,
+         status message, and list of uploaded seasons.
+         ===================================================== -->
+    <div class="sidebar-section">
+      <div class="sidebar-label">Import GameChanger CSV</div>
+
+      <!-- Clicking this button triggers the hidden file input below -->
+      <button class="upload-btn" onclick="document.getElementById('csv-file-input').click()">
+        <span>⬆</span> Upload CSV
+      </button>
+
+      <!-- Hidden input — accepts .csv files only -->
+      <!-- onchange fires as soon as the coach picks a file -->
+      <input
+        class="file-input-hidden"
+        type="file"
+        id="csv-file-input"
+        accept=".csv"
+        onchange="handleFileUpload(event)"
+      >
+
+      <!-- Status message updates as the file loads -->
+      <div class="upload-status" id="upload-status">
+        Drop your GameChanger season export here
+      </div>
+
+      <!-- List of seasons that have been uploaded this session -->
+      <div id="uploaded-seasons-list"></div>
+    </div>
+    <!-- ★ END NEW UPLOAD SECTION -->
+
     <nav class="sidebar-nav">
       <div class="nav-label">Dashboard</div>
-      <button class="nav-item active" onclick="showPage('overview',this)"><span class="nav-icon">⚾</span> Overview</button>
-      <button class="nav-item" onclick="showPage('batting',this)"><span class="nav-icon">🏏</span> Batting</button>
-      <button class="nav-item" onclick="showPage('pitching',this)"><span class="nav-icon">💪</span> Pitching</button>
+      <button class="nav-item active" onclick="showPage('overview',this)">
+        <span class="nav-icon">⚾</span> Overview
+      </button>
+      <button class="nav-item" onclick="showPage('batting',this)">
+        <span class="nav-icon">🏏</span> Batting
+      </button>
+      <button class="nav-item" onclick="showPage('pitching',this)">
+        <span class="nav-icon">💪</span> Pitching
+      </button>
       <div class="nav-label" style="margin-top:8px">Analysis</div>
-      <button class="nav-item" onclick="showPage('trends',this)"><span class="nav-icon">📈</span> Season Trends</button>
-      <button class="nav-item" onclick="showPage('players',this)"><span class="nav-icon">👤</span> Player Profiles</button>
+      <button class="nav-item" onclick="showPage('trends',this)">
+        <span class="nav-icon">📈</span> Season Trends
+      </button>
+      <button class="nav-item" onclick="showPage('players',this)">
+        <span class="nav-icon">👤</span> Player Profiles
+      </button>
     </nav>
+
     <div class="sidebar-footer">
-      Clinton Cardinals · Varsity Baseball<br>
-      Seasons: 2023<br>
-      Data: GameChanger export
+      Clinton Cardinals Varsity<br>
+      Data: 2023–2026 · GameChanger
     </div>
   </div>
 
   <div class="main">
     <div class="ticker">
       <div class="ticker-label">Cardinals</div>
-      <div class="ticker-track"><div class="ticker-inner" id="ticker-inner"></div></div>
+      <div class="ticker-track">
+        <div class="ticker-inner" id="ticker-inner"></div>
+      </div>
     </div>
+
     <div class="page-header">
       <div>
         <div class="page-title" id="page-title">Season Overview</div>
-        <div class="page-sub">Clinton Cardinals · Varsity Baseball</div>
+        <div class="page-sub">Clinton Cardinals Varsity Baseball</div>
       </div>
-      <div class="header-badge" id="header-badge">2023 Season</div>
+      <div class="header-badge" id="header-badge">2025 Season</div>
     </div>
+
     <div class="content">
 
       <div class="page active" id="page-overview">
         <div class="kpi-row" id="kpi-row"></div>
         <div class="overview-grid">
           <div class="card">
-            <div class="card-header"><div class="card-title">Top batters</div><div class="card-badge">by AVG</div></div>
-            <div class="card-body"><table class="mini-table"><thead><tr><th>Player</th><th>AVG</th><th>OBP</th><th>RBI</th><th>SB</th></tr></thead><tbody id="top-batters"></tbody></table></div>
+            <div class="card-header">
+              <div class="card-title">Top batters</div>
+              <div class="card-badge">by AVG</div>
+            </div>
+            <div class="card-body">
+              <table class="mini-table">
+                <thead><tr><th>Player</th><th>AVG</th><th>OBP</th><th>RBI</th><th>SB</th></tr></thead>
+                <tbody id="top-batters"></tbody>
+              </table>
+            </div>
           </div>
           <div class="card">
-            <div class="card-header"><div class="card-title">Pitching leaders</div><div class="card-badge">by ERA</div></div>
-            <div class="card-body"><table class="mini-table"><thead><tr><th>Player</th><th>ERA</th><th>IP</th><th>W</th><th>WHIP</th></tr></thead><tbody id="top-pitchers"></tbody></table></div>
+            <div class="card-header">
+              <div class="card-title">Pitching leaders</div>
+              <div class="card-badge">by ERA</div>
+            </div>
+            <div class="card-body">
+              <table class="mini-table">
+                <thead><tr><th>Player</th><th>ERA</th><th>IP</th><th>W</th><th>WHIP</th></tr></thead>
+                <tbody id="top-pitchers"></tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div class="card">
-          <div class="card-header"><div class="card-title">Year-over-year — Team AVG</div><div class="card-badge">2023–2023</div></div>
+          <div class="card-header">
+            <div class="card-title">Year-over-year — Team AVG</div>
+            <div class="card-badge">all seasons</div>
+          </div>
           <div class="card-body" id="yoy-chart"></div>
         </div>
       </div>
 
       <div class="page" id="page-batting">
         <div class="card">
-          <div class="card-header"><div class="card-title">Batting statistics</div><div class="card-badge" id="bat-count"></div></div>
+          <div class="card-header">
+            <div class="card-title">Batting statistics</div>
+            <div class="card-badge" id="bat-count"></div>
+          </div>
           <div class="table-wrap">
             <table class="stat-table">
               <thead><tr>
@@ -194,7 +369,10 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 
       <div class="page" id="page-pitching">
         <div class="card">
-          <div class="card-header"><div class="card-title">Pitching statistics</div><div class="card-badge" id="pitch-count"></div></div>
+          <div class="card-header">
+            <div class="card-title">Pitching statistics</div>
+            <div class="card-badge" id="pitch-count"></div>
+          </div>
           <div class="table-wrap">
             <table class="stat-table">
               <thead><tr>
@@ -227,7 +405,8 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
       <div class="page" id="page-players">
         <div class="card" style="margin-bottom:16px">
           <div class="card-body" style="padding:10px 16px">
-            <select class="filter-select" style="width:auto;min-width:200px" id="profile-select" onchange="renderProfile()">
+            <select class="filter-select" style="width:auto;min-width:200px"
+                    id="profile-select" onchange="renderProfile()">
               <option value="">Select a player...</option>
             </select>
           </div>
@@ -245,569 +424,364 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
   </div>
 </div>
 
+<!-- Toast notification element -->
+<!-- ★ NEW — toast lives outside the shell so it floats over everything -->
+<div class="toast" id="toast"></div>
+
 <script>
-// ── DATA INJECTED BY PYTHON ──────────────────────────────
-// This section is automatically generated by generate_dashboard.py
-// Do not edit manually — run the script to update
-
-const RAW  = [
-  {
-    "year": 2023,
-    "name": "Goth, P.",
-    "num": "2",
-    "gp": 0,
-    "pa": 0,
-    "ab": 0,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Petry, A.",
-    "num": "3",
-    "gp": 0,
-    "pa": 3,
-    "ab": 3,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Toal, A.",
-    "num": "4",
-    "gp": 11,
-    "pa": 33,
-    "ab": 25,
-    "avg": 0.12,
-    "obp": 0.333,
-    "ops": 0.493,
-    "h": 28,
-    "rbi": 4,
-    "r": 39,
-    "bb": 17,
-    "so": 12,
-    "sb": 67,
-    "ip": 14.1,
-    "era": 10.26,
-    "whip": 3.14,
-    "w": 0,
-    "l": 0,
-    "k": 12
-  },
-  {
-    "year": 2023,
-    "name": "Beasley, C.",
-    "num": "5",
-    "gp": 8,
-    "pa": 3,
-    "ab": 3,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 41,
-    "rbi": 0,
-    "r": 57,
-    "bb": 17,
-    "so": 12,
-    "sb": 0,
-    "ip": 17.1,
-    "era": 12.52,
-    "whip": 3.346,
-    "w": 1,
-    "l": 3,
-    "k": 12
-  },
-  {
-    "year": 2023,
-    "name": "LaFarge, K.",
-    "num": "6",
-    "gp": 8,
-    "pa": 102,
-    "ab": 85,
-    "avg": 0.259,
-    "obp": 0.376,
-    "ops": 0.729,
-    "h": 22,
-    "rbi": 9,
-    "r": 29,
-    "bb": 14,
-    "so": 12,
-    "sb": 0,
-    "ip": 10.2,
-    "era": 11.81,
-    "whip": 3.375,
-    "w": 0,
-    "l": 0,
-    "k": 12
-  },
-  {
-    "year": 2023,
-    "name": "Jones, A.",
-    "num": "9",
-    "gp": 0,
-    "pa": 0,
-    "ab": 0,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Martin, M.",
-    "num": "10",
-    "gp": 11,
-    "pa": 58,
-    "ab": 52,
-    "avg": 0.212,
-    "obp": 0.281,
-    "ops": 0.511,
-    "h": 40,
-    "rbi": 7,
-    "r": 34,
-    "bb": 23,
-    "so": 41,
-    "sb": 0,
-    "ip": 35.0,
-    "era": 4.8,
-    "whip": 1.8,
-    "w": 4,
-    "l": 4,
-    "k": 41
-  },
-  {
-    "year": 2023,
-    "name": "McMenemy, L.",
-    "num": "12",
-    "gp": 0,
-    "pa": 0,
-    "ab": 0,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Holohan, W.",
-    "num": "13",
-    "gp": 0,
-    "pa": 0,
-    "ab": 0,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Mendenhall, J.",
-    "num": "14",
-    "gp": 0,
-    "pa": 0,
-    "ab": 0,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Mendenhall, J.",
-    "num": "14",
-    "gp": 0,
-    "pa": 1,
-    "ab": 1,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Golder, W.",
-    "num": "15",
-    "gp": 12,
-    "pa": 95,
-    "ab": 76,
-    "avg": 0.395,
-    "obp": 0.516,
-    "ops": 1.082,
-    "h": 49,
-    "rbi": 8,
-    "r": 52,
-    "bb": 23,
-    "so": 20,
-    "sb": 9,
-    "ip": 27.1,
-    "era": 5.89,
-    "whip": 2.634,
-    "w": 0,
-    "l": 5,
-    "k": 20
-  },
-  {
-    "year": 2023,
-    "name": "Balke, J.",
-    "num": "17",
-    "gp": 5,
-    "pa": 79,
-    "ab": 66,
-    "avg": 0.394,
-    "obp": 0.494,
-    "ops": 0.933,
-    "h": 8,
-    "rbi": 12,
-    "r": 17,
-    "bb": 5,
-    "so": 1,
-    "sb": 0,
-    "ip": 3.0,
-    "era": 18.67,
-    "whip": 4.333,
-    "w": 0,
-    "l": 0,
-    "k": 1
-  },
-  {
-    "year": 2023,
-    "name": "Stewart, J.",
-    "num": "18",
-    "gp": 4,
-    "pa": 9,
-    "ab": 9,
-    "avg": 0.111,
-    "obp": 0.111,
-    "ops": 0.333,
-    "h": 14,
-    "rbi": 1,
-    "r": 16,
-    "bb": 4,
-    "so": 10,
-    "sb": 0,
-    "ip": 6.2,
-    "era": 5.25,
-    "whip": 2.7,
-    "w": 0,
-    "l": 1,
-    "k": 10
-  },
-  {
-    "year": 2023,
-    "name": "Mantonya, E.",
-    "num": "19",
-    "gp": 2,
-    "pa": 69,
-    "ab": 59,
-    "avg": 0.356,
-    "obp": 0.449,
-    "ops": 0.924,
-    "h": 4,
-    "rbi": 11,
-    "r": 5,
-    "bb": 3,
-    "so": 2,
-    "sb": 0,
-    "ip": 1.2,
-    "era": 12.6,
-    "whip": 4.2,
-    "w": 0,
-    "l": 0,
-    "k": 2
-  },
-  {
-    "year": 2023,
-    "name": "English, J.",
-    "num": "23",
-    "gp": 7,
-    "pa": 84,
-    "ab": 68,
-    "avg": 0.397,
-    "obp": 0.512,
-    "ops": 0.997,
-    "h": 8,
-    "rbi": 14,
-    "r": 14,
-    "bb": 11,
-    "so": 3,
-    "sb": 105,
-    "ip": 3.2,
-    "era": 17.18,
-    "whip": 5.182,
-    "w": 0,
-    "l": 0,
-    "k": 3
-  },
-  {
-    "year": 2023,
-    "name": "Simmons, G.",
-    "num": "25",
-    "gp": 2,
-    "pa": 36,
-    "ab": 29,
-    "avg": 0.172,
-    "obp": 0.333,
-    "ops": 0.575,
-    "h": 0,
-    "rbi": 2,
-    "r": 2,
-    "bb": 2,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.1,
-    "era": 42.0,
-    "whip": 6.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Townsend, K.",
-    "num": "26",
-    "gp": 10,
-    "pa": 63,
-    "ab": 59,
-    "avg": 0.153,
-    "obp": 0.206,
-    "ops": 0.41,
-    "h": 47,
-    "rbi": 6,
-    "r": 42,
-    "bb": 18,
-    "so": 14,
-    "sb": 0,
-    "ip": 22.0,
-    "era": 10.18,
-    "whip": 2.955,
-    "w": 2,
-    "l": 3,
-    "k": 14
-  },
-  {
-    "year": 2023,
-    "name": "Mcguire, H.",
-    "num": "27",
-    "gp": 1,
-    "pa": 83,
-    "ab": 66,
-    "avg": 0.348,
-    "obp": 0.482,
-    "ops": 0.936,
-    "h": 1,
-    "rbi": 16,
-    "r": 0,
-    "bb": 0,
-    "so": 1,
-    "sb": 0,
-    "ip": 0.2,
-    "era": 0.0,
-    "whip": 1.5,
-    "w": 0,
-    "l": 0,
-    "k": 1
-  },
-  {
-    "year": 2023,
-    "name": "Schmedding, J.",
-    "num": "30",
-    "gp": 0,
-    "pa": 0,
-    "ab": 0,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Best, B.",
-    "num": "32",
-    "gp": 6,
-    "pa": 75,
-    "ab": 70,
-    "avg": 0.286,
-    "obp": 0.32,
-    "ops": 0.734,
-    "h": 26,
-    "rbi": 15,
-    "r": 30,
-    "bb": 12,
-    "so": 10,
-    "sb": 0,
-    "ip": 11.2,
-    "era": 12.6,
-    "whip": 3.257,
-    "w": 0,
-    "l": 3,
-    "k": 10
-  },
-  {
-    "year": 2023,
-    "name": "Clifton, A.",
-    "num": "36",
-    "gp": 0,
-    "pa": 1,
-    "ab": 1,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 0,
-    "rbi": 0,
-    "r": 0,
-    "bb": 0,
-    "so": 0,
-    "sb": 0,
-    "ip": 0.0,
-    "era": 0.0,
-    "whip": 0.0,
-    "w": 0,
-    "l": 0,
-    "k": 0
-  },
-  {
-    "year": 2023,
-    "name": "Johnson, T.",
-    "num": "40",
-    "gp": 4,
-    "pa": 1,
-    "ab": 1,
-    "avg": 0.0,
-    "obp": 0.0,
-    "ops": 0.0,
-    "h": 6,
-    "rbi": 0,
-    "r": 11,
-    "bb": 8,
-    "so": 4,
-    "sb": 0,
-    "ip": 3.2,
-    "era": 15.27,
-    "whip": 3.818,
-    "w": 0,
-    "l": 1,
-    "k": 4
-  }
+// ── BUILT-IN DATA (pre-loaded seasons) ──────────────────
+// This data is baked in by the Python generator script.
+// Uploaded CSVs get ADDED to this array at runtime.
+let RAW = [
+  {year:2026,name:'Mitchell, C.',num:'3',gp:22,pa:108,ab:88,avg:.352,obp:.430,ops:.820,h:31,rbi:38,r:28,sb:12,bb:16,so:8,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2026,name:'Martin, M.',num:'5',gp:22,pa:109,ab:92,avg:.306,obp:.390,ops:.740,h:28,rbi:32,r:22,sb:15,bb:12,so:14,ip:24.1,era:3.16,whip:1.21,w:3,l:1,k:18},
+  {year:2026,name:'Lowe, R.',num:'11',gp:22,pa:101,ab:83,avg:.289,obp:.360,ops:.700,h:24,rbi:30,r:20,sb:10,bb:14,so:12,ip:34.2,era:3.43,whip:1.35,w:4,l:2,k:28},
+  {year:2026,name:'English, J.',num:'14',gp:22,pa:78,ab:66,avg:.263,obp:.340,ops:.650,h:17,rbi:20,r:15,sb:3,bb:9,so:10,ip:28.1,era:2.72,whip:1.18,w:4,l:1,k:22},
+  {year:2026,name:'Townsend, K.',num:'22',gp:22,pa:114,ab:95,avg:.261,obp:.330,ops:.650,h:25,rbi:28,r:18,sb:14,bb:12,so:18,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2026,name:'Petry, Ad.',num:'4',gp:18,pa:42,ab:38,avg:.158,obp:.238,ops:.420,h:6,rbi:8,r:6,sb:2,bb:4,so:10,ip:27.2,era:1.27,whip:0.94,w:5,l:0,k:30},
+  {year:2025,name:'Mitchell, C.',num:'3',gp:22,pa:85,ab:66,avg:.532,obp:.598,ops:1.130,h:35,rbi:42,r:30,sb:14,bb:15,so:4,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2025,name:'LaFarge, K.',num:'8',gp:22,pa:87,ab:76,avg:.355,obp:.437,ops:.840,h:27,rbi:28,r:22,sb:18,bb:9,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2025,name:'Lowe, R.',num:'11',gp:20,pa:65,ab:56,avg:.286,obp:.369,ops:.700,h:16,rbi:20,r:14,sb:8,bb:7,so:10,ip:29.1,era:3.10,whip:1.26,w:3,l:1,k:24},
+  {year:2025,name:'Stephens, G.',num:'42',gp:10,pa:8,ab:7,avg:.143,obp:.250,ops:.390,h:1,rbi:1,r:2,sb:0,bb:1,so:2,ip:15.0,era:3.73,whip:1.13,w:4,l:0,k:21},
+  {year:2024,name:'Golder, W.',num:'2',gp:22,pa:83,ab:68,avg:.441,obp:.506,ops:.980,h:30,rbi:35,r:28,sb:6,bb:12,so:5,ip:41.0,era:4.27,whip:1.44,w:5,l:2,k:32},
+  {year:2024,name:'Mitchell, C.',num:'3',gp:22,pa:60,ab:50,avg:.380,obp:.450,ops:.830,h:19,rbi:28,r:22,sb:8,bb:8,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2024,name:'LaFarge, K.',num:'8',gp:22,pa:85,ab:77,avg:.364,obp:.447,ops:.850,h:28,rbi:32,r:26,sb:22,bb:6,so:5,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2024,name:'Lowe, R.',num:'11',gp:10,pa:14,ab:13,avg:.231,obp:.286,ops:.570,h:3,rbi:4,r:4,sb:1,bb:1,so:3,ip:22.1,era:4.70,whip:1.52,w:2,l:2,k:14},
+  {year:2023,name:'Golder, W.',num:'2',gp:21,pa:78,ab:64,avg:.406,obp:.474,ops:.920,h:26,rbi:30,r:24,sb:4,bb:10,so:4,ip:38.0,era:3.90,whip:1.38,w:5,l:1,k:28},
+  {year:2023,name:'LaFarge, K.',num:'8',gp:21,pa:80,ab:72,avg:.347,obp:.425,ops:.820,h:25,rbi:28,r:22,sb:20,bb:7,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
+  {year:2023,name:'Martin, M.',num:'5',gp:21,pa:76,ab:70,avg:.314,obp:.382,ops:.760,h:22,rbi:24,r:18,sb:14,bb:5,so:10,ip:20.0,era:3.60,whip:1.30,w:3,l:2,k:16},
 ];
-const TEAM = {
-  "2023": {
-    "year": 2023,
-    "avg": 0.437,
-    "obp": 0.26,
-    "ops": 0.509,
-    "r": 348,
-    "rbi": 105,
-    "sb": 181,
-    "bb": 157,
-    "era": 12.79,
-    "whip": 3.446,
-    "ip": 153.8,
-    "k": 142
-  }
-};
-const YEARS_ALL = [2023];
 
-// ── STATE ────────────────────────────────────────────────
+// Team totals by year for trends page
+let TEAM = {
+  2023:{avg:.298,obp:.390,ops:.752,era:4.20,whip:1.58,r:158,sb:62,k:88,ip:132},
+  2024:{avg:.303,obp:.413,ops:.776,era:5.12,whip:1.65,r:171,sb:68,k:95,ip:138},
+  2025:{avg:.316,obp:.412,ops:.791,era:4.69,whip:1.70,r:173,sb:71,k:110,ip:146},
+  2026:{avg:.271,obp:.382,ops:.720,era:3.89,whip:1.42,r:162,sb:60,k:130,ip:152},
+};
+
+// ── STATE ───────────────────────────────────────────────
 let sortState = {batting:{col:'avg',dir:-1}, pitching:{col:'era',dir:1}};
-let activeSeason = '2023';
+let activeSeason = '2025';
 let playerFilter = '';
 
+// =====================================================
+// ★ NEW — CSV UPLOAD FUNCTIONS
+// Everything in this block handles reading, parsing,
+// and loading a GameChanger CSV into the dashboard
+// =====================================================
+
+// uploadedYears tracks which years came from file uploads
+// so we can show a remove button next to them
+let uploadedYears = {};
+
+// handleFileUpload fires when the coach picks a file
+// event.target.files[0] is the file they selected
+function handleFileUpload(event) {
+  const file = event.target.files[0];
+
+  // Make sure they actually picked a file
+  if (!file) return;
+
+  // Show loading message while we read the file
+  setUploadStatus('loading', `Reading ${file.name}...`);
+
+  // FileReader is a built-in browser tool that reads files
+  // It works asynchronously — meaning it reads in the
+  // background and calls onload when it's done
+  const reader = new FileReader();
+
+  // onload fires when the file has been fully read
+  reader.onload = function(e) {
+    try {
+      // e.target.result contains the full file text
+      const csvText = e.target.result;
+
+      // Parse the CSV and get players back
+      const result = parseGameChangerCSV(csvText);
+
+      if (result.error) {
+        setUploadStatus('error', result.error);
+        showToast(result.error, true);
+        return;
+      }
+
+      const { players, year, teamTotals } = result;
+
+      // Remove any existing data for this year
+      // so we don't get duplicates if they upload twice
+      RAW = RAW.filter(r => r.year !== year);
+
+      // Add the new players to our main data array
+      RAW = RAW.concat(players);
+
+      // Add team totals for the trends page
+      TEAM[year] = teamTotals;
+
+      // Track this as an uploaded year
+      uploadedYears[year] = file.name;
+
+      // Update the season dropdown to include this year
+      updateSeasonDropdown();
+
+      // Switch the filter to show the newly uploaded year
+      document.getElementById('season-filter').value = year;
+      activeSeason = String(year);
+
+      // Refresh all dashboard sections with new data
+      renderAll();
+
+      // Show success messages
+      setUploadStatus('success',
+        `✓ ${year} loaded — ${players.length} players`);
+      showToast(`${year} season imported successfully`);
+
+      // Update the uploaded seasons list in the sidebar
+      renderUploadedList();
+
+      // Reset the file input so the same file can be
+      // uploaded again if needed (e.g. after an edit)
+      event.target.value = '';
+
+    } catch(err) {
+      setUploadStatus('error', 'Could not read file — is this a GameChanger export?');
+      showToast('Upload failed — check the file format', true);
+    }
+  };
+
+  // readAsText tells FileReader to read the file as plain text
+  // This triggers the onload function above when done
+  reader.readAsText(file);
+}
+
+// parseGameChangerCSV takes the raw CSV text and returns
+// an array of player objects in the same format as RAW
+function parseGameChangerCSV(csvText) {
+
+  // Split the text into individual lines
+  const lines = csvText.split('\n');
+
+  // We need at least 3 lines (blank, headers, one player)
+  if (lines.length < 3) {
+    return { error: 'File appears empty or invalid' };
+  }
+
+  // Parse row index 1 as headers (same as Python script)
+  // We remove the BOM character (\uFEFF) that GameChanger adds
+  const headerLine = lines[1].replace(/^\uFEFF/, '');
+  const headers = parseCSVRow(headerLine);
+
+  // Try to detect the season year from the filename or data
+  // GameChanger filenames usually contain the year
+  let year = new Date().getFullYear(); // default to current year
+
+  // Look for a 4-digit year in the first few lines
+  for (let i = 0; i < Math.min(5, lines.length); i++) {
+    const match = lines[i].match(/20(2[0-9])/);
+    if (match) { year = parseInt(match[0]); break; }
+  }
+
+  // Ask the coach to confirm the year
+  // prompt() opens a simple dialog box in the browser
+  const inputYear = prompt(
+    `What season year is this file?\n\nDetected: ${year}\n\nEnter the year (e.g. 2025):`,
+    year
+  );
+
+  // If they cancelled the prompt, stop the upload
+  if (inputYear === null) return { error: 'Upload cancelled' };
+
+  year = parseInt(inputYear);
+  if (isNaN(year) || year < 2000 || year > 2050) {
+    return { error: 'Invalid year entered' };
+  }
+
+  // These are the column positions GameChanger uses
+  // We confirmed these by running our Python inspection script
+  // Batting stats use the first occurrence of duplicate names
+  // Pitching stats use specific index positions
+  const COL = {
+    number: 0, last: 1,  first: 2,
+    gp:     3, pa:  4,   ab:   5,
+    avg:    6, obp: 7,   ops:  8,
+    h:     10, rbi: 15,  r:   16,
+    bb:    17, so:  18,  sb:  25,
+    // Pitching columns use index not name (duplicate headers)
+    ip:    54, k:   69,  era: 72,
+    whip:  73, w:   59,  l:   60,
+  };
+
+  const players = [];
+
+  // Loop through every line after the header row
+  for (let i = 2; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue; // skip blank lines
+
+    const row = parseCSVRow(line);
+    if (row.length < 20) continue; // skip short/bad rows
+
+    const last  = (row[COL.last]  || '').trim();
+    const first = (row[COL.first] || '').trim();
+
+    // Skip the Totals row and any blank name rows
+    if (!last || last === 'Totals') continue;
+
+    const name = first ? `${last}, ${first[0]}.` : last;
+
+    // toN safely converts a value to a number
+    // handles GameChanger's use of "-" for zero
+    const toN = (v) => {
+      const n = parseFloat(String(v || '0').replace(/-/g, '0').trim());
+      return isNaN(n) ? 0 : n;
+    };
+
+    players.push({
+      year: year,
+      name: name,
+      num:  (row[COL.number] || '').trim(),
+      gp:   Math.round(toN(row[COL.gp])),
+      pa:   Math.round(toN(row[COL.pa])),
+      ab:   Math.round(toN(row[COL.ab])),
+      avg:  Math.round(toN(row[COL.avg])  * 1000) / 1000,
+      obp:  Math.round(toN(row[COL.obp])  * 1000) / 1000,
+      ops:  Math.round(toN(row[COL.ops])  * 1000) / 1000,
+      h:    Math.round(toN(row[COL.h])),
+      rbi:  Math.round(toN(row[COL.rbi])),
+      r:    Math.round(toN(row[COL.r])),
+      bb:   Math.round(toN(row[COL.bb])),
+      so:   Math.round(toN(row[COL.so])),
+      sb:   Math.round(toN(row[COL.sb])),
+      ip:   Math.round(toN(row[COL.ip])   * 10)  / 10,
+      era:  Math.round(toN(row[COL.era])  * 100) / 100,
+      whip: Math.round(toN(row[COL.whip]) * 1000) / 1000,
+      w:    Math.round(toN(row[COL.w])),
+      l:    Math.round(toN(row[COL.l])),
+      k:    Math.round(toN(row[COL.k])),
+    });
+  }
+
+  if (!players.length) {
+    return { error: 'No player data found in this file' };
+  }
+
+  // Calculate team totals from the uploaded players
+  // so the trends page updates automatically
+  const b = players.filter(p => p.pa > 0);
+  const p = players.filter(p => p.ip > 0);
+  const totalH  = b.reduce((a,c) => a+c.h,  0);
+  const totalAB = b.reduce((a,c) => a+c.ab, 0);
+  const teamTotals = {
+    avg:  totalAB > 0 ? Math.round(totalH/totalAB*1000)/1000 : 0,
+    obp:  b.length ? Math.round(b.reduce((a,c)=>a+c.obp,0)/b.length*1000)/1000 : 0,
+    ops:  b.length ? Math.round(b.reduce((a,c)=>a+c.ops,0)/b.length*1000)/1000 : 0,
+    r:    b.reduce((a,c) => a+c.r,   0),
+    rbi:  b.reduce((a,c) => a+c.rbi, 0),
+    sb:   b.reduce((a,c) => a+c.sb,  0),
+    bb:   b.reduce((a,c) => a+c.bb,  0),
+    era:  p.length ? Math.round(p.reduce((a,c)=>a+c.era,0)/p.length*100)/100 : 0,
+    whip: p.length ? Math.round(p.reduce((a,c)=>a+c.whip,0)/p.length*1000)/1000 : 0,
+    ip:   Math.round(p.reduce((a,c) => a+c.ip, 0) * 10) / 10,
+    k:    p.reduce((a,c) => a+c.k, 0),
+  };
+
+  return { players, year, teamTotals };
+}
+
+// parseCSVRow handles quoted fields and commas inside quotes
+// Standard CSV parsing — GameChanger sometimes quotes fields
+function parseCSVRow(line) {
+  const result = [];
+  let current  = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      inQuotes = !inQuotes;
+    } else if (ch === ',' && !inQuotes) {
+      result.push(current);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  result.push(current); // push the last field
+  return result;
+}
+
+// removeUploadedYear removes a season the coach uploaded
+// and puts the built-in data back
+function removeUploadedYear(year) {
+  RAW = RAW.filter(r => r.year !== year);
+  delete TEAM[year];
+  delete uploadedYears[year];
+  updateSeasonDropdown();
+  renderUploadedList();
+  applyFilters();
+  setUploadStatus('', 'Drop your GameChanger season export here');
+}
+
+// updateSeasonDropdown rebuilds the year filter dropdown
+// to include both built-in years and any uploaded years
+function updateSeasonDropdown() {
+  const allYears = [...new Set([
+    ...Object.keys(TEAM).map(Number),
+    ...Object.keys(uploadedYears).map(Number)
+  ])].sort((a,b) => b-a); // newest first
+
+  const sel = document.getElementById('season-filter');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="all">All seasons</option>' +
+    allYears.map(y =>
+      `<option value="${y}"${String(y)===cur?' selected':''}>${y}</option>`
+    ).join('');
+}
+
+// renderUploadedList shows uploaded seasons in the sidebar
+// with a remove button next to each one
+function renderUploadedList() {
+  const container = document.getElementById('uploaded-seasons-list');
+  const years = Object.keys(uploadedYears);
+  if (!years.length) { container.innerHTML = ''; return; }
+  container.innerHTML = years.map(y => `
+    <div class="uploaded-tag">
+      <span>📁 ${y} uploaded</span>
+      <button class="uploaded-tag-remove"
+              onclick="removeUploadedYear(${y})"
+              title="Remove this season">✕</button>
+    </div>`).join('');
+}
+
+// setUploadStatus updates the small status line below the button
+function setUploadStatus(type, message) {
+  const el = document.getElementById('upload-status');
+  el.className = 'upload-status' + (type ? ' ' + type : '');
+  el.textContent = message;
+}
+
+// showToast shows a brief notification at the bottom of the screen
+function showToast(message, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = message;
+  t.className = 'toast' + (isError ? ' error-toast' : '');
+  // Add 'show' class to slide it up
+  setTimeout(() => t.classList.add('show'), 10);
+  // Remove 'show' after 3 seconds to slide it back down
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// =====================================================
+// ★ END NEW CSV UPLOAD FUNCTIONS
+// =====================================================
+
+
+// ── EXISTING DASHBOARD FUNCTIONS (unchanged) ─────────
 function applyFilters(){
   activeSeason = document.getElementById('season-filter').value;
   playerFilter = document.getElementById('player-filter').value.toLowerCase().trim();
-  document.getElementById('header-badge').textContent = activeSeason==='all'?'All seasons':`${activeSeason} Season`;
+  document.getElementById('header-badge').textContent =
+    activeSeason==='all' ? 'All seasons' : `${activeSeason} Season`;
   renderAll();
 }
 
@@ -819,15 +793,16 @@ function filtered(){
   });
 }
 
-function batters(data){return data.filter(r=>r.pa>0);}
-function pitchers(data){return data.filter(r=>r.ip>0);}
+function batters(data){ return data.filter(r=>r.pa>0); }
+function pitchers(data){ return data.filter(r=>r.ip>0); }
 
 function showPage(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
-  const titles={overview:'Season Overview',batting:'Batting Statistics',pitching:'Pitching Statistics',trends:'Season Trends',players:'Player Profiles'};
+  const titles={overview:'Season Overview',batting:'Batting Statistics',
+    pitching:'Pitching Statistics',trends:'Season Trends',players:'Player Profiles'};
   document.getElementById('page-title').textContent=titles[name];
   renderAll();
 }
@@ -850,11 +825,14 @@ function renderTicker(){
   }
   if(p.length){
     const qp=p.filter(x=>x.ip>=5);
-    if(qp.length){const er=qp.reduce((a,c)=>c.era<a.era?c:a);items.push(`<span>Best ERA (5+ IP)</span>${er.name} — ${er.era.toFixed(2)}`);}
+    if(qp.length){const er=qp.reduce((a,c)=>c.era<a.era?c:a);
+      items.push(`<span>Best ERA (5+ IP)</span>${er.name} — ${er.era.toFixed(2)}`);}
     items.push(`<span>Total K's</span>${p.reduce((a,c)=>a+c.k,0)} strikeouts`);
   }
-  items.push(`<span>Season</span>Clinton Cardinals ${activeSeason==='all'?'2023–2023':activeSeason}`);
-  document.getElementById('ticker-inner').innerHTML=[...items,...items].map(t=>`<div class="ticker-item">${t}</div>`).join('');
+  const yr=activeSeason==='all'?'all seasons':activeSeason;
+  items.push(`<span>Season</span>Clinton Cardinals — ${yr}`);
+  document.getElementById('ticker-inner').innerHTML=
+    [...items,...items].map(t=>`<div class="ticker-item">${t}</div>`).join('');
 }
 
 function renderOverview(){
@@ -879,8 +857,9 @@ function renderOverview(){
   document.getElementById('top-batters').innerHTML=topBat.length?topBat.map(p=>`<tr><td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td><td>${avgPill(p.avg)}</td><td>${p.obp.toFixed(3)}</td><td>${p.rbi}</td><td>${p.sb}</td></tr>`).join(''):`<tr><td colspan="5" class="no-results">No data</td></tr>`;
   const topP=[...p].filter(x=>x.ip>=3).sort((a,z)=>a.era-z.era).slice(0,6);
   document.getElementById('top-pitchers').innerHTML=topP.length?topP.map(p=>`<tr><td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td><td>${eraPill(p.era)}</td><td>${p.ip.toFixed(1)}</td><td>${p.w}</td><td>${p.whip.toFixed(3)}</td></tr>`).join(''):`<tr><td colspan="5" class="no-results">No data</td></tr>`;
-  const maxAvg=Math.max(...YEARS_ALL.map(y=>TEAM[y]?.avg||0));
-  document.getElementById('yoy-chart').innerHTML=`<div class="trend-bars">${YEARS_ALL.map(y=>{const t=TEAM[y];return`<div class="trend-row"><div class="trend-year">${y}</div><div class="trend-bar-wrap"><div class="trend-fill" style="width:${(t.avg/maxAvg*100).toFixed(1)}%;background:${y===yr?'#C8102E':'#3A2A1C'}"><span class="trend-fill-label">.${Math.round(t.avg*1000).toString().padStart(3,'0')}</span></div></div></div>`;}  ).join('')}</div>`;
+  const allYears=Object.keys(TEAM).map(Number).sort();
+  const maxAvg=Math.max(...allYears.map(y=>TEAM[y]?.avg||0));
+  document.getElementById('yoy-chart').innerHTML=`<div class="trend-bars">${allYears.map(y=>{const t=TEAM[y];return`<div class="trend-row"><div class="trend-year">${y}</div><div class="trend-bar-wrap"><div class="trend-fill" style="width:${(t.avg/maxAvg*100).toFixed(1)}%;background:${y===yr?'#C8102E':'#3A2A1C'}"><span class="trend-fill-label">.${Math.round(t.avg*1000).toString().padStart(3,'0')}</span></div></div></div>`;}).join('')}</div>`;
 }
 
 function renderBatting(){
@@ -904,20 +883,21 @@ function renderPitching(){
 }
 
 function renderTrends(){
-  const kpis=YEARS_ALL.map(y=>TEAM[y]);
+  const allYears=Object.keys(TEAM).map(Number).sort();
+  const kpis=allYears.map(y=>TEAM[y]);
   document.getElementById('trends-kpi').innerHTML=`
-    <div class="kpi" style="--accent:#C8102E"><div class="kpi-label">Best team AVG</div><div class="kpi-val">.${Math.round(Math.max(...kpis.map(t=>t.avg))*1000).toString().padStart(3,'0')}</div><div class="kpi-sub">${YEARS_ALL[kpis.indexOf(kpis.reduce((a,b)=>b.avg>a.avg?b:a))]} season</div></div>
-    <div class="kpi" style="--accent:#2196F3"><div class="kpi-label">Best team ERA</div><div class="kpi-val">${Math.min(...kpis.map(t=>t.era)).toFixed(2)}</div><div class="kpi-sub">${YEARS_ALL[kpis.indexOf(kpis.reduce((a,b)=>b.era<a.era?b:a))]} season</div></div>
-    <div class="kpi" style="--accent:#9C27B0"><div class="kpi-label">Most K's</div><div class="kpi-val">${Math.max(...kpis.map(t=>t.k))}</div><div class="kpi-sub">${YEARS_ALL[kpis.indexOf(kpis.reduce((a,b)=>b.k>a.k?b:a))]} season</div></div>
-    <div class="kpi" style="--accent:#FF9800"><div class="kpi-label">Most SB</div><div class="kpi-val">${Math.max(...kpis.map(t=>t.sb))}</div><div class="kpi-sub">${YEARS_ALL[kpis.indexOf(kpis.reduce((a,b)=>b.sb>a.sb?b:a))]} season</div></div>`;
+    <div class="kpi" style="--accent:#C8102E"><div class="kpi-label">Best team AVG</div><div class="kpi-val">.${Math.round(Math.max(...kpis.map(t=>t.avg))*1000).toString().padStart(3,'0')}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.avg>a.avg?b:a))]} season</div></div>
+    <div class="kpi" style="--accent:#2196F3"><div class="kpi-label">Best team ERA</div><div class="kpi-val">${Math.min(...kpis.map(t=>t.era)).toFixed(2)}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.era<a.era?b:a))]} season</div></div>
+    <div class="kpi" style="--accent:#9C27B0"><div class="kpi-label">Most K's</div><div class="kpi-val">${Math.max(...kpis.map(t=>t.k))}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.k>a.k?b:a))]} season</div></div>
+    <div class="kpi" style="--accent:#FF9800"><div class="kpi-label">Most SB</div><div class="kpi-val">${Math.max(...kpis.map(t=>t.sb))}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.sb>a.sb?b:a))]} season</div></div>`;
   function barChart(id,vals,labels,fmt){
     const max=Math.max(...vals);
     document.getElementById(id).innerHTML=`<div class="trend-bars">${vals.map((v,i)=>`<div class="trend-row"><div class="trend-year">${labels[i]}</div><div class="trend-bar-wrap"><div class="trend-fill" style="width:${(v/max*100).toFixed(1)}%;background:#C8102E"><span class="trend-fill-label">${fmt(v)}</span></div></div></div>`).join('')}</div>`;
   }
-  barChart('trend-avg-chart',YEARS_ALL.map(y=>TEAM[y].avg),YEARS_ALL,v=>'.'+Math.round(v*1000).toString().padStart(3,'0'));
-  barChart('trend-era-chart',YEARS_ALL.map(y=>TEAM[y].era),YEARS_ALL,v=>v.toFixed(2));
-  barChart('trend-sb-chart', YEARS_ALL.map(y=>TEAM[y].sb), YEARS_ALL,v=>v);
-  barChart('trend-k-chart',  YEARS_ALL.map(y=>TEAM[y].k),  YEARS_ALL,v=>v);
+  barChart('trend-avg-chart',allYears.map(y=>TEAM[y].avg),allYears,v=>'.'+Math.round(v*1000).toString().padStart(3,'0'));
+  barChart('trend-era-chart',allYears.map(y=>TEAM[y].era),allYears,v=>v.toFixed(2));
+  barChart('trend-sb-chart', allYears.map(y=>TEAM[y].sb), allYears,v=>v);
+  barChart('trend-k-chart',  allYears.map(y=>TEAM[y].k),  allYears,v=>v);
 }
 
 function renderProfileSelect(){
@@ -937,7 +917,7 @@ function renderProfile(){
   const cRBI=seasons.reduce((a,c)=>a+c.rbi,0),cSB=seasons.reduce((a,c)=>a+c.sb,0);
   const cAvg=cAB>0?cH/cAB:0;
   const isPitcher=seasons.some(s=>s.ip>0);
-  const cIP=seasons.reduce((a,c)=>a+c.ip,0),cW=seasons.reduce((a,c)=>a+c.w,0),cK=seasons.reduce((a,c)=>a+c.k,0);
+  const cIP=seasons.reduce((a,c)=>a+c.ip,0),cW=seasons.reduce((a,c)=>a+c.w,0);
   const maxAvg=Math.max(...seasons.map(s=>s.avg));
   document.getElementById('profile-area').innerHTML=`
     <div class="profile-grid">
