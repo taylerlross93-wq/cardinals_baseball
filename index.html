@@ -642,10 +642,13 @@ function handleFileUpload(event) {
   reader.onload = function(e) {
     try {
       // e.target.result contains the full file text
+      console.log('File read OK, length:', csvText.length);
+      console.log('First 200 chars:', csvText.substring(0, 200));
       const csvText = e.target.result;
 
       // Parse the CSV and get players back
       const result = parseGameChangerCSV(csvText);
+      console.log('Parse result:', result.error || 'success, players: ' + result.players?.length);
 
       if (result.error) {
         setUploadStatus('error', result.error);
