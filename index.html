@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cardinals Baseball — Coach Dashboard</title>
+<title id="page-title-tab">Cardinals Baseball — Coach Dashboard</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#F5F0E8;overflow:hidden}
@@ -96,6 +96,205 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 .empty-icon{font-size:32px;margin-bottom:12px}
 .empty-title{font-size:15px;font-weight:600;color:#8A9BA8;margin-bottom:6px}
 .empty-sub{font-size:12px}
+
+/* ── PIPELINE READINESS STYLES ── */
+.readiness-card{background:#120D09;border:1px solid #2E2018;border-radius:10px;overflow:hidden;margin-bottom:16px}
+.readiness-header{padding:12px 16px;border-bottom:1px solid #2E2018;background:linear-gradient(90deg,#1a0508,#051020);display:flex;align-items:center;justify-content:space-between}
+.readiness-title{font-size:13px;font-weight:600;color:#F5F0E8}
+.readiness-badge{font-size:10px;padding:3px 10px;border-radius:10px;background:#1C1410;border:1px solid #2E2018;color:#8A9BA8}
+.readiness-table{width:100%;border-collapse:collapse;font-size:12px}
+.readiness-table th{text-align:left;padding:8px 12px;color:#8A9BA8;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid #2E2018;background:#120D09;white-space:nowrap}
+.readiness-table th:not(:first-child){text-align:center}
+.readiness-table td{padding:8px 12px;border-bottom:1px solid #1C1410;vertical-align:top}
+.readiness-table td:not(:first-child){text-align:center}
+.readiness-table tr:last-child td{border-bottom:none}
+.readiness-table tr:hover td{background:#1a1208}
+/* Score badge — color changes based on readiness */
+.score-badge{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;font-size:15px;font-weight:700;border:2px solid}
+.score-green{background:#1B3A1F;border-color:#2E7D32;color:#81C784}
+.score-yellow{background:#3E2800;border-color:#F57F17;color:#FFB74D}
+.score-red{background:#3E1212;border-color:#C62828;color:#EF9A9A}
+/* Readiness label pill */
+.ready-pill{display:inline-block;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700;margin-top:3px}
+.ready-pill.green{background:#1B3A1F;color:#81C784}
+.ready-pill.yellow{background:#3E2800;color:#FFB74D}
+.ready-pill.red{background:#3E1212;color:#EF9A9A}
+/* Stat score bars inside the pipeline table */
+.score-bar-wrap{background:#1C1410;border-radius:3px;height:6px;width:80px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:5px}
+.score-bar-fill{height:100%;border-radius:3px}
+/* Trait rating stars */
+.trait-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1C1410;font-size:11px}
+.trait-row:last-child{border-bottom:none}
+.trait-label{color:#8A9BA8;min-width:160px}
+.trait-stars{display:flex;gap:3px}
+.star{width:16px;height:16px;border-radius:3px;cursor:pointer;border:1px solid #3A2A1C;background:#1C1410;transition:all .1s;display:flex;align-items:center;justify-content:center;font-size:9px}
+.star.filled{background:#C8102E;border-color:#C8102E;color:#fff}
+.star:hover{border-color:#C8102E}
+/* Notes textarea */
+.notes-field{width:100%;background:#1C1410;border:1px solid #3A2A1C;border-radius:6px;color:#D0C8BC;font-size:12px;padding:8px 10px;resize:vertical;min-height:56px;font-family:inherit;margin-top:6px}
+.notes-field:focus{outline:1px solid #C8102E;border-color:transparent}
+/* Expand/collapse coach input panel */
+.coach-panel{background:#0D0A08;border-top:1px solid #2E2018;padding:12px 16px;display:none}
+.coach-panel.open{display:block}
+.coach-toggle{background:none;border:none;color:#8A9BA8;font-size:11px;cursor:pointer;padding:0;margin-top:4px;text-decoration:underline}
+.coach-toggle:hover{color:#F5F0E8}
+.save-coach-btn{margin-top:10px;padding:7px 16px;background:#C8102E;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
+.save-coach-btn:hover{opacity:.85}
+/* JV stats mini display */
+.jv-mini{font-size:11px;color:#D0C8BC;line-height:1.6}
+.jv-mini-label{font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em}
+.delete-btn{padding:4px 10px;background:none;border:1px solid #5A4A3C;border-radius:5px;color:#8A9BA8;font-size:11px;cursor:pointer;transition:all .15s}
+.delete-btn:hover{border-color:#C62828;color:#EF9A9A;background:#3E1212}
+.delete-btn.blue:hover{border-color:#1565C0;color:#90CAF9;background:#0D2744}
+.source-tag{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600}
+.source-builtin{background:#2E1E10;color:#8A9BA8}
+.source-uploaded{background:#1B3A1F;color:#81C784}
+
+/* ── SCOUTING REPORT STYLES ── */
+.scout-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.scout-form-full{grid-column:1/-1}
+.scout-input{width:100%;padding:9px 12px;background:#1C1410;border:1px solid #3A2A1C;border-radius:7px;color:#F5F0E8;font-size:13px;font-family:inherit}
+.scout-input:focus{outline:1px solid #C8102E;border-color:transparent}
+.scout-input::placeholder{color:#5A4A3C}
+.scout-textarea{width:100%;padding:9px 12px;background:#1C1410;border:1px solid #3A2A1C;border-radius:7px;color:#F5F0E8;font-size:13px;font-family:inherit;resize:vertical;min-height:72px}
+.scout-textarea:focus{outline:1px solid #C8102E;border-color:transparent}
+.scout-textarea::placeholder{color:#5A4A3C}
+.scout-label{font-size:11px;font-weight:600;color:#8A9BA8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;display:block}
+.scout-section-title{font-size:12px;font-weight:700;color:#C8102E;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 10px;padding-bottom:5px;border-bottom:1px solid #2E2018}
+.rating-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1C1410}
+.rating-row:last-child{border-bottom:none}
+.rating-label{font-size:12px;color:#D0C8BC;flex:1}
+.rating-stars{display:flex;gap:4px}
+.rating-star{width:20px;height:20px;border-radius:4px;cursor:pointer;border:1px solid #3A2A1C;background:#1C1410;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .1s;color:#5A4A3C}
+.rating-star.on{background:#C8102E;border-color:#C8102E;color:#fff}
+.rating-star:hover{border-color:#C8102E}
+.scout-grade{display:flex;gap:6px;flex-wrap:wrap}
+.grade-btn{padding:5px 12px;border-radius:6px;border:1px solid #3A2A1C;background:#1C1410;color:#8A9BA8;font-size:12px;font-weight:600;cursor:pointer;transition:all .12s}
+.grade-btn:hover{border-color:#C8102E;color:#F5F0E8}
+.grade-btn.sel-grade{background:#C8102E;border-color:#C8102E;color:#fff}
+.scout-btn{padding:9px 20px;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;transition:all .12s;border:none}
+.scout-btn-primary{background:#C8102E;color:#fff}
+.scout-btn-primary:hover{opacity:.85}
+.scout-btn-secondary{background:none;border:1px solid #3A2A1C;color:#8A9BA8}
+.scout-btn-secondary:hover{border-color:#C8102E;color:#F5F0E8}
+.scout-report-card{background:#120D09;border:1px solid #2E2018;border-radius:10px;padding:16px;margin-bottom:12px;cursor:pointer;transition:border-color .15s}
+.scout-report-card:hover{border-color:#3A2A1C}
+.scout-report-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.scout-report-team{font-size:14px;font-weight:700;color:#F5F0E8}
+.scout-report-date{font-size:11px;color:#8A9BA8}
+.scout-report-meta{font-size:11px;color:#8A9BA8;margin-bottom:8px}
+.scout-report-summary{font-size:12px;color:#D0C8BC;line-height:1.5}
+.scout-delete-btn{padding:4px 10px;background:none;border:1px solid #5A4A3C;border-radius:5px;color:#5A4A3C;font-size:11px;cursor:pointer}
+.scout-delete-btn:hover{border-color:#C62828;color:#EF9A9A}
+.overall-grade{display:inline-block;padding:4px 14px;border-radius:10px;font-size:12px;font-weight:700}
+.grade-A{background:#1B3A1F;color:#81C784}
+.grade-B{background:#1A2A3A;color:#90CAF9}
+.grade-C{background:#3E2800;color:#FFB74D}
+.grade-D{background:#3E1212;color:#EF9A9A}
+.grade-F{background:#2A0808;color:#EF5350}
+.pitcher-row{background:#0D0A08;border:1px solid #2E2018;border-radius:7px;padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all .12s}
+.pitcher-row:hover{border-color:#3A2A1C}
+.pitcher-row.selected{border-color:#C8102E;background:#1A0D09;box-shadow:inset 0 0 0 1px rgba(200,16,46,.2)}
+.pitcher-row-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.remove-pitcher-btn{padding:3px 8px;background:none;border:1px solid #5A4A3C;border-radius:4px;color:#5A4A3C;font-size:11px;cursor:pointer;margin-left:auto}
+.remove-pitcher-btn:hover{border-color:#C62828;color:#EF9A9A}
+
+/* ── OPPONENT TEAM DATABASE STYLES ── */
+.teams-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+.team-card{background:#120D09;border:1px solid #2E2018;border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s}
+.team-card:hover{border-color:#C8102E;background:#1a0d09}
+.team-card-name{font-size:14px;font-weight:700;color:#F5F0E8;margin-bottom:4px}
+.team-card-meta{font-size:11px;color:#8A9BA8;margin-bottom:10px}
+.team-card-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.team-card-stat{text-align:center;background:#1C1410;border-radius:6px;padding:6px 4px}
+.team-card-stat-val{font-size:14px;font-weight:700;color:#F5F0E8;font-family:Georgia,serif}
+.team-card-stat-label{font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.team-record{display:inline-block;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;margin-bottom:8px}
+.record-winning{background:#1B3A1F;color:#81C784}
+.record-losing{background:#3E1212;color:#EF9A9A}
+.record-even{background:#3E2800;color:#FFB74D}
+.team-detail-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.back-btn{padding:6px 14px;background:none;border:1px solid #3A2A1C;border-radius:7px;color:#8A9BA8;font-size:12px;cursor:pointer;transition:all .12s}
+.back-btn:hover{border-color:#C8102E;color:#F5F0E8}
+.team-detail-name{font-family:Georgia,serif;font-size:20px;font-weight:700;color:#F5F0E8}
+.game-log-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #1C1410}
+.game-log-row:last-child{border-bottom:none}
+.game-log-date{font-size:11px;color:#8A9BA8;min-width:80px;padding-top:2px}
+.game-log-score{font-size:13px;font-weight:600;color:#F5F0E8;min-width:90px;padding-top:2px}
+.game-log-notes{font-size:12px;color:#A09080;flex:1;line-height:1.5}
+.game-log-grade{min-width:30px;text-align:center}
+.team-tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid #2E2018}
+.team-tab{padding:8px 14px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:none;color:#8A9BA8;border-bottom:2px solid transparent}
+.team-tab.active{color:#C8102E;border-bottom-color:#C8102E}
+.team-panel{display:none}.team-panel.active{display:block}
+.stat-trend-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #1C1410;font-size:12px}
+.stat-trend-row:last-child{border-bottom:none}
+.stat-trend-label{color:#8A9BA8;min-width:120px}
+.stat-trend-val{color:#F5F0E8;font-weight:600;min-width:60px}
+.stat-trend-bar-wrap{flex:1;background:#1C1410;border-radius:3px;height:8px;overflow:hidden}
+.stat-trend-bar{height:100%;border-radius:3px;background:#C8102E}
+.search-teams{width:100%;padding:8px 12px;background:#1C1410;border:1px solid #3A2A1C;border-radius:7px;color:#F5F0E8;font-size:13px;margin-bottom:14px}
+.search-teams:focus{outline:1px solid #C8102E;border-color:transparent}
+.search-teams::placeholder{color:#5A4A3C}
+
+/* ── OUR PITCHING & DEFENSE BREAKDOWN STYLES ── */
+.breakdown-section{margin-top:16px}
+.breakdown-title{font-size:11px;font-weight:700;color:#C8102E;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid #2E2018}
+.inning-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-bottom:12px}
+.inning-cell{background:#1C1410;border:1px solid #2E2018;border-radius:5px;padding:6px 4px;text-align:center}
+.inning-cell-label{font-size:9px;color:#5A4A3C;text-transform:uppercase;margin-bottom:3px}
+.inning-cell-val{font-size:14px;font-weight:700;color:#F5F0E8;font-family:Georgia,serif}
+.inning-cell-val.bad{color:#EF9A9A}
+.inning-cell-val.ok{color:#FFB74D}
+.inning-cell-val.good{color:#81C784}
+.pitcher-breakdown{background:#0D0A08;border:1px solid #2E2018;border-radius:8px;padding:12px;margin-bottom:10px}
+.pitcher-breakdown-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pitcher-breakdown-name{font-size:13px;font-weight:700;color:#F5F0E8}
+.pitcher-breakdown-meta{font-size:11px;color:#8A9BA8}
+.pitch-count-bar{height:8px;background:#1C1410;border-radius:4px;overflow:hidden;margin-top:4px}
+.pitch-count-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#81C784,#FFB74D,#EF9A9A)}
+.efficiency-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.efficiency-stat{text-align:center}
+.efficiency-val{font-size:16px;font-weight:700;color:#F5F0E8;font-family:Georgia,serif}
+.efficiency-label{font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.error-player-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1C1410;font-size:12px}
+.error-player-row:last-child{border-bottom:none}
+.error-player-name{color:#F5F0E8;font-weight:600;min-width:120px}
+.error-position{color:#8A9BA8;font-size:10px;min-width:40px}
+.error-count{font-size:14px;font-weight:700;color:#EF9A9A;font-family:Georgia,serif;min-width:30px;text-align:center}
+.warning-bubble{background:#3E1212;border:1px solid #C62828;border-radius:8px;padding:8px 12px;font-size:11px;color:#EF9A9A;margin-top:8px;display:flex;align-items:center;gap:6px}
+
+/* ── PITCH TRACKER STYLES ── */
+.pitch-tracker-grid{display:grid;grid-template-columns:200px 1fr;gap:16px;height:calc(100vh - 180px);overflow:hidden}
+.pt-sidebar{background:#120D09;border:1px solid #2E2018;border-radius:10px;overflow-y:auto;padding:12px}
+.pt-main{overflow-y:auto}
+.pt-player-item{padding:8px 10px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500;color:#A09080;margin-bottom:3px;transition:all .15s;border:1px solid transparent}
+.pt-player-item:hover{background:#2E1E10;color:#F5F0E8}
+.pt-player-item.selected{background:#C8102E;color:#fff;border-color:#C8102E}
+.pt-player-item .pt-player-stats{font-size:10px;opacity:.7;margin-top:2px}
+.inning-input-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #1C1410}
+.inning-input-row:last-child{border-bottom:none}
+.inning-num{font-size:11px;font-weight:700;color:#8A9BA8;width:24px;flex-shrink:0;text-align:center}
+.inning-input{width:44px;padding:5px 6px;background:#1C1410;border:1px solid #3A2A1C;border-radius:5px;color:#F5F0E8;font-size:12px;text-align:center}
+.inning-input:focus{outline:1px solid #C8102E}
+.inning-input-label{font-size:10px;color:#5A4A3C;min-width:30px}
+.pt-add-game-btn{width:100%;padding:8px;background:#C8102E;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;margin-top:10px}
+.pt-add-game-btn:hover{opacity:.85}
+.trend-chart-wrap{background:#120D09;border:1px solid #2E2018;border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.trend-chart-title{font-size:12px;font-weight:600;color:#F5F0E8;margin-bottom:10px}
+.inning-trend-bars{display:flex;align-items:flex-end;gap:3px;height:80px;margin-bottom:4px}
+.inning-trend-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.inning-trend-bar{width:100%;border-radius:3px 3px 0 0;min-height:2px;transition:height .3s}
+.inning-trend-label{font-size:9px;color:#5A4A3C;text-align:center}
+.inning-trend-val{font-size:9px;color:#8A9BA8;text-align:center}
+.pt-game-log{background:#120D09;border:1px solid #2E2018;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.pt-game-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #1C1410;font-size:12px;cursor:pointer;transition:background .12s}
+.pt-game-row:last-child{border-bottom:none}
+.pt-game-row:hover{background:#1a0d09}
+.pt-game-opponent{font-weight:600;color:#F5F0E8;min-width:130px}
+.pt-game-ip{color:#8A9BA8;min-width:50px}
+.pt-game-pitches{color:#D0C8BC}
+.pt-warning{color:#FFB74D;font-size:11px;margin-left:auto}
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:#120D09}
 ::-webkit-scrollbar-thumb{background:#3A2A1C;border-radius:3px}
@@ -139,8 +338,8 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 <div class="shell">
   <div class="sidebar">
     <div class="sidebar-brand">
-      <div class="brand-name">Cardinals Baseball</div>
-      <div class="brand-sub">Coach Dashboard</div>
+      <div class="brand-name" id="sidebar-brand-name">Cardinals Baseball</div>
+      <div class="brand-sub" id="sidebar-brand-sub">Coach Dashboard</div>
     </div>
 
     <div class="sidebar-section">
@@ -180,20 +379,27 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
       <div class="nav-label" style="margin-top:8px">Analysis</div>
       <button class="nav-item" onclick="showPage('trends',this)"><span class="nav-icon">📈</span> Season Trends</button>
       <button class="nav-item" onclick="showPage('players',this)"><span class="nav-icon">👤</span> Player Profiles</button>
+      <button class="nav-item" onclick="showPage('pipeline',this)"><span class="nav-icon">⬆</span> Player Pipeline</button>
+      <div class="nav-label" style="margin-top:8px">Tools</div>
+      <button class="nav-item" onclick="showPage('scouting',this)"><span class="nav-icon">📓</span> Scouting Report</button>
+      <button class="nav-item" onclick="showPage('practice',this)"><span class="nav-icon">📑</span> Practice Plans</button>
+      <button class="nav-item" onclick="showPage('pitchtracker',this)"><span class="nav-icon">🎯</span> Pitch Tracker</button>
+      <div class="nav-label" style="margin-top:8px">Settings</div>
+      <button class="nav-item" onclick="showPage('data',this)"><span class="nav-icon">🗂</span> Data Manager</button>
     </nav>
 
-    <div class="sidebar-footer">Clinton Cardinals Varsity Baseball<br>Data: GameChanger export</div>
+    <div class="sidebar-footer" id="sidebar-footer">Clinton Cardinals Varsity Baseball<br>Data: GameChanger export</div>
   </div>
 
   <div class="main">
     <div class="ticker">
-      <div class="ticker-label">Cardinals</div>
+      <div class="ticker-label" id="ticker-label">Cardinals</div>
       <div class="ticker-track"><div class="ticker-inner" id="ticker-inner"></div></div>
     </div>
     <div class="page-header">
       <div>
         <div class="page-title" id="page-title">Season Overview</div>
-        <div class="page-sub">Clinton Cardinals Baseball</div>
+        <div class="page-sub" id="page-sub-main">Clinton Cardinals Baseball</div>
       </div>
       <div class="header-badge" id="header-badge">2025 Season · Varsity</div>
     </div>
@@ -275,6 +481,18 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
         </div>
       </div>
 
+      <!-- DEDICATED PIPELINE PAGE -->
+      <div class="page" id="page-pipeline">
+        <div id="pipeline-page-section"></div>
+        <div id="pipeline-empty" style="display:none">
+          <div class="empty-state">
+            <div class="empty-icon">⬆</div>
+            <div class="empty-title">Upload JV data to see the pipeline</div>
+            <div class="empty-sub">Switch the Team dropdown to Both and upload a JV GameChanger CSV — every player will get a readiness score automatically</div>
+          </div>
+        </div>
+      </div>
+
       <div class="page" id="page-players">
         <div id="pipeline-section"></div>
         <div class="card" style="margin-bottom:16px">
@@ -293,6 +511,450 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
         </div>
       </div>
 
+      <!-- DATA MANAGER PAGE -->
+      <div class="page" id="page-data">
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header">
+            <div class="card-title">Loaded seasons</div>
+            <div class="card-badge" id="data-count"></div>
+          </div>
+          <div class="card-body" style="padding:0">
+            <table class="stat-table" style="min-width:300px">
+              <thead><tr>
+                <th style="text-align:left;padding-left:12px">Season</th>
+                <th>Team</th>
+                <th>Players</th>
+                <th>Batters</th>
+                <th>Pitchers</th>
+                <th>Source</th>
+                <th>Action</th>
+              </tr></thead>
+              <tbody id="data-seasons-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="card-header">
+            <div class="card-title">Coach input data</div>
+            <div class="card-badge" id="coach-data-count"></div>
+          </div>
+          <div class="card-body" style="padding:0">
+            <table class="stat-table" style="min-width:300px">
+              <thead><tr>
+                <th style="text-align:left;padding-left:12px">Player</th>
+                <th>Traits rated</th>
+                <th>Has notes</th>
+                <th>Action</th>
+              </tr></thead>
+              <tbody id="data-coach-body"></tbody>
+            </table>
+          </div>
+          <div style="padding:12px 16px;border-top:1px solid #2E2018">
+            <button onclick="clearAllCoachInput()" style="padding:7px 14px;background:none;border:1px solid #5A4A3C;border-radius:6px;color:#8A9BA8;font-size:12px;cursor:pointer">
+              Clear all coach input
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title" style="color:#EF9A9A">Danger zone</div>
+          </div>
+          <div class="card-body">
+            <div style="font-size:12px;color:#8A9BA8;margin-bottom:12px">
+              These actions cannot be undone. Use with caution.
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button onclick="clearAllVarsity()" style="padding:8px 16px;background:none;border:1px solid #C62828;border-radius:6px;color:#EF9A9A;font-size:12px;cursor:pointer;font-weight:500">
+                Clear all Varsity data
+              </button>
+              <button onclick="clearAllJV()" style="padding:8px 16px;background:none;border:1px solid #1565C0;border-radius:6px;color:#90CAF9;font-size:12px;cursor:pointer;font-weight:500">
+                Clear all JV data
+              </button>
+              <button onclick="clearEverything()" style="padding:8px 16px;background:#3E1212;border:1px solid #C62828;border-radius:6px;color:#EF9A9A;font-size:12px;cursor:pointer;font-weight:600">
+                Reset everything
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- SCOUTING REPORT PAGE -->
+      <div class="page" id="page-scouting">
+
+        <!-- View toggle -->
+        <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap">
+          <button class="scout-btn scout-btn-primary" onclick="showScoutView('new')">+ New report</button>
+          <button class="scout-btn scout-btn-secondary" id="btn-teams-view" onclick="showScoutView('teams')">
+            🗂 Team database (<span id="teams-count">0</span> teams)
+          </button>
+          <button class="scout-btn scout-btn-secondary" onclick="showScoutView('list')">
+            All reports (<span id="scout-count">0</span>)
+          </button>
+        </div>
+
+        <!-- TEAM DATABASE VIEW -->
+        <div id="scout-teams-view" style="display:none">
+          <input class="search-teams" type="text" id="team-search-input"
+                 placeholder="Search teams..." oninput="renderTeamDatabase()">
+          <div id="teams-grid-container"></div>
+        </div>
+
+        <!-- TEAM DETAIL VIEW -->
+        <div id="scout-team-detail" style="display:none">
+          <div class="team-detail-header">
+            <button class="back-btn" onclick="showScoutView('teams')">← Teams</button>
+            <div class="team-detail-name" id="team-detail-name"></div>
+          </div>
+          <div id="team-detail-content"></div>
+        </div>
+
+        <!-- SAVED REPORTS LIST -->
+        <div id="scout-list-view" style="display:none">
+          <div id="scout-reports-list">
+            <div class="empty-state">
+              <div class="empty-icon">📓</div>
+              <div class="empty-title">No scouting reports yet</div>
+              <div class="empty-sub">Create your first report using the New report button above</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW / EDIT REPORT FORM -->
+        <div id="scout-new-view" style="display:none">
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-header">
+              <div class="card-title" id="scout-form-title">New scouting report</div>
+            </div>
+            <div class="card-body">
+
+              <!-- GAME INFO -->
+              <div class="scout-section-title">Game information</div>
+              <div class="scout-form-grid">
+                <div>
+                  <label class="scout-label">Opponent</label>
+                  <input class="scout-input" type="text" id="scout-opponent" placeholder="e.g. Sedalia Smith-Cotton">
+                </div>
+                <div>
+                  <label class="scout-label">Date scouted</label>
+                  <input class="scout-input" type="date" id="scout-date">
+                </div>
+                <div>
+                  <label class="scout-label">Location</label>
+                  <input class="scout-input" type="text" id="scout-location" placeholder="e.g. Sedalia — home field">
+                </div>
+                <div>
+                  <label class="scout-label">Final score</label>
+                  <input class="scout-input" type="text" id="scout-score" placeholder="e.g. They won 5-3">
+                </div>
+                <div class="scout-form-full">
+                  <label class="scout-label">Scouted by</label>
+                  <input class="scout-input" type="text" id="scout-author" placeholder="Your name">
+                </div>
+              </div>
+
+              <!-- OPPONENT STATS CSV UPLOAD -->
+              <div class="scout-section-title">Opponent stats (optional)</div>
+              <div style="background:#0D0A08;border:1px solid #2E2018;border-radius:8px;padding:12px 14px;margin-bottom:16px">
+                <div style="font-size:12px;color:#8A9BA8;margin-bottom:8px">
+                  Upload a GameChanger CSV export from the scouted game to auto-populate their stats below.
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                    <button class="scout-btn scout-btn-secondary"
+                            onclick="document.getElementById('scout-csv-input').click()">
+                      ⬆ Upload opponent file
+                    </button>
+                    <input type="file" id="scout-csv-input" accept=".csv,.txt" style="display:none"
+                           onchange="handleScoutFile(event,'opponent')">
+                    <span id="scout-opp-status" style="font-size:11px;color:#8A9BA8">
+                      Opponent .txt or season .csv
+                    </span>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                    <button class="scout-btn scout-btn-secondary"
+                            onclick="document.getElementById('scout-our-input').click()"
+                            id="scout-our-btn">
+                      ⬆ Upload our team file
+                    </button>
+                    <input type="file" id="scout-our-input" accept=".csv,.txt" style="display:none"
+                           onchange="handleScoutFile(event,'ours')">
+                    <span id="scout-our-status" style="font-size:11px;color:#8A9BA8">
+                      Our .txt or season .csv
+                    </span>
+                  </div>
+                  <div id="scout-csv-status" style="font-size:11px;color:#8A9BA8;display:none"></div>
+                </div>
+                <!-- Opponent stats table — hidden until CSV loaded -->
+                <div id="scout-stats-area" style="display:none;margin-top:14px">
+                  <!-- Tabs to switch between opponent and our team breakdown -->
+                  <div style="display:flex;gap:4px;margin-bottom:12px;border-bottom:1px solid #2E2018">
+                    <button class="team-tab active" id="csv-tab-opp" onclick="switchCsvTab('opp',this)">Opponent stats</button>
+                    <button class="team-tab" id="csv-tab-ours" onclick="switchCsvTab('ours',this)">Our pitching & defense</button>
+                  </div>
+
+                  <!-- OPPONENT STATS PANEL -->
+                  <div id="csv-panel-opp">
+                    <div style="font-size:11px;font-weight:600;color:#C8102E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Opponent batting</div>
+                    <div style="overflow-x:auto">
+                      <table class="stat-table" style="min-width:400px;font-size:11px">
+                        <thead><tr>
+                          <th style="text-align:left;padding-left:8px">Player</th>
+                          <th>AB</th><th>AVG</th><th>H</th><th>RBI</th><th>R</th><th>BB</th><th>K</th><th>SB</th>
+                        </tr></thead>
+                        <tbody id="scout-stats-body"></tbody>
+                      </table>
+                    </div>
+                    <div id="scout-pitch-stats-area" style="display:none;margin-top:12px">
+                      <div style="font-size:11px;font-weight:600;color:#C8102E;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Opponent pitching</div>
+                      <div style="overflow-x:auto">
+                        <table class="stat-table" style="min-width:400px;font-size:11px">
+                          <thead><tr>
+                            <th style="text-align:left;padding-left:8px">Pitcher</th>
+                            <th>IP</th><th>ERA</th><th>WHIP</th><th>K</th><th>BB</th><th>W</th><th>L</th>
+                          </tr></thead>
+                          <tbody id="scout-pitch-body"></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- OUR PITCHING & DEFENSE PANEL -->
+                  <div id="csv-panel-ours" style="display:none">
+                    <div id="our-pitching-breakdown"></div>
+                    <div id="our-defense-breakdown"></div>
+                  </div>
+
+                  <button class="scout-btn scout-btn-secondary" style="margin-top:12px;font-size:11px" onclick="clearScoutCSV()">
+                    Clear CSV data
+                  </button>
+                </div>
+              </div>
+
+              <!-- OVERALL ASSESSMENT -->
+              <div class="scout-section-title">Overall assessment</div>
+              <div style="margin-bottom:12px">
+                <label class="scout-label">Overall team grade</label>
+                <div class="scout-grade" id="overall-grade-btns">
+                  <button class="grade-btn" onclick="setGrade('overall','A',this)">A</button>
+                  <button class="grade-btn" onclick="setGrade('overall','B',this)">B</button>
+                  <button class="grade-btn" onclick="setGrade('overall','C',this)">C</button>
+                  <button class="grade-btn" onclick="setGrade('overall','D',this)">D</button>
+                  <button class="grade-btn" onclick="setGrade('overall','F',this)">F</button>
+                </div>
+                <input type="hidden" id="scout-overall-grade" value="">
+              </div>
+              <div>
+                <label class="scout-label">Overall notes</label>
+                <textarea class="scout-textarea" id="scout-overall-notes" placeholder="General impressions of the team — speed, power, aggressiveness, defense..."></textarea>
+              </div>
+
+              <!-- PITCHING -->
+              <div class="scout-section-title">Pitching</div>
+              <div id="pitcher-list"></div>
+              <button class="scout-btn scout-btn-secondary" style="margin-bottom:16px" onclick="addPitcher()">+ Add pitcher</button>
+
+              <!-- OFFENSE -->
+              <div class="scout-section-title">Offensive tendencies</div>
+              <div class="rating-row">
+                <span class="rating-label">Contact hitting ability</span>
+                <div class="rating-stars" id="stars-contact"></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Power / extra base hits</span>
+                <div class="rating-stars" id="stars-power"></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Plate discipline / walks</span>
+                <div class="rating-stars" id="stars-discipline"></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Baserunning / speed</span>
+                <div class="rating-stars" id="stars-speed"></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Bunting / small ball</span>
+                <div class="rating-stars" id="stars-bunt"></div>
+              </div>
+              <div style="margin-top:12px">
+                <label class="scout-label">Offensive notes</label>
+                <textarea class="scout-textarea" id="scout-offense-notes" placeholder="Key hitters, tendencies, what to watch out for..."></textarea>
+              </div>
+
+              <!-- DEFENSE -->
+              <div class="scout-section-title">Defense</div>
+              <div class="rating-row">
+                <span class="rating-label">Infield range & hands</span>
+                <div class="rating-stars" id="stars-infield"></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Outfield range & arm</span>
+                <div class="rating-stars" id="stars-outfield"></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Catcher & throwing game</span>
+                <div class="rating-stars" id="stars-catcher"></div>
+              </div>
+              <div class="rating-row">
+                <span class="rating-label">Overall defensive execution</span>
+                <div class="rating-stars" id="stars-defense"></div>
+              </div>
+              <div style="margin-top:12px">
+                <label class="scout-label">Defensive notes</label>
+                <textarea class="scout-textarea" id="scout-defense-notes" placeholder="Weak positions, strong arms, tendencies, errors observed..."></textarea>
+              </div>
+
+              <!-- STRATEGY -->
+              <div class="scout-section-title">Strategy & tendencies</div>
+              <div style="margin-bottom:12px">
+                <label class="scout-label">Do they steal?</label>
+                <div class="scout-grade" id="steal-btns">
+                  <button class="grade-btn" onclick="setGrade('steal','Yes — frequently',this)">Yes — frequently</button>
+                  <button class="grade-btn" onclick="setGrade('steal','Sometimes',this)">Sometimes</button>
+                  <button class="grade-btn" onclick="setGrade('steal','Rarely',this)">Rarely</button>
+                  <button class="grade-btn" onclick="setGrade('steal','No',this)">No</button>
+                </div>
+                <input type="hidden" id="scout-steal" value="">
+              </div>
+              <div style="margin-bottom:12px">
+                <label class="scout-label">Do they bunt?</label>
+                <div class="scout-grade" id="bunt-btns">
+                  <button class="grade-btn" onclick="setGrade('bunt','Yes — frequently',this)">Yes — frequently</button>
+                  <button class="grade-btn" onclick="setGrade('bunt','Sometimes',this)">Sometimes</button>
+                  <button class="grade-btn" onclick="setGrade('bunt','Rarely',this)">Rarely</button>
+                  <button class="grade-btn" onclick="setGrade('bunt','No',this)">No</button>
+                </div>
+                <input type="hidden" id="scout-bunt" value="">
+              </div>
+              <div>
+                <label class="scout-label">Strategy notes</label>
+                <textarea class="scout-textarea" id="scout-strategy-notes" placeholder="Signs observed, patterns, first pitch tendencies, hit and run, positioning..."></textarea>
+              </div>
+
+              <!-- KEY PLAYERS -->
+              <div class="scout-section-title">Key players to watch</div>
+              <div>
+                <label class="scout-label">Players of concern</label>
+                <textarea class="scout-textarea" id="scout-key-players" placeholder="Name, number, position, and why they're dangerous..."></textarea>
+              </div>
+
+              <!-- WEAKNESSES -->
+              <div class="scout-section-title">Exploitable weaknesses</div>
+              <div>
+                <label class="scout-label">How to attack this team</label>
+                <textarea class="scout-textarea" id="scout-weaknesses" placeholder="Weak hitter positions, holes in the lineup, pitchers who struggle with breaking balls, base stealing opportunities..."></textarea>
+              </div>
+
+              <!-- SAVE -->
+              <div style="display:flex;gap:10px;margin-top:20px">
+                <button class="scout-btn scout-btn-primary" onclick="saveScoutReport()">Save report</button>
+                <button class="scout-btn scout-btn-secondary" onclick="showScoutView('list')">Cancel</button>
+                <button class="scout-btn scout-btn-secondary" id="scout-print-btn" onclick="printScoutReport()" style="margin-left:auto">🖨 Print / Export PDF</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PITCH TRACKER PAGE -->
+      <div class="page" id="page-pitchtracker">
+        <div style="display:flex;gap:10px;margin-bottom:16px;align-items:center;flex-wrap:wrap">
+          <button class="scout-btn scout-btn-primary" onclick="showPTView('log')">+ Log game manually</button>
+          <button class="scout-btn scout-btn-secondary" onclick="document.getElementById('pt-season-csv-input').click()">
+            ⬆ Import season CSV
+          </button>
+          <button class="scout-btn scout-btn-secondary" onclick="document.getElementById('pt-game-csv-input').click()">
+            ⬆ Import game file (.txt)
+          </button>
+          <button class="scout-btn scout-btn-secondary" onclick="showPTView('trends')">📈 Pitcher trends</button>
+          <button class="scout-btn scout-btn-secondary" onclick="showPTView('list')">All games (<span id="pt-game-count">0</span>)</button>
+        </div>
+        <!-- Hidden file inputs for both import types -->
+        <input type="file" id="pt-season-csv-input" accept=".csv" style="display:none"
+               onchange="handlePTSeasonCSV(event)">
+        <input type="file" id="pt-game-csv-input" accept=".txt,.csv" style="display:none"
+               onchange="handlePTGameFile(event)">
+        <!-- Import status message -->
+        <div id="pt-import-status" style="font-size:12px;color:#8A9BA8;margin-bottom:10px;display:none"></div>
+
+        <!-- LOG NEW GAME VIEW -->
+        <div id="pt-log-view">
+          <div class="card" style="margin-bottom:16px">
+            <div class="card-header">
+              <div class="card-title" id="pt-form-title">Log Pitcher Performance</div>
+            </div>
+            <div class="card-body">
+              <div class="scout-form-grid" style="margin-bottom:14px">
+                <div>
+                  <label class="scout-label">Opponent</label>
+                  <input class="scout-input" type="text" id="pt-opponent" placeholder="e.g. Sedalia">
+                </div>
+                <div>
+                  <label class="scout-label">Date</label>
+                  <input class="scout-input" type="date" id="pt-date">
+                </div>
+                <div>
+                  <label class="scout-label">Result</label>
+                  <select class="scout-input" id="pt-result">
+                    <option value="">—</option>
+                    <option>Win</option>
+                    <option>Loss</option>
+                    <option>No decision</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="scout-label">Score</label>
+                  <input class="scout-input" type="text" id="pt-score" placeholder="e.g. 5-3">
+                </div>
+              </div>
+
+              <!-- Pitcher entry section -->
+              <div style="font-size:11px;font-weight:700;color:#C8102E;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;padding-bottom:5px;border-bottom:1px solid #2E2018">
+                Pitcher performance
+              </div>
+              <div id="pt-pitcher-entries"></div>
+              <button class="scout-btn scout-btn-secondary" style="margin-bottom:14px" onclick="ptAddPitcher()">+ Add pitcher</button>
+              <button class="scout-btn scout-btn-secondary" style="margin-bottom:14px" onclick="ptRemovePitcher()">- Remove pitcher</button>
+
+              <div style="display:flex;gap:10px">
+                <button class="scout-btn scout-btn-primary" onclick="savePTGame()">Save game</button>
+                <button class="scout-btn scout-btn-secondary" onclick="showPTView('list')">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALL GAMES LIST VIEW -->
+        <div id="pt-list-view" style="display:none">
+          <div class="pt-game-log" id="pt-games-list">
+            <div class="empty-state">
+              <div class="empty-icon">🎯</div>
+              <div class="empty-title">No games logged yet</div>
+              <div class="empty-sub">Log a game to start tracking pitcher trends</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRENDS VIEW -->
+        <div id="pt-trends-view" style="display:none">
+          <div style="margin-bottom:12px">
+            <label class="scout-label">Select pitcher</label>
+            <select class="filter-select" id="pt-pitcher-select" onchange="renderPTTrends()" style="max-width:300px">
+              <option value="">All pitchers</option>
+            </select>
+          </div>
+          <div id="pt-trends-content">
+            <div class="empty-state">
+              <div class="empty-icon">📈</div>
+              <div class="empty-title">No trend data yet</div>
+              <div class="empty-sub">Log at least two games to see trends</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -300,40 +962,28 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 
 <script>
 // ── DATA ─────────────────────────────────────────────
-// Varsity data — baked in, also grows via CSV upload
-let RAW = [
-  {year:2026,name:'Mitchell, C.',num:'3',gp:22,pa:108,ab:88,avg:.352,obp:.430,ops:.820,h:31,rbi:38,r:28,sb:12,bb:16,so:8,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2026,name:'Martin, M.',num:'5',gp:22,pa:109,ab:92,avg:.306,obp:.390,ops:.740,h:28,rbi:32,r:22,sb:15,bb:12,so:14,ip:24.1,era:3.16,whip:1.21,w:3,l:1,k:18},
-  {year:2026,name:'Lowe, R.',num:'11',gp:22,pa:101,ab:83,avg:.289,obp:.360,ops:.700,h:24,rbi:30,r:20,sb:10,bb:14,so:12,ip:34.2,era:3.43,whip:1.35,w:4,l:2,k:28},
-  {year:2026,name:'English, J.',num:'14',gp:22,pa:78,ab:66,avg:.263,obp:.340,ops:.650,h:17,rbi:20,r:15,sb:3,bb:9,so:10,ip:28.1,era:2.72,whip:1.18,w:4,l:1,k:22},
-  {year:2026,name:'Townsend, K.',num:'22',gp:22,pa:114,ab:95,avg:.261,obp:.330,ops:.650,h:25,rbi:28,r:18,sb:14,bb:12,so:18,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2026,name:'Petry, Ad.',num:'4',gp:18,pa:42,ab:38,avg:.158,obp:.238,ops:.420,h:6,rbi:8,r:6,sb:2,bb:4,so:10,ip:27.2,era:1.27,whip:0.94,w:5,l:0,k:30},
-  {year:2025,name:'Mitchell, C.',num:'3',gp:22,pa:85,ab:66,avg:.532,obp:.598,ops:1.130,h:35,rbi:42,r:30,sb:14,bb:15,so:4,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2025,name:'LaFarge, K.',num:'8',gp:22,pa:87,ab:76,avg:.355,obp:.437,ops:.840,h:27,rbi:28,r:22,sb:18,bb:9,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2025,name:'Lowe, R.',num:'11',gp:20,pa:65,ab:56,avg:.286,obp:.369,ops:.700,h:16,rbi:20,r:14,sb:8,bb:7,so:10,ip:29.1,era:3.10,whip:1.26,w:3,l:1,k:24},
-  {year:2025,name:'Stephens, G.',num:'42',gp:10,pa:8,ab:7,avg:.143,obp:.250,ops:.390,h:1,rbi:1,r:2,sb:0,bb:1,so:2,ip:15.0,era:3.73,whip:1.13,w:4,l:0,k:21},
-  {year:2024,name:'Golder, W.',num:'2',gp:22,pa:83,ab:68,avg:.441,obp:.506,ops:.980,h:30,rbi:35,r:28,sb:6,bb:12,so:5,ip:41.0,era:4.27,whip:1.44,w:5,l:2,k:32},
-  {year:2024,name:'Mitchell, C.',num:'3',gp:22,pa:60,ab:50,avg:.380,obp:.450,ops:.830,h:19,rbi:28,r:22,sb:8,bb:8,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2024,name:'LaFarge, K.',num:'8',gp:22,pa:85,ab:77,avg:.364,obp:.447,ops:.850,h:28,rbi:32,r:26,sb:22,bb:6,so:5,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2024,name:'Lowe, R.',num:'11',gp:10,pa:14,ab:13,avg:.231,obp:.286,ops:.570,h:3,rbi:4,r:4,sb:1,bb:1,so:3,ip:22.1,era:4.70,whip:1.52,w:2,l:2,k:14},
-  {year:2023,name:'Golder, W.',num:'2',gp:21,pa:78,ab:64,avg:.406,obp:.474,ops:.920,h:26,rbi:30,r:24,sb:4,bb:10,so:4,ip:38.0,era:3.90,whip:1.38,w:5,l:1,k:28},
-  {year:2023,name:'LaFarge, K.',num:'8',gp:21,pa:80,ab:72,avg:.347,obp:.425,ops:.820,h:25,rbi:28,r:22,sb:20,bb:7,so:6,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2023,name:'Martin, M.',num:'5',gp:21,pa:76,ab:70,avg:.314,obp:.382,ops:.760,h:22,rbi:24,r:18,sb:14,bb:5,so:10,ip:20.0,era:3.60,whip:1.30,w:3,l:2,k:16},
-];
+// Varsity data 
+let RAW = [];
 
 // JV data — starts empty, grows via CSV upload
 let RAW_JV = [];
 
 // Varsity team totals by year for trends
-let TEAM = {
-  2023:{avg:.298,obp:.390,ops:.752,era:4.20,whip:1.58,r:158,sb:62,k:88,ip:132},
-  2024:{avg:.303,obp:.413,ops:.776,era:5.12,whip:1.65,r:171,sb:68,k:95,ip:138},
-  2025:{avg:.316,obp:.412,ops:.791,era:4.69,whip:1.70,r:173,sb:71,k:110,ip:146},
-  2026:{avg:.271,obp:.382,ops:.720,era:3.89,whip:1.42,r:162,sb:60,k:130,ip:152},
-};
+let TEAM = {};
 
 // JV team totals — built automatically when JV CSV is uploaded
 let TEAM_JV = {};
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  TEAM CONFIGURATION — CHANGE THESE 3 LINES PER CUSTOMER     ║
+// ╠══════════════════════════════════════════════════════════════╣
+// ║  1. TEAM_NAME   = mascot name  e.g. 'Warriors', 'Eagles'    ║
+// ║  2. TEAM_SCHOOL = school name  e.g. 'Sedalia', 'Harrisonville'║
+// ║  3. TEAM_SPORT  = sport        e.g. 'JV Baseball', 'Softball'║
+// ╚══════════════════════════════════════════════════════════════╝
+let TEAM_NAME   = 'Cardinals';
+let TEAM_SCHOOL = 'Clinton';
+let TEAM_SPORT  = 'Varsity Baseball';
 
 // ── STATE ─────────────────────────────────────────────
 let sortState = {batting:{col:'avg',dir:-1}, pitching:{col:'era',dir:1}};
@@ -341,6 +991,11 @@ let activeSeason = '2025';
 let activeTeam   = 'varsity';
 let playerFilter = '';
 let uploadedYears = {};
+
+// Shared across Scouting Report and Pitch Tracker
+// Declared here so both sections can access them
+let ptGames = [];
+const INNINGS = ['1st','2nd','3rd','4th','5th','6th','7th'];
 
 // ── UPLOAD ────────────────────────────────────────────
 function handleFileUpload(event) {
@@ -584,9 +1239,14 @@ function showPage(name, el) {
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
   const titles = {overview:'Season Overview',batting:'Batting Statistics',
-    pitching:'Pitching Statistics',trends:'Season Trends',players:'Player Profiles'};
+    pitching:'Pitching Statistics',trends:'Season Trends',players:'Player Profiles',
+    pipeline:'Player Pipeline',scouting:'Scouting Report',practice:'Practice Plans',
+    pitchtracker:'Pitch Tracker',data:'Data Manager'};
   document.getElementById('page-title').textContent = titles[name];
-  safeRenderAll();
+  if (name === 'data')    { renderDataManager(); }
+  else if (name === 'scouting') { renderScoutList(); showScoutView(scoutReports.length ? 'teams' : 'list'); }
+  else if (name === 'pitchtracker') { renderPTList(); showPTView('list'); }
+  else { safeRenderAll(); }
 }
 
 // ── HELPERS ───────────────────────────────────────────
@@ -675,7 +1335,7 @@ function renderTicker() {
       items.push(`<span>Best ERA (5+ IP)</span>${er.name} — ${er.era.toFixed(2)}`);}
     items.push(`<span>Total K's</span>${p.reduce((a,c)=>a+c.k,0)} strikeouts`);
   }
-  items.push(`<span>Season</span>Cardinals — ${activeSeason==='all'?'All seasons':activeSeason}`);
+  items.push(`<span>Season</span>${TEAM_NAME} — ${activeSeason==='all'?'All seasons':activeSeason}`);
   document.getElementById('ticker-inner').innerHTML =
     [...items,...items].map(t=>`<div class="ticker-item">${t}</div>`).join('');
 }
@@ -1097,7 +1757,2907 @@ function renderProfile() {
     </div>`;
 }
 
+
+// ── PIPELINE READINESS SYSTEM ────────────────────────────────────────────
+// coachInputs stores ratings and notes per player
+// Structure: { 'PlayerName': { traits: {athleticism:3,...}, notes: 'text' } }
+let coachInputs = {};
+
+// TRAIT DEFINITIONS — shown as 1-5 star ratings
+const TRAITS = [
+  {key:'athleticism',  label:'Athleticism at practice'},
+  {key:'work_ethic',   label:'Work ethic & attitude'},
+  {key:'signs',        label:'Knowledge of signs'},
+  {key:'vs_pitching',  label:'Performance vs good pitching'},
+  {key:'position',     label:'Position opportunity on Varsity'},
+  {key:'coachability', label:'Coachability & focus'},
+];
+
+// STATISTICAL BENCHMARKS
+// Based on what a JV player typically needs to contribute at Varsity
+// Coaches can adjust these as they learn more about their program
+const BENCHMARKS = {
+  avg:   { target:.280, weight:20 },  // batting average
+  obp:   { target:.360, weight:15 },  // on base percentage
+  krate: { target:.22,  weight:10 },  // strikeout rate (lower = better)
+  era:   { target:4.50, weight:8  },  // ERA for pitchers
+  whip:  { target:1.50, weight:7  },  // WHIP for pitchers
+  // Note: errors and IP handled separately below
+};
+
+// calcStatScore — returns 0-70 based on a player's JV stats
+// compared to the benchmarks above
+function calcStatScore(player) {
+  let score = 0;
+
+  // AVG score — 20 points max
+  // Scale: .300+ = 20, .250 = 14, .200 = 7, below .200 = 0
+  const avgRatio = Math.min(player.avg / BENCHMARKS.avg.target, 1.2);
+  score += Math.round(Math.min(avgRatio, 1) * BENCHMARKS.avg.weight);
+
+  // OBP score — 15 points max
+  const obpRatio = Math.min(player.obp / BENCHMARKS.obp.target, 1.2);
+  score += Math.round(Math.min(obpRatio, 1) * BENCHMARKS.obp.weight);
+
+  // K rate — 10 points max (lower K rate is better)
+  // K rate = SO / PA (strikeouts per plate appearance)
+  if (player.pa > 0) {
+    const krate = player.so / player.pa;
+    // If krate is at or below target, full points
+    // If krate is twice the target, 0 points
+    const krateScore = Math.max(0, 1 - (krate / (BENCHMARKS.krate.target * 2)));
+    score += Math.round(krateScore * BENCHMARKS.krate.weight);
+  }
+
+  // Pitching stats — only apply if player has innings pitched
+  if (player.ip >= 3) {
+    // ERA — 8 points max (lower is better)
+    if (player.era > 0) {
+      const eraScore = Math.max(0, 1 - ((player.era - BENCHMARKS.era.target) / 6));
+      score += Math.round(Math.min(eraScore, 1) * BENCHMARKS.era.weight);
+    } else {
+      score += BENCHMARKS.era.weight; // 0.00 ERA gets full points
+    }
+    // WHIP — 7 points max (lower is better)
+    const whipScore = Math.max(0, 1 - ((player.whip - BENCHMARKS.whip.target) / 2));
+    score += Math.round(Math.min(whipScore, 1) * BENCHMARKS.whip.weight);
+  } else {
+    // Non-pitchers get these points from plate discipline instead
+    // Extra OBP weight for position players
+    const extraObp = Math.min(player.obp / BENCHMARKS.obp.target, 1);
+    score += Math.round(extraObp * 10);
+  }
+
+  // Cap stat score at 70
+  return Math.min(score, 70);
+}
+
+// calcCoachScore — returns 0-30 based on trait ratings
+// 6 traits × 5 points max = 30 points
+function calcCoachScore(playerName) {
+  const input = coachInputs[playerName];
+  if (!input || !input.traits) return 0;
+  let score = 0;
+  TRAITS.forEach(t => {
+    const rating = input.traits[t.key] || 0; // 0-5
+    score += rating; // each point = 1 point toward coach score
+  });
+  return Math.min(score, 30); // 6 traits × 5 max = 30
+}
+
+// getReadiness — returns total score and color tier
+function getReadiness(player) {
+  const statScore   = calcStatScore(player);
+  const coachScore  = calcCoachScore(player.name);
+  const total       = statScore + coachScore;
+  const tier = total >= 75 ? 'green' : total >= 50 ? 'yellow' : 'red';
+  const label = tier==='green' ? 'Ready' : tier==='yellow' ? 'Developing' : 'Not ready';
+  return { total, statScore, coachScore, tier, label };
+}
+
+// renderPipeline — renders into both the Player Profiles widget
+// AND the dedicated Player Pipeline page
+function renderPipeline() {
+  const section     = document.getElementById('pipeline-section');
+  const pageSection = document.getElementById('pipeline-page-section');
+  const emptyMsg    = document.getElementById('pipeline-empty');
+
+  // If no JV data at all — show empty state on pipeline page
+  if (!RAW_JV.length) {
+    if (section)     section.innerHTML = '';
+    if (pageSection) pageSection.innerHTML = '';
+    if (emptyMsg)    emptyMsg.style.display = 'block';
+    return;
+  }
+  if (emptyMsg) emptyMsg.style.display = 'none';
+
+  // On Player Profiles page only show when Both is selected
+  if (section) {
+    if (activeTeam !== 'both') { section.innerHTML = ''; }
+  }
+
+  // Get the most recent season for each JV player
+  const jvPlayers = {};
+  RAW_JV.forEach(r => {
+    if (r.pa > 0 || r.ip > 0) {
+      if (!jvPlayers[r.name] || r.year > jvPlayers[r.name].year) {
+        jvPlayers[r.name] = r;
+      }
+    }
+  });
+
+  const allJV = Object.values(jvPlayers);
+  if (!allJV.length) {
+    section.innerHTML = ''; return;
+  }
+
+  // Sort by readiness score descending (most ready first)
+  allJV.sort((a, b) => getReadiness(b).total - getReadiness(a).total);
+
+  // Check which players also appear in Varsity data
+  const varNames = new Set(RAW.map(r => r.name));
+
+  const rows = allJV.map(player => {
+    const { total, statScore, coachScore, tier, label } = getReadiness(player);
+    const hasVarsity = varNames.has(player.name);
+    const input      = coachInputs[player.name] || {};
+    const notes      = input.notes || '';
+    const krate      = player.pa > 0 ? (player.so / player.pa * 100).toFixed(0) + '%' : '—';
+
+    // Build trait ratings display
+    const traitHTML = TRAITS.map(t => {
+      const rating = (input.traits || {})[t.key] || 0;
+      const stars  = [1,2,3,4,5].map(n =>
+        `<div class="star ${n<=rating?'filled':''}"
+              onclick="setTrait('${player.name}','${t.key}',${n})">★</div>`
+      ).join('');
+      return `<div class="trait-row">
+        <span class="trait-label">${t.label}</span>
+        <div class="trait-stars">${stars}</div>
+      </div>`;
+    }).join('');
+
+    // Score breakdown bar
+    const statPct  = (statScore  / 70  * 100).toFixed(0);
+    const coachPct = (coachScore / 30  * 100).toFixed(0);
+
+    return `<tr id="pr-row-${player.name.replace(/[^a-z0-9]/gi,'_')}">
+      <td style="min-width:160px">
+        <div style="font-weight:600;color:#F5F0E8">${player.name}</div>
+        <div style="font-size:10px;color:#8A9BA8;margin-top:2px">
+          ${hasVarsity ? '<span style="color:#EF9A9A">Also on Varsity</span>' : 'JV only'}
+          · ${player.year}
+        </div>
+        <button class="coach-toggle" onclick="toggleCoachPanel('${player.name.replace(/[^a-z0-9]/gi,'_')}')">
+          ${Object.keys(input.traits||{}).length ? '✏ Edit coach input' : '+ Add coach input'}
+        </button>
+      </td>
+      <td>
+        <div class="score-badge score-${tier}">${total}</div>
+        <div><span class="ready-pill ${tier}">${label}</span></div>
+      </td>
+      <td>
+        <div class="jv-mini">
+          <div class="jv-mini-label">Batting</div>
+          AVG ${player.avg.toFixed(3)} · OBP ${player.obp.toFixed(3)}<br>
+          K% ${krate} · SB ${player.sb}
+        </div>
+        ${player.ip>=3?`<div class="jv-mini" style="margin-top:6px">
+          <div class="jv-mini-label">Pitching</div>
+          ${player.ip.toFixed(1)} IP · ERA ${player.era.toFixed(2)} · WHIP ${player.whip.toFixed(3)}
+        </div>`:''}
+      </td>
+      <td style="min-width:120px">
+        <div style="font-size:10px;color:#8A9BA8;margin-bottom:4px">
+          Stats <span style="color:#F5F0E8;font-weight:600">${statScore}/70</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${statPct}%;background:#C8102E"></div></div>
+        </div>
+        <div style="font-size:10px;color:#8A9BA8">
+          Coach <span style="color:#F5F0E8;font-weight:600">${coachScore}/30</span>
+          <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${coachPct}%;background:#1565C0"></div></div>
+        </div>
+      </td>
+      <td style="min-width:180px;color:#A09080;font-size:11px;font-style:italic;max-width:220px">
+        ${notes || '<span style="color:#3A2A1C">No notes yet</span>'}
+      </td>
+    </tr>
+    <tr id="pr-panel-${player.name.replace(/[^a-z0-9]/gi,'_')}" style="display:none">
+      <td colspan="5" style="padding:0">
+        <div class="coach-panel open" id="cp-${player.name.replace(/[^a-z0-9]/gi,'_')}">
+          <div style="font-size:11px;font-weight:600;color:#8A9BA8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">
+            Coach ratings — ${player.name}
+          </div>
+          ${traitHTML}
+          <div style="font-size:11px;color:#8A9BA8;margin-top:10px;margin-bottom:4px">Notes</div>
+          <textarea class="notes-field"
+            id="notes-${player.name.replace(/[^a-z0-9]/gi,'_')}"
+            placeholder="Add coaching observations — athleticism, attitude, signs knowledge, position competition..."
+            onchange="saveNotes('${player.name}','${player.name.replace(/[^a-z0-9]/gi,'_')}')"
+          >${notes}</textarea>
+          <button class="save-coach-btn"
+            onclick="saveCoachInput('${player.name}','${player.name.replace(/[^a-z0-9]/gi,'_')}')">
+            Save coach input
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // Count by tier for the header badge
+  const counts = allJV.reduce((a,p) => {
+    const t = getReadiness(p).tier;
+    a[t] = (a[t]||0)+1; return a;
+  }, {});
+
+  const pipelineHTML = `<div class="readiness-card">
+    <div class="readiness-header">
+      <div class="readiness-title">⬆ JV → Varsity Readiness Pipeline</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="ready-pill green">${counts.green||0} Ready</span>
+        <span class="ready-pill yellow">${counts.yellow||0} Developing</span>
+        <span class="ready-pill red">${counts.red||0} Not ready</span>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="readiness-table">
+        <thead><tr>
+          <th>Player</th>
+          <th>Readiness</th>
+          <th>JV stats</th>
+          <th>Score breakdown</th>
+          <th>Coach notes</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  </div>`;
+
+  // Render into the dedicated Pipeline page
+  if (pageSection) pageSection.innerHTML = pipelineHTML;
+
+  // Also render into Player Profiles widget when Both is selected
+  if (section && activeTeam === 'both') section.innerHTML = pipelineHTML;
+}
+
+// toggleCoachPanel — show/hide the coach input section for a player
+function toggleCoachPanel(safeId) {
+  const row = document.getElementById('pr-panel-' + safeId);
+  if (!row) return;
+  const isOpen = row.style.display !== 'none';
+  row.style.display = isOpen ? 'none' : 'table-row';
+}
+
+// setTrait — called when a coach clicks a star rating
+// Updates coachInputs and re-renders the pipeline
+function setTrait(playerName, traitKey, value) {
+  if (!coachInputs[playerName])        coachInputs[playerName] = {};
+  if (!coachInputs[playerName].traits) coachInputs[playerName].traits = {};
+
+  // Clicking the same star again toggles it off
+  const current = coachInputs[playerName].traits[traitKey] || 0;
+  coachInputs[playerName].traits[traitKey] = current === value ? 0 : value;
+
+  // Re-render pipeline to update score and stars immediately
+  renderPipeline();
+}
+
+// saveNotes — saves notes as they're typed (on change)
+function saveNotes(playerName, safeId) {
+  const el = document.getElementById('notes-' + safeId);
+  if (!el) return;
+  if (!coachInputs[playerName]) coachInputs[playerName] = {};
+  coachInputs[playerName].notes = el.value;
+}
+
+// saveCoachInput — saves everything and shows confirmation
+function saveCoachInput(playerName, safeId) {
+  saveNotes(playerName, safeId);
+  // Re-render to update the score and notes column
+  renderPipeline();
+  showToast(`Coach input saved for ${playerName}`);
+}
+// ── END PIPELINE READINESS SYSTEM ────────────────────────────────────────
+
+
+// ── DATA MANAGER ─────────────────────────────────────
+// renderDataManager — builds the data management page
+function renderDataManager() {
+  // Gather all seasons from both varsity and JV
+  const vYears  = [...new Set(RAW.map(r=>r.year))].sort((a,b)=>b-a);
+  const jvYears = [...new Set(RAW_JV.map(r=>r.year))].sort((a,b)=>b-a);
+
+  // Track which seasons came from uploads vs built-in
+  const uploadedLabels = Object.keys(uploadedYears);
+
+  let rows = '';
+
+  // Varsity seasons
+  vYears.forEach(y => {
+    const players  = RAW.filter(r=>r.year===y);
+    const bats     = players.filter(r=>r.pa>0).length;
+    const pitches  = players.filter(r=>r.ip>0).length;
+    const isUpload = uploadedLabels.some(l=>l.startsWith(String(y))&&l.includes('Varsity'));
+    rows += `<tr>
+      <td><span class="year-tag y${y}">${y}</span></td>
+      <td style="color:#EF9A9A;font-size:11px;font-weight:600">Varsity</td>
+      <td>${players.length}</td>
+      <td>${bats}</td>
+      <td>${pitches}</td>
+      <td><span class="source-tag ${isUpload?'source-uploaded':'source-builtin'}">${isUpload?'Uploaded':'Built-in'}</span></td>
+      <td><button class="delete-btn" onclick="deleteSeasonData('varsity',${y})">Remove</button></td>
+    </tr>`;
+  });
+
+  // JV seasons
+  jvYears.forEach(y => {
+    const players  = RAW_JV.filter(r=>r.year===y);
+    const bats     = players.filter(r=>r.pa>0).length;
+    const pitches  = players.filter(r=>r.ip>0).length;
+    rows += `<tr>
+      <td><span class="year-tag y${y}">${y}</span></td>
+      <td style="color:#90CAF9;font-size:11px;font-weight:600">JV</td>
+      <td>${players.length}</td>
+      <td>${bats}</td>
+      <td>${pitches}</td>
+      <td><span class="source-tag source-uploaded">Uploaded</span></td>
+      <td><button class="delete-btn blue" onclick="deleteSeasonData('jv',${y})">Remove</button></td>
+    </tr>`;
+  });
+
+  if (!rows) {
+    rows = '<tr><td colspan="7" class="no-results">No season data loaded</td></tr>';
+  }
+
+  const totalSeasons = vYears.length + jvYears.length;
+  document.getElementById('data-count').textContent = `${totalSeasons} season${totalSeasons!==1?'s':''} loaded`;
+  document.getElementById('data-seasons-body').innerHTML = rows;
+
+  // Coach input table
+  const coachNames = Object.keys(coachInputs).sort();
+  let coachRows = '';
+  coachNames.forEach(name => {
+    const input      = coachInputs[name];
+    const traitCount = Object.keys(input.traits||{}).filter(k=>(input.traits[k]||0)>0).length;
+    const hasNotes   = (input.notes||'').trim().length > 0;
+    coachRows += `<tr>
+      <td style="font-weight:600;color:#F5F0E8">${name}</td>
+      <td>${traitCount} / ${TRAITS.length} traits</td>
+      <td>${hasNotes?'<span style="color:#81C784">✓ Yes</span>':'<span style="color:#5A4A3C">No</span>'}</td>
+      <td><button class="delete-btn" onclick="deleteCoachInput('${name}')">Remove</button></td>
+    </tr>`;
+  });
+  if (!coachRows) {
+    coachRows = '<tr><td colspan="4" class="no-results">No coach input saved yet</td></tr>';
+  }
+  document.getElementById('coach-data-count').textContent =
+    `${coachNames.length} player${coachNames.length!==1?'s':''} with input`;
+  document.getElementById('data-coach-body').innerHTML = coachRows;
+}
+
+// deleteSeasonData — removes one season from varsity or JV
+function deleteSeasonData(team, year) {
+  if (!confirm(`Remove ${year} ${team==='jv'?'JV':'Varsity'} data? This cannot be undone.`)) return;
+  if (team === 'jv') {
+    RAW_JV = RAW_JV.filter(r => r.year !== year);
+    delete TEAM_JV[year];
+  } else {
+    RAW    = RAW.filter(r => r.year !== year);
+    delete TEAM[year];
+  }
+  // Remove from uploaded years tracker
+  const label = `${year} ${team==='jv'?'JV':'Varsity'}`;
+  delete uploadedYears[label];
+  renderUploadedList();
+  renderDataManager();
+  safeRenderAll();
+  showToast(`${year} ${team==='jv'?'JV':'Varsity'} data removed`);
+}
+
+// deleteCoachInput — removes coach ratings and notes for one player
+function deleteCoachInput(playerName) {
+  if (!confirm(`Remove all coach input for ${playerName}?`)) return;
+  delete coachInputs[playerName];
+  renderDataManager();
+  renderPipeline();
+  showToast(`Coach input removed for ${playerName}`);
+}
+
+// clearAllCoachInput — wipes all coach ratings and notes
+function clearAllCoachInput() {
+  if (!confirm('Clear ALL coach input for all players? This cannot be undone.')) return;
+  coachInputs = {};
+  renderDataManager();
+  renderPipeline();
+  showToast('All coach input cleared');
+}
+
+// clearAllVarsity — removes all varsity data (keeps built-in)
+function clearAllVarsity() {
+  if (!confirm('Remove all Varsity data? This will clear all seasons including built-in data.')) return;
+  RAW   = [];
+  TEAM  = {};
+  // Clear varsity uploaded year labels
+  Object.keys(uploadedYears).forEach(k => { if (k.includes('Varsity')) delete uploadedYears[k]; });
+  renderUploadedList();
+  renderDataManager();
+  safeRenderAll();
+  showToast('All Varsity data cleared');
+}
+
+// clearAllJV — removes all JV data
+function clearAllJV() {
+  if (!confirm('Remove all JV data? This cannot be undone.')) return;
+  RAW_JV  = [];
+  TEAM_JV = {};
+  Object.keys(uploadedYears).forEach(k => { if (k.includes('JV')) delete uploadedYears[k]; });
+  renderUploadedList();
+  renderDataManager();
+  safeRenderAll();
+  showToast('All JV data cleared');
+}
+
+// clearEverything — full reset back to built-in data only
+function clearEverything() {
+  if (!confirm('Reset everything? This clears all uploaded data and coach input.')) return;
+  RAW_JV      = [];
+  TEAM_JV     = {};
+  coachInputs = {};
+  uploadedYears = {};
+  // Start with clean empty arrays
+  RAW = [];
+  TEAM = {};
+  renderUploadedList();
+  renderDataManager();
+  safeRenderAll();
+  showToast('Dashboard reset - all data cleared');
+}
+// ── END DATA MANAGER ──────────────────────────────────
+
+// ── SCOUTING REPORT SYSTEM ────────────────────────────────────────────────
+let scoutReports  = [];   // saved reports array
+let scoutEditId   = null; // null = new report, number = editing existing
+let scoutRatings  = {};   // current form star ratings
+let scoutGrades   = {};   // current form grade selections
+let pitcherCount  = 0;    // how many pitcher rows are in the form
+
+// RATING CATEGORIES — used to build star widgets
+const SCOUT_RATINGS = [
+  'contact','power','discipline','speed','bunt',
+  'infield','outfield','catcher','defense'
+];
+
+// initScoutForm — resets the form to blank for a new report
+function initScoutForm() {
+  scoutRatings = {};
+  scoutGrades  = {};
+  pitcherCount = 0;
+  scoutEditId  = null;
+
+  // Clear all text fields
+  ['scout-opponent','scout-date','scout-location','scout-score',
+   'scout-author','scout-overall-notes','scout-offense-notes',
+   'scout-defense-notes','scout-strategy-notes',
+   'scout-key-players','scout-weaknesses'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Set date to today
+  document.getElementById('scout-date').valueAsDate = new Date();
+
+  // Clear grade buttons
+  ['overall-grade-btns','steal-btns','bunt-btns'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.querySelectorAll('.grade-btn').forEach(b=>b.classList.remove('sel-grade'));
+  });
+  document.getElementById('scout-overall-grade').value = '';
+  document.getElementById('scout-steal').value = '';
+  document.getElementById('scout-bunt').value  = '';
+
+  // Build star widgets
+  SCOUT_RATINGS.forEach(key => buildStars(key));
+
+  // Reset pitchers
+  clearScoutCSV();
+  document.getElementById('pitcher-list').innerHTML = '';
+  addPitcher(); // start with one empty pitcher row
+
+  document.getElementById('scout-form-title').textContent = 'New scouting report';
+}
+
+// buildStars — creates a 1-5 star rating widget for a given key
+function buildStars(key) {
+  const container = document.getElementById('stars-' + key);
+  if (!container) return;
+  const current = scoutRatings[key] || 0;
+  container.innerHTML = [1,2,3,4,5].map(n =>
+    `<div class="rating-star ${n<=current?'on':''}"
+          onclick="setRating('${key}',${n})">★</div>`
+  ).join('');
+}
+
+// setRating — handles star click, toggles off if same star clicked twice
+function setRating(key, value) {
+  scoutRatings[key] = scoutRatings[key] === value ? 0 : value;
+  buildStars(key);
+}
+
+// setGrade — handles grade/option button selection
+function setGrade(group, value, btn) {
+  scoutGrades[group] = value;
+  // Find the parent container and deselect all, then select clicked
+  const container = btn.parentElement;
+  container.querySelectorAll('.grade-btn').forEach(b=>b.classList.remove('sel-grade'));
+  btn.classList.add('sel-grade');
+  // Also store in hidden input if it exists
+  const hidden = document.getElementById('scout-' + group);
+  if (hidden) hidden.value = value;
+  const hidden2 = document.getElementById('scout-' + group + '-grade');
+  if (hidden2) hidden2.value = value;
+}
+
+// addPitcher — adds a new pitcher row to the pitching section
+function addPitcher() {
+  pitcherCount++;
+  const id = pitcherCount;
+  const div = document.createElement('div');
+  div.className = 'pitcher-row';
+  div.id = 'pitcher-' + id;
+  div.innerHTML = `
+    <div class="pitcher-row-header">
+      <span style="font-size:11px;font-weight:600;color:#8A9BA8;text-transform:uppercase;letter-spacing:.06em">Pitcher ${id}</span>
+    </div>
+    <div class="scout-form-grid">
+      <div>
+        <label class="scout-label">Name / number</label>
+        <input class="scout-input" type="text" id="pitcher-name-${id}" placeholder="e.g. #12 Johnson">
+      </div>
+      <div>
+        <label class="scout-label">Throws</label>
+        <select class="scout-input" id="pitcher-hand-${id}">
+          <option value="">—</option>
+          <option>Right</option>
+          <option>Left</option>
+        </select>
+      </div>
+      <div>
+        <label class="scout-label">Est. velocity</label>
+        <input class="scout-input" type="text" id="pitcher-velo-${id}" placeholder="e.g. 78-82 mph">
+      </div>
+      <div>
+        <label class="scout-label">Best pitch</label>
+        <input class="scout-input" type="text" id="pitcher-best-${id}" placeholder="e.g. Curveball, Changeup">
+      </div>
+    </div>
+    <div>
+      <label class="scout-label">Pitching notes</label>
+      <textarea class="scout-textarea" id="pitcher-notes-${id}" style="min-height:56px"
+        placeholder="Release point, tendencies, what works against them, tip pitches..."></textarea>
+    </div>`;
+  document.getElementById('pitcher-list').appendChild(div);
+}
+
+function removePitcher(id) {
+  const el = document.getElementById('pitcher-' + id);
+  if (el) el.remove();
+}
+
+// collectPitchers — gathers all pitcher rows into an array
+function collectPitchers() {
+  const pitchers = [];
+  for (let i = 1; i <= pitcherCount + 10; i++) {
+    const row = document.getElementById('pitcher-' + i);
+    if (!row) continue;
+    const name  = (document.getElementById('pitcher-name-' + i)  || {}).value || '';
+    const hand  = (document.getElementById('pitcher-hand-' + i)  || {}).value || '';
+    const velo  = (document.getElementById('pitcher-velo-' + i)  || {}).value || '';
+    const best  = (document.getElementById('pitcher-best-' + i)  || {}).value || '';
+    const notes = (document.getElementById('pitcher-notes-' + i) || {}).value || '';
+    if (name || notes) pitchers.push({ name, hand, velo, best, notes });
+  }
+  return pitchers;
+}
+
+// saveScoutReport — collects form data and saves to scoutReports array
+function saveScoutReport() {
+  const opponent = document.getElementById('scout-opponent').value.trim();
+  if (!opponent) { showToast('Please enter an opponent name', true); return; }
+
+  const report = {
+    id:            scoutEditId !== null ? scoutEditId : Date.now(),
+    opponent:      opponent,
+    date:          document.getElementById('scout-date').value,
+    location:      document.getElementById('scout-location').value.trim(),
+    score:         document.getElementById('scout-score').value.trim(),
+    author:        document.getElementById('scout-author').value.trim(),
+    overallGrade:  scoutGrades.overall || '',
+    overallNotes:  document.getElementById('scout-overall-notes').value.trim(),
+    ratings:       { ...scoutRatings },
+    pitchers:      collectPitchers(),
+    offenseNotes:  document.getElementById('scout-offense-notes').value.trim(),
+    defenseNotes:  document.getElementById('scout-defense-notes').value.trim(),
+    strategyNotes: document.getElementById('scout-strategy-notes').value.trim(),
+    steal:         scoutGrades.steal || '',
+    bunt:          scoutGrades.bunt  || '',
+    keyPlayers:    document.getElementById('scout-key-players').value.trim(),
+    weaknesses:    document.getElementById('scout-weaknesses').value.trim(),
+    savedAt:       new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    csvData:       JSON.parse(JSON.stringify(scoutCSVData)),  // includes ourPitchers + ourFielders
+  };
+
+  if (scoutEditId !== null) {
+    // Replace existing report
+    const idx = scoutReports.findIndex(r=>r.id===scoutEditId);
+    if (idx >= 0) scoutReports[idx] = report;
+    else scoutReports.push(report);
+  } else {
+    scoutReports.push(report);
+  }
+
+  renderScoutList();
+  showScoutView('list');
+  showToast(`Scouting report saved — ${opponent}`);
+}
+
+// renderScoutList — renders the saved reports list
+function renderScoutList() {
+  document.getElementById('scout-count').textContent = scoutReports.length;
+  const teamCount = Object.keys(getTeams()).length;
+  document.getElementById('teams-count').textContent = teamCount;
+  const container = document.getElementById('scout-reports-list');
+  if (!scoutReports.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📓</div>
+      <div class="empty-title">No scouting reports yet</div>
+      <div class="empty-sub">Create your first report using the New report button above</div>
+    </div>`;
+    return;
+  }
+  container.innerHTML = [...scoutReports].reverse().map(r => {
+    const gradeClass = r.overallGrade ? `grade-${r.overallGrade}` : '';
+    const ratingStars = (key) => {
+      const v = r.ratings[key] || 0;
+      return [1,2,3,4,5].map(n=>`<span style="color:${n<=v?'#C8102E':'#3A2A1C'}">★</span>`).join('');
+    };
+    return `<div class="scout-report-card" onclick="editScoutReport(${r.id})">
+      <div class="scout-report-card-header">
+        <div>
+          <div class="scout-report-team">${r.opponent}</div>
+          <div class="scout-report-meta">${r.date||''}${r.location?' · '+r.location:''}${r.score?' · '+r.score:''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          ${r.overallGrade?`<span class="overall-grade ${gradeClass}">${r.overallGrade}</span>`:''}
+          <button class="scout-delete-btn" onclick="event.stopPropagation();deleteScoutReport(${r.id})">Delete</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0;font-size:11px">
+        <div><span style="color:#5A4A3C">Contact</span> ${ratingStars('contact')}</div>
+        <div><span style="color:#5A4A3C">Power</span> ${ratingStars('power')}</div>
+        <div><span style="color:#5A4A3C">Speed</span> ${ratingStars('speed')}</div>
+        <div><span style="color:#5A4A3C">Infield</span> ${ratingStars('infield')}</div>
+        <div><span style="color:#5A4A3C">Outfield</span> ${ratingStars('outfield')}</div>
+        <div><span style="color:#5A4A3C">Defense</span> ${ratingStars('defense')}</div>
+      </div>
+      ${r.overallNotes?`<div class="scout-report-summary">${r.overallNotes.substring(0,180)}${r.overallNotes.length>180?'…':''}</div>`:''}
+      ${r.pitchers.length?`<div style="margin-top:6px;font-size:11px;color:#8A9BA8">Pitchers: ${r.pitchers.map(p=>p.name||'Unknown').join(', ')}</div>`:''}
+      <div style="margin-top:6px;font-size:10px;color:#3A2A1C">Saved ${r.savedAt}${r.author?' · '+r.author:''} · Click to edit</div>
+    </div>`;
+  }).join('');
+}
+
+// editScoutReport — loads a saved report into the form for editing
+function editScoutReport(id) {
+  const r = scoutReports.find(x=>x.id===id);
+  if (!r) return;
+  scoutEditId = id;
+  scoutRatings = { ...r.ratings };
+  scoutGrades  = {
+    overall: r.overallGrade,
+    steal:   r.steal,
+    bunt:    r.bunt,
+  };
+
+  showScoutView('new');
+  document.getElementById('scout-form-title').textContent = `Editing — ${r.opponent}`;
+  document.getElementById('scout-opponent').value      = r.opponent;
+  document.getElementById('scout-date').value          = r.date;
+  document.getElementById('scout-location').value      = r.location;
+  document.getElementById('scout-score').value         = r.score;
+  document.getElementById('scout-author').value        = r.author;
+  document.getElementById('scout-overall-notes').value = r.overallNotes;
+  document.getElementById('scout-offense-notes').value = r.offenseNotes;
+  document.getElementById('scout-defense-notes').value = r.defenseNotes;
+  document.getElementById('scout-strategy-notes').value= r.strategyNotes;
+  document.getElementById('scout-key-players').value   = r.keyPlayers;
+  document.getElementById('scout-weaknesses').value    = r.weaknesses;
+
+  // Rebuild stars with saved ratings
+  SCOUT_RATINGS.forEach(key => buildStars(key));
+
+  // Restore grade buttons
+  ['overall','steal','bunt'].forEach(group => {
+    const val = scoutGrades[group];
+    if (!val) return;
+    const containerId = group==='overall'?'overall-grade-btns':group+'-btns';
+    const container   = document.getElementById(containerId);
+    if (!container) return;
+    container.querySelectorAll('.grade-btn').forEach(b => {
+      if (b.textContent === val) b.classList.add('sel-grade');
+    });
+  });
+
+  // Restore CSV stats if they were saved with the report
+  if (r.csvData && (r.csvData.batters.length || r.csvData.pitchers.length || r.csvData.ourPitchers?.length)) {
+    scoutCSVData = r.csvData;
+    // Rebuild the stats table from saved data
+    const batBody = document.getElementById('scout-stats-body');
+    batBody.innerHTML = r.csvData.batters
+      .sort((a,b)=>b.avg-a.avg)
+      .map(p=>`<tr>
+        <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+        <td>${p.ab}</td>
+        <td>${p.avg>0?'.'+Math.round(p.avg*1000).toString().padStart(3,'0'):'.000'}</td>
+        <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+        <td>${p.bb}</td><td>${p.so}</td><td>${p.sb}</td>
+      </tr>`).join('');
+    document.getElementById('scout-stats-area').style.display = 'block';
+    document.getElementById('scout-csv-status').textContent =
+      `✓ ${r.csvData.batters.length} batters loaded (saved with report)`;
+    // Restore our pitching & defense breakdown
+    if (r.csvData.ourPitchers?.length) renderOurPitchingBreakdown(r.csvData.ourPitchers);
+    if (r.csvData.ourFielders?.length) renderOurDefenseBreakdown(r.csvData.ourFielders);
+    if (r.csvData.pitchers.length) {
+      document.getElementById('scout-pitch-stats-area').style.display = 'block';
+      document.getElementById('scout-pitch-body').innerHTML = r.csvData.pitchers
+        .map(p=>`<tr>
+          <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+          <td>${p.ip.toFixed(1)}</td><td>${p.era.toFixed(2)}</td>
+          <td>${p.whip.toFixed(3)}</td><td>${p.k}</td><td>${p.bb}</td>
+          <td>${p.w}</td><td>${p.l}</td>
+        </tr>`).join('');
+    }
+  } else {
+    clearScoutCSV();
+  }
+
+  // Rebuild pitchers
+  document.getElementById('pitcher-list').innerHTML = '';
+  pitcherCount = 0;
+  if (r.pitchers.length) {
+    r.pitchers.forEach(p => {
+      addPitcher();
+      const i = pitcherCount;
+      document.getElementById('pitcher-name-' + i).value  = p.name;
+      document.getElementById('pitcher-hand-' + i).value  = p.hand;
+      document.getElementById('pitcher-velo-' + i).value  = p.velo;
+      document.getElementById('pitcher-best-' + i).value  = p.best;
+      document.getElementById('pitcher-notes-' + i).value = p.notes;
+    });
+  } else {
+    addPitcher();
+  }
+}
+
+function deleteScoutReport(id) {
+  const r = scoutReports.find(x=>x.id===id);
+  if (!r) return;
+  if (!confirm(`Delete scouting report for ${r.opponent}?`)) return;
+  scoutReports = scoutReports.filter(x=>x.id!==id);
+  renderScoutList();
+  showToast('Report deleted');
+}
+
+// showScoutView — toggles between all scouting views
+function showScoutView(view) {
+  // Hide all views first
+  ['scout-list-view','scout-new-view','scout-teams-view','scout-team-detail'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+
+  if (view === 'new') {
+    document.getElementById('scout-new-view').style.display = 'block';
+    if (scoutEditId === null) initScoutForm();
+  } else if (view === 'teams') {
+    document.getElementById('scout-teams-view').style.display = 'block';
+    renderTeamDatabase();
+  } else if (view === 'team-detail') {
+    document.getElementById('scout-team-detail').style.display = 'block';
+  } else {
+    // default — list view
+    document.getElementById('scout-list-view').style.display = 'block';
+    renderScoutList();
+  }
+}
+
+// printScoutReport — opens a clean printable version of the current form
+function printScoutReport() {
+  const opponent = document.getElementById('scout-opponent').value || 'Opponent';
+  const date     = document.getElementById('scout-date').value || '';
+  const ratingStars = (key) => {
+    const v = scoutRatings[key] || 0;
+    return '★'.repeat(v) + '☆'.repeat(5-v);
+  };
+  const pitchers = collectPitchers();
+
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head>
+    <title>Scouting Report — ${opponent}</title>
+    <style>
+      body{font-family:Arial,sans-serif;max-width:800px;margin:20px auto;padding:20px;color:#111;font-size:13px}
+      h1{font-size:20px;margin-bottom:4px}
+      h2{font-size:14px;border-bottom:2px solid #C8102E;padding-bottom:4px;margin:16px 0 8px;color:#C8102E;text-transform:uppercase;letter-spacing:.05em}
+      .meta{color:#666;margin-bottom:16px;font-size:12px}
+      .rating-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #eee}
+      .grade{font-weight:700;font-size:16px;float:right}
+      .pitcher-block{background:#f9f9f9;padding:10px;margin-bottom:8px;border-left:3px solid #C8102E}
+      .notes{background:#f5f5f5;padding:10px;margin:6px 0;border-radius:4px;min-height:40px;white-space:pre-wrap}
+      @media print{body{margin:0}button{display:none}}
+    </style>
+  </head><body>
+    <h1>Scouting Report — ${opponent} <span class="grade">${scoutGrades.overall||''}</span></h1>
+    <div class="meta">
+      Date: ${date} &nbsp;|&nbsp;
+      Location: ${document.getElementById('scout-location').value||'—'} &nbsp;|&nbsp;
+      Score: ${document.getElementById('scout-score').value||'—'} &nbsp;|&nbsp;
+      Scouted by: ${document.getElementById('scout-author').value||'—'}
+    </div>
+    <h2>Overall assessment</h2>
+    <div class="notes">${document.getElementById('scout-overall-notes').value||'—'}</div>
+    <h2>Pitching</h2>
+    ${pitchers.map(p=>`<div class="pitcher-block">
+      <strong>${p.name||'Unknown'}</strong> | ${p.hand||'—'} | ${p.velo||'—'} | Best pitch: ${p.best||'—'}<br>
+      <span style="color:#555">${p.notes||''}</span>
+    </div>`).join('')||'<p>No pitchers noted</p>'}
+    <h2>Offensive ratings</h2>
+    <div class="rating-row"><span>Contact hitting</span><span>${ratingStars('contact')}</span></div>
+    <div class="rating-row"><span>Power / XBH</span><span>${ratingStars('power')}</span></div>
+    <div class="rating-row"><span>Plate discipline</span><span>${ratingStars('discipline')}</span></div>
+    <div class="rating-row"><span>Baserunning / speed</span><span>${ratingStars('speed')}</span></div>
+    <div class="rating-row"><span>Bunting / small ball</span><span>${ratingStars('bunt')}</span></div>
+    <div class="notes" style="margin-top:8px">${document.getElementById('scout-offense-notes').value||'—'}</div>
+    <h2>Defensive ratings</h2>
+    <div class="rating-row"><span>Infield</span><span>${ratingStars('infield')}</span></div>
+    <div class="rating-row"><span>Outfield</span><span>${ratingStars('outfield')}</span></div>
+    <div class="rating-row"><span>Catcher</span><span>${ratingStars('catcher')}</span></div>
+    <div class="rating-row"><span>Overall defense</span><span>${ratingStars('defense')}</span></div>
+    <div class="notes" style="margin-top:8px">${document.getElementById('scout-defense-notes').value||'—'}</div>
+    <h2>Strategy & tendencies</h2>
+    <div class="rating-row"><span>Steal?</span><span>${scoutGrades.steal||'—'}</span></div>
+    <div class="rating-row"><span>Bunt?</span><span>${scoutGrades.bunt||'—'}</span></div>
+    <div class="notes" style="margin-top:8px">${document.getElementById('scout-strategy-notes').value||'—'}</div>
+    <h2>Key players to watch</h2>
+    <div class="notes">${document.getElementById('scout-key-players').value||'—'}</div>
+    <h2>Exploitable weaknesses</h2>
+    <div class="notes">${document.getElementById('scout-weaknesses').value||'—'}</div>
+    <br><button onclick="window.print()">Print / Save as PDF</button>
+  </body></html>`);
+  win.document.close();
+}
+
+// ── SCOUTING REPORT CSV UPLOAD ───────────────────────────────────────────
+// scoutCSVData holds the parsed opponent stats from an uploaded CSV
+// It gets saved with the report so stats persist when editing
+let scoutCSVData = { batters: [], pitchers: [], ourPitchers: [], ourFielders: [] };
+
+// handleScoutCSV — reads a GameChanger CSV and populates
+// the opponent stats table inside the scouting form
+function handleScoutCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  document.getElementById('scout-csv-status').textContent = `Reading ${file.name}...`;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const raw   = e.target.result;
+    const lines = raw.split('\n').map(l => l.replace(/\r/g, ''));
+    if (lines.length < 3) {
+      document.getElementById('scout-csv-status').textContent = 'Could not read file';
+      return;
+    }
+
+    // ── FORMAT DETECTION ──────────────────────────────────────────────────
+    // GameChanger has two export formats:
+    //   Season CSV  — comma-delimited, abbreviated column names like AVG, OBP
+    //   Game .txt   — pipe-delimited, full column names like Jersey, Hits, etc.
+    // We detect by checking if the second non-blank line contains 'Jersey'
+    const nonBlankLines = lines.filter(l => l.trim().length > 0);
+    const looksLikeTxt  = nonBlankLines.length > 0 &&
+      (nonBlankLines[0].includes('Jersey') || nonBlankLines[0].includes('|'));
+
+    if (looksLikeTxt || file.name.toLowerCase().endsWith('.txt')) {
+      // Route to the .txt single-game handler
+      // which updates BOTH scouting report and Pitch Tracker
+      handleScoutTxtFile(lines, file.name);
+      event.target.value = '';
+      return;
+    }
+    // ── END FORMAT DETECTION ──────────────────────────────────────────────
+
+    // Column positions confirmed from GameChanger export inspection
+    const COL = {
+      // Batting
+      last:1, first:2, pa:4, ab:5, avg:6, h:10, rbi:15,
+      r:16, bb:17, so:18, sb:25,
+      // Pitching
+      ip:54, bf:57, pitches:58, w:59, l:60, sv:61,
+      runs_allowed:66, er:67, bb_pit:68, k:69, hbp:71,
+      era:72, whip:73, wp:80,
+      // Fielding
+      tc:148, assists:149, po:150, errors:152, dp:153, inn:155,
+      // Position innings
+      pos_p:163, pos_c:164, pos_1b:165, pos_2b:166, pos_3b:167,
+      pos_ss:168, pos_lf:169, pos_cf:170, pos_rf:171,
+    };
+
+    const toN = v => {
+      const n = parseFloat(String(v||'0').replace(/-/g,'0').trim());
+      return isNaN(n) ? 0 : n;
+    };
+
+    // Parse CSV using the same row parser as the main uploader
+    function parseRow(line) {
+      const result = []; let cur = ''; let inQ = false;
+      for (const ch of line) {
+        if (ch === '"') inQ = !inQ;
+        else if (ch === ',' && !inQ) { result.push(cur); cur = ''; }
+        else cur += ch;
+      }
+      result.push(cur);
+      return result;
+    }
+
+    const batters      = [];
+    const pitchers     = [];
+    const ourPitchers  = [];  // our team's pitchers this game
+    const ourFielders  = [];  // our team's fielders this game
+
+    for (let i = 2; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      const row  = parseRow(line);
+      if (row.length < 10) continue;
+      const last  = (row[COL.last]  || '').trim().replace(/"/g,'');
+      const first = (row[COL.first] || '').trim().replace(/"/g,'');
+      if (!last || last === 'Totals') continue;
+
+      const name = first ? `${last}, ${first[0]}.` : last;
+      const pa   = toN(row[COL.pa]);
+      const ip   = toN(row[COL.ip]);
+
+      // Opponent batters (PA > 0)
+      if (pa > 0) {
+        batters.push({
+          name,
+          ab:  Math.round(toN(row[COL.ab])),
+          avg: Math.round(toN(row[COL.avg]) * 1000) / 1000,
+          h:   Math.round(toN(row[COL.h])),
+          rbi: Math.round(toN(row[COL.rbi])),
+          r:   Math.round(toN(row[COL.r])),
+          bb:  Math.round(toN(row[COL.bb])),
+          so:  Math.round(toN(row[COL.so])),
+          sb:  Math.round(toN(row[COL.sb])),
+        });
+      }
+
+      // Opponent pitchers
+      if (ip > 0) {
+        pitchers.push({
+          name,
+          ip:   Math.round(ip * 10) / 10,
+          era:  Math.round(toN(row[COL.era])  * 100)  / 100,
+          whip: Math.round(toN(row[COL.whip]) * 1000) / 1000,
+          k:    Math.round(toN(row[COL.k])),
+          bb:   Math.round(toN(row[COL.bb])),
+          w:    Math.round(toN(row[COL.w])),
+          l:    Math.round(toN(row[COL.l])),
+        });
+      }
+
+      // OUR pitchers — same file has our team's pitching stats
+      // We identify "our" pitchers as those with pitches thrown (#P col)
+      // and store full efficiency data for breakdown analysis
+      const pitchCount = toN(row[COL.pitches]);
+      if (ip > 0 && pitchCount > 0) {
+        ourPitchers.push({
+          name,
+          ip:           Math.round(ip * 10) / 10,
+          pitches:      Math.round(pitchCount),
+          bf:           Math.round(toN(row[COL.bf])),
+          runs_allowed: Math.round(toN(row[COL.runs_allowed])),
+          er:           Math.round(toN(row[COL.er])),
+          bb:           Math.round(toN(row[COL.bb_pit])),
+          k:            Math.round(toN(row[COL.k])),
+          hbp:          Math.round(toN(row[COL.hbp])),
+          wp:           Math.round(toN(row[COL.wp])),
+          era:          Math.round(toN(row[COL.era])  * 100)  / 100,
+          whip:         Math.round(toN(row[COL.whip]) * 1000) / 1000,
+          // Pitches per inning = pitch count / IP (IP in baseball is outs/3)
+          // This gives us an efficiency metric
+          p_per_ip:     ip > 0 ? Math.round(pitchCount / ip * 10) / 10 : 0,
+          p_per_bf:     toN(row[COL.bf]) > 0 ? Math.round(pitchCount / toN(row[COL.bf]) * 10) / 10 : 0,
+        });
+      }
+
+      // OUR fielders — collect errors by player and position
+      const errors = Math.round(toN(row[COL.errors]));
+      const inn    = toN(row[COL.inn]);
+      if (inn > 0 || errors > 0) {
+        // Determine primary position from which position had the most innings
+        const positions = {
+          'P':  toN(row[COL.pos_p]),  'C':  toN(row[COL.pos_c]),
+          '1B': toN(row[COL.pos_1b]), '2B': toN(row[COL.pos_2b]),
+          '3B': toN(row[COL.pos_3b]), 'SS': toN(row[COL.pos_ss]),
+          'LF': toN(row[COL.pos_lf]), 'CF': toN(row[COL.pos_cf]),
+          'RF': toN(row[COL.pos_rf]),
+        };
+        const primaryPos = Object.entries(positions)
+          .filter(([,v])=>v>0)
+          .sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+        ourFielders.push({
+          name, errors, inn, primaryPos,
+          tc: Math.round(toN(row[COL.tc])),
+          po: Math.round(toN(row[COL.po])),
+          assists: Math.round(toN(row[COL.assists])),
+        });
+      }
+    }
+
+    // Store all parsed data — both opponent and our team
+    scoutCSVData = { batters, pitchers, ourPitchers, ourFielders };
+
+    // Render batting stats table
+    const batBody = document.getElementById('scout-stats-body');
+    if (batters.length) {
+      batBody.innerHTML = batters
+        .sort((a,b) => b.avg - a.avg)
+        .map(p => `<tr>
+          <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+          <td>${p.ab}</td>
+          <td>${p.avg > 0 ? '.'+Math.round(p.avg*1000).toString().padStart(3,'0') : '.000'}</td>
+          <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+          <td>${p.bb}</td><td>${p.so}</td><td>${p.sb}</td>
+        </tr>`).join('');
+    } else {
+      batBody.innerHTML = '<tr><td colspan="9" class="no-results">No batting data found</td></tr>';
+    }
+
+    // Render pitching stats table if pitchers exist
+    const pitchArea = document.getElementById('scout-pitch-stats-area');
+    const pitchBody = document.getElementById('scout-pitch-body');
+    if (pitchers.length) {
+      pitchArea.style.display = 'block';
+      pitchBody.innerHTML = pitchers
+        .sort((a,b) => a.era - b.era)
+        .map(p => `<tr>
+          <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+          <td>${p.ip.toFixed(1)}</td>
+          <td>${p.era.toFixed(2)}</td>
+          <td>${p.whip.toFixed(3)}</td>
+          <td>${p.k}</td><td>${p.bb}</td>
+          <td>${p.w}</td><td>${p.l}</td>
+        </tr>`).join('');
+    } else {
+      pitchArea.style.display = 'none';
+    }
+
+    // Show the stats area
+    document.getElementById('scout-stats-area').style.display = 'block';
+    // Render our pitching & defense breakdown
+    renderOurPitchingBreakdown(ourPitchers);
+    renderOurDefenseBreakdown(ourFielders);
+
+    document.getElementById('scout-csv-status').textContent =
+      `✓ ${batters.length} opp batters · ${ourPitchers.length} our pitchers · ${ourFielders.filter(f=>f.errors>0).length} fielders w/ errors`;
+
+    // Reset file input so same file can be re-uploaded
+    event.target.value = '';
+  };
+
+  reader.onerror = function() {
+    document.getElementById('scout-csv-status').textContent = 'Could not read file';
+  };
+
+  reader.readAsText(file);
+}
+
+// clearScoutCSV — wipes the loaded opponent stats
+function clearScoutCSV() {
+  scoutCSVData = { batters: [], pitchers: [], ourPitchers: [], ourFielders: [] };
+  document.getElementById('scout-stats-area').style.display  = 'none';
+  const oppStatus = document.getElementById('scout-opp-status');
+  const ourStatus = document.getElementById('scout-our-status');
+  if (oppStatus) oppStatus.textContent = 'Opponent .txt or season .csv';
+  if (ourStatus) ourStatus.textContent = `Our .txt or season .csv`;
+  document.getElementById('scout-stats-body').innerHTML      = '';
+  document.getElementById('scout-pitch-body').innerHTML      = '';
+  document.getElementById('scout-pitch-stats-area').style.display = 'none';
+}
+
+// ── SCOUT TXT FILE HANDLER ────────────────────────────────────────────────
+// handleScoutTxtFile — processes a GameChanger single-game .txt export
+// This file contains BOTH teams' stats in one pipe-delimited file.
+// It updates the Scouting Report opponent stats AND the Pitch Tracker
+// with our pitching data simultaneously.
+//
+// Column positions (confirmed from file inspection):
+// 0=Jersey, 1=Hits, 2=Singles, 3=Doubles, 4=Triples, 5=HomeRuns
+// 6=RBI, 7=Runs, 8=AtBats, 9=BB, 10=SO, 11=HBP, 13=StolenBase
+// 14=StolenBaseAttempts, 18=EarnedRuns, 19=RunsAgainst
+// 21=BattersFaced, 22=BattersStruckOut, 23=BBAgainst
+// 24=HitsAgainst, 25=HitBatter, 26=WildPitches
+// 27=Appearances, 28=InningsPitched, 30=NumberOfPitches
+
+function handleScoutTxtFile(lines, filename) {
+  const toN = v => {
+    const n = parseFloat(String(v||'0').trim());
+    return isNaN(n) ? 0 : n;
+  };
+
+  // Find the header row — it contains 'Jersey'
+  let headerIdx = -1;
+  for (let i = 0; i < Math.min(5, lines.length); i++) {
+    if (lines[i].includes('Jersey')) { headerIdx = i; break; }
+  }
+  const startRow = headerIdx >= 0 ? headerIdx + 1 : 1;
+
+  // Parse all player rows
+  const allPlayers = [];
+  for (let i = startRow; i < lines.length; i++) {
+    const row    = lines[i].trim().split('|');
+    const jersey = row[0]?.trim();
+    if (!jersey || jersey === '' || jersey === 'Jersey') continue;
+
+    allPlayers.push({
+      jersey,
+      hits:    toN(row[1]),
+      singles: toN(row[2]),
+      doubles: toN(row[3]),
+      triples: toN(row[4]),
+      hr:      toN(row[5]),
+      rbi:     toN(row[6]),
+      runs:    toN(row[7]),
+      ab:      toN(row[8]),
+      bb:      toN(row[9]),
+      so:      toN(row[10]),
+      hbp:     toN(row[11]),
+      sb:      toN(row[13]),
+      sbAtt:   toN(row[14]),
+      er:      toN(row[18]),
+      ra:      toN(row[19]),
+      bf:      toN(row[21]),
+      k:       toN(row[22]),
+      bbA:     toN(row[23]),
+      hitsA:   toN(row[24]),
+      hbpA:    toN(row[25]),
+      wp:      toN(row[26]),
+      ip:      toN(row[28]),
+      pitches: toN(row[30]),
+    });
+  }
+
+  if (!allPlayers.length) {
+    document.getElementById('scout-csv-status').textContent = 'No player data found in file';
+    return;
+  }
+
+  // Separate pitchers (have pitch count) from position players
+  const pitcherPlayers = allPlayers.filter(p => p.pitches > 0 || p.ip > 0);
+  const batterPlayers  = allPlayers.filter(p => p.ab > 0 || p.hits > 0 || p.runs > 0 || p.rbi > 0 || p.bb > 0);
+
+  // ── ASK: which team is this file for? ─────────────────────────────────
+  // The .txt file has no team name — ask the coach
+  const teamChoice = prompt(
+    `This game file has ${allPlayers.length} players.\n\n` +
+    `Is this file for:\n` +
+    `  1 — The OPPONENT (loads their stats into scouting report)\n` +
+    `  2 — OUR TEAM (loads our pitching into Pitch Tracker)\n` +
+    `  3 — Both (same file has both teams combined)\n\n` +
+    `Enter 1, 2, or 3:`,
+    '1'
+  );
+  if (!teamChoice) return;
+
+  const loadOpponent = teamChoice === '1' || teamChoice === '3';
+  const loadOurs     = teamChoice === '2' || teamChoice === '3';
+
+  // ── LOAD OPPONENT STATS INTO SCOUTING REPORT ──────────────────────────
+  if (loadOpponent) {
+    // Build batter objects using jersey numbers as names
+    const batters = batterPlayers.map(p => ({
+      name: `#${p.jersey}`,
+      ab:   p.ab,
+      avg:  p.ab > 0 ? Math.round(p.hits/p.ab*1000)/1000 : 0,
+      h:    p.hits,
+      rbi:  p.rbi,
+      r:    p.runs,
+      bb:   p.bb,
+      so:   p.so,
+      sb:   p.sb,
+    }));
+
+    const oppPitchers = pitcherPlayers.map(p => ({
+      name: `#${p.jersey}`,
+      ip:   Math.round(p.ip*10)/10,
+      era:  p.ip > 0 ? Math.round((p.er*9/p.ip)*100)/100 : 0,
+      whip: p.ip > 0 ? Math.round(((p.hitsA+p.bbA)/p.ip)*1000)/1000 : 0,
+      k:    p.k,
+      bb:   p.bbA,
+      w:    0,
+      l:    0,
+    }));
+
+    // Store in scoutCSVData and render opponent tables
+    scoutCSVData.batters  = batters;
+    scoutCSVData.pitchers = oppPitchers;
+
+    const batBody = document.getElementById('scout-stats-body');
+    if (batBody) {
+      batBody.innerHTML = batters.sort((a,b)=>b.avg-a.avg).map(p => `<tr>
+        <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+        <td>${p.ab}</td>
+        <td>${p.avg>0?'.'+Math.round(p.avg*1000).toString().padStart(3,'0'):'.000'}</td>
+        <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+        <td>${p.bb}</td><td>${p.so}</td><td>${p.sb}</td>
+      </tr>`).join('');
+    }
+
+    const pitchArea = document.getElementById('scout-pitch-stats-area');
+    const pitchBody = document.getElementById('scout-pitch-body');
+    if (pitcherPlayers.length && pitchArea && pitchBody) {
+      pitchArea.style.display = 'block';
+      pitchBody.innerHTML = oppPitchers.map(p => `<tr>
+        <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+        <td>${p.ip.toFixed(1)}</td>
+        <td>${p.era.toFixed(2)}</td>
+        <td>${p.whip.toFixed(3)}</td>
+        <td>${p.k}</td><td>${p.bb}</td><td>—</td><td>—</td>
+      </tr>`).join('');
+    }
+
+    const statsArea = document.getElementById('scout-stats-area');
+    if (statsArea) statsArea.style.display = 'block';
+
+    document.getElementById('scout-csv-status').textContent =
+      `✓ Opponent stats loaded — ${batters.length} batters, ${oppPitchers.length} pitchers from ${filename}`;
+  }
+
+  // ── LOAD OUR PITCHING INTO PITCH TRACKER ──────────────────────────────
+  if (loadOurs && pitcherPlayers.length) {
+    // Get opponent name and date for the pitch tracker entry
+    const opponent = document.getElementById('scout-opponent')?.value?.trim() ||
+                     prompt('What opponent is this game against?', '') || 'Unknown';
+    const gameDate = document.getElementById('scout-date')?.value ||
+                     new Date().toISOString().split('T')[0];
+
+    // Ask coach to name each pitcher by jersey number
+    const namedPitchers = pitcherPlayers.map(p => {
+      const name = prompt(
+        `Jersey #${p.jersey} threw ${p.ip} innings with ${p.pitches} pitches.\n\nEnter their name (or leave blank to use #${p.jersey}):`,
+        ''
+      ) || `#${p.jersey}`;
+
+      return {
+        name,
+        innings:      INNINGS.map(() => ({pitches:0,hits:0,runs:0,k:0,bb:0})),
+        totalPitches: p.pitches,
+        totalRuns:    p.ra,
+        totalK:       p.k,
+        totalBB:      p.bbA,
+        totalHits:    p.hitsA,
+        ip:           Math.round(p.ip),
+        p_per_ip:     p.ip > 0 ? Math.round(p.pitches/p.ip*10)/10 : 0,
+        era:          p.ip > 0 ? Math.round((p.er*9/p.ip)*100)/100 : 0,
+        whip:         p.ip > 0 ? Math.round(((p.hitsA+p.bbA)/p.ip)*1000)/1000 : 0,
+        bf:           p.bf,
+        wp:           p.wp,
+        isGameImport: true,
+      };
+    });
+
+    // Add to pitch tracker games
+    ptGames.push({
+      id:           Date.now(),
+      opponent:     opponent,
+      date:         gameDate,
+      result:       '',
+      score:        `${batterPlayers.reduce((a,c)=>a+c.runs,0)} runs`,
+      isGameImport: true,
+      pitchers:     namedPitchers,
+    });
+
+    renderPTList();
+    renderPTPitcherSelect();
+
+    // Also render our breakdown in scouting report
+    scoutCSVData.ourPitchers = namedPitchers;
+    renderOurPitchingBreakdown(namedPitchers);
+
+    // Update our fielders from error data
+    const ourFielders = allPlayers.filter(p=>p.ab>0||p.ip>0).map(p=>({
+      name:       `#${p.jersey}`,
+      errors:     0,  // .txt format doesn't include fielding errors
+      inn:        p.ip > 0 ? p.ip : 0,
+      primaryPos: p.ip > 0 ? 'P' : '—',
+      tc: 0, po: 0, assists: 0,
+    }));
+    scoutCSVData.ourFielders = ourFielders;
+    renderOurDefenseBreakdown(ourFielders);
+
+    const statusMsg = loadOpponent
+      ? document.getElementById('scout-csv-status').textContent + ` · Our pitching added to Pitch Tracker`
+      : `✓ Our pitching loaded — ${namedPitchers.length} pitchers added to Pitch Tracker`;
+    document.getElementById('scout-csv-status').textContent = statusMsg;
+  }
+
+  // ── FINAL STATUS & DISPLAY ───────────────────────────────────────────────
+  // Show stats area and give clear feedback regardless of which path ran
+  const statsArea = document.getElementById('scout-stats-area');
+  if (statsArea) statsArea.style.display = 'block';
+
+  // Switch to the opponent tab if we loaded opponent stats
+  if (loadOpponent) {
+    const oppTab = document.getElementById('csv-tab-opp');
+    if (oppTab) switchCsvTab('opp', oppTab);
+  }
+
+  // Build final status message
+  const oppCount  = loadOpponent ? batterPlayers.length  : 0;
+  const pitchCount = loadOpponent ? pitcherPlayers.length : 0;
+  const ourCount  = loadOurs     ? pitcherPlayers.length : 0;
+
+  let finalStatus = '✓ ';
+  if (loadOpponent) finalStatus += `${oppCount} opponent batters, ${pitchCount} pitchers loaded`;
+  if (loadOpponent && loadOurs) finalStatus += ' · ';
+  if (loadOurs)     finalStatus += `${ourCount} of our pitchers added to Pitch Tracker`;
+  finalStatus += ` — from ${filename}`;
+
+  const statusEl = document.getElementById('scout-csv-status');
+  if (statusEl) statusEl.textContent = finalStatus;
+
+  // If the stats table is empty (DOM elements existed but nothing rendered)
+  // add a fallback summary so the coach sees something
+  const batBody = document.getElementById('scout-stats-body');
+  if (loadOpponent && batBody && !batBody.innerHTML.trim()) {
+    batBody.innerHTML = batterPlayers.map(p => `<tr>
+      <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">#${p.jersey}</td>
+      <td>${p.ab}</td>
+      <td>${p.ab>0?'.'+Math.round(p.hits/p.ab*1000).toString().padStart(3,'0'):'.000'}</td>
+      <td>${p.hits}</td><td>${p.rbi}</td><td>${p.runs}</td>
+      <td>${p.bb}</td><td>${p.so}</td><td>${p.sb}</td>
+    </tr>`).join('') || '<tr><td colspan="9" style="text-align:center;color:#5A4A3C;padding:12px">No batting data</td></tr>';
+  }
+}
+// ── END SCOUT TXT FILE HANDLER ────────────────────────────────────────────
+
+
+// ── SCOUT FILE HANDLER (UNIFIED) ─────────────────────────────────────────
+// handleScoutFile — routes any uploaded game file to the right parser
+// based on which button was clicked (opponent vs our team).
+// Replaces the old prompt-based teamChoice system with separate buttons
+// so coaches never have to guess which team's data they're uploading.
+//
+// team = 'opponent' | 'ours'
+
+function handleScoutFile(event, team) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const statusId = team === 'opponent' ? 'scout-opp-status' : 'scout-our-status';
+  const setStatus = (msg, ok=true) => {
+    const el = document.getElementById(statusId);
+    if (el) { el.textContent = msg; el.style.color = ok ? '#81C784' : '#EF9A9A'; }
+  };
+
+  setStatus(`Reading ${file.name}...`, true);
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const raw   = e.target.result;
+    const lines = raw.split('\n').map(l => l.replace(/\r/g,''));
+
+    // Detect format — pipe = game .txt, comma = season .csv
+    const nonBlank    = lines.filter(l => l.trim());
+    const isPipeFmt   = nonBlank.length > 0 && nonBlank[0].includes('|');
+    const isTxtFile   = file.name.toLowerCase().endsWith('.txt');
+
+    if (isPipeFmt || isTxtFile) {
+      // Single-game pipe-delimited .txt format
+      handleScoutTxtSingleTeam(lines, file.name, team, setStatus);
+    } else {
+      // Season CSV — use the existing full CSV parser
+      // but only extract the relevant half (opponent batters OR our pitchers)
+      handleScoutSeasonCSV(lines, file.name, team, setStatus);
+    }
+    event.target.value = '';
+  };
+  reader.onerror = () => setStatus('Could not read file', false);
+  reader.readAsText(file);
+}
+
+// handleScoutTxtSingleTeam — processes one team's .txt game export
+// No longer asks "which team" — the button already tells us
+function handleScoutTxtSingleTeam(lines, filename, team, setStatus) {
+  const toN = v => { const n=parseFloat(String(v||'0').trim()); return isNaN(n)?0:n; };
+
+  // Find header row
+  let headerIdx = -1;
+  for (let i = 0; i < Math.min(5, lines.length); i++) {
+    if (lines[i].includes('Jersey')) { headerIdx = i; break; }
+  }
+  const startRow = headerIdx >= 0 ? headerIdx + 1 : 1;
+
+  const allPlayers = [];
+  for (let i = startRow; i < lines.length; i++) {
+    const row    = lines[i].trim().split('|');
+    const jersey = row[0]?.trim();
+    if (!jersey || jersey === '' || jersey === 'Jersey') continue;
+    allPlayers.push({
+      jersey,
+      hits: toN(row[1]), singles: toN(row[2]), doubles: toN(row[3]),
+      triples: toN(row[4]), hr: toN(row[5]), rbi: toN(row[6]),
+      runs: toN(row[7]), ab: toN(row[8]), bb: toN(row[9]),
+      so: toN(row[10]), hbp: toN(row[11]), sb: toN(row[13]),
+      sbAtt: toN(row[14]), er: toN(row[18]), ra: toN(row[19]),
+      bf: toN(row[21]), k: toN(row[22]), bbA: toN(row[23]),
+      hitsA: toN(row[24]), hbpA: toN(row[25]), wp: toN(row[26]),
+      ip: toN(row[28]), pitches: toN(row[30]),
+    });
+  }
+
+  if (!allPlayers.length) {
+    setStatus('No player data found in file', false); return;
+  }
+
+  const pitcherPlayers = allPlayers.filter(p => p.pitches > 0 || p.ip > 0);
+  const batterPlayers  = allPlayers.filter(p => p.ab > 0 || p.hits > 0 || p.runs > 0 || p.rbi > 0 || p.bb > 0);
+
+  if (team === 'opponent') {
+    // ── LOAD OPPONENT STATS ──────────────────────────────────────────────
+    const batters = batterPlayers.map(p => ({
+      name: `#${p.jersey}`,
+      ab: p.ab,
+      avg: p.ab > 0 ? Math.round(p.hits/p.ab*1000)/1000 : 0,
+      h: p.hits, rbi: p.rbi, r: p.runs, bb: p.bb, so: p.so, sb: p.sb,
+    }));
+    const oppPitchers = pitcherPlayers.map(p => ({
+      name: `#${p.jersey}`,
+      ip:   Math.round(p.ip*10)/10,
+      era:  p.ip > 0 ? Math.round((p.er*9/p.ip)*100)/100 : 0,
+      whip: p.ip > 0 ? Math.round(((p.hitsA+p.bbA)/p.ip)*1000)/1000 : 0,
+      k: p.k, bb: p.bbA, w: 0, l: 0,
+    }));
+
+    scoutCSVData.batters  = batters;
+    scoutCSVData.pitchers = oppPitchers;
+
+    const batBody = document.getElementById('scout-stats-body');
+    if (batBody) batBody.innerHTML = batters.sort((a,b)=>b.avg-a.avg).map(p=>`<tr>
+      <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+      <td>${p.ab}</td>
+      <td>${p.avg>0?'.'+Math.round(p.avg*1000).toString().padStart(3,'0'):'.000'}</td>
+      <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+      <td>${p.bb}</td><td>${p.so}</td><td>${p.sb}</td>
+    </tr>`).join('') || '<tr><td colspan="9" class="no-results">No batting data</td></tr>';
+
+    const pitchArea = document.getElementById('scout-pitch-stats-area');
+    const pitchBody = document.getElementById('scout-pitch-body');
+    if (pitcherPlayers.length && pitchArea && pitchBody) {
+      pitchArea.style.display = 'block';
+      pitchBody.innerHTML = oppPitchers.map(p=>`<tr>
+        <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+        <td>${p.ip.toFixed(1)}</td><td>${p.era.toFixed(2)}</td>
+        <td>${p.whip.toFixed(3)}</td><td>${p.k}</td><td>${p.bb}</td><td>—</td><td>—</td>
+      </tr>`).join('');
+    }
+
+    const statsArea = document.getElementById('scout-stats-area');
+    if (statsArea) { statsArea.style.display='block'; switchCsvTab('opp', document.getElementById('csv-tab-opp')); }
+    setStatus(`✓ ${batters.length} batters · ${oppPitchers.length} pitchers loaded`);
+
+  } else {
+    // ── LOAD OUR TEAM STATS ──────────────────────────────────────────────
+    if (!pitcherPlayers.length) {
+      setStatus('No pitching data found for our team', false); return;
+    }
+
+    // Ask coach to name pitchers by jersey number
+    const opponent = document.getElementById('scout-opponent')?.value?.trim() ||
+                     prompt(`Who was the opponent in this game?`, '') || 'Unknown';
+    const gameDate = document.getElementById('scout-date')?.value ||
+                     new Date().toISOString().split('T')[0];
+
+    const namedPitchers = pitcherPlayers.map(p => {
+      const name = prompt(
+        `${TEAM_NAME} #${p.jersey} threw ${p.ip} innings · ${p.pitches} pitches.\n\nEnter their name (or leave blank to use #${p.jersey}):`,
+        ''
+      ) || `#${p.jersey}`;
+      return {
+        name,
+        innings:      INNINGS.map(()=>({pitches:0,hits:0,runs:0,k:0,bb:0})),
+        totalPitches: p.pitches,
+        totalRuns:    p.ra,
+        totalK:       p.k,
+        totalBB:      p.bbA,
+        totalHits:    p.hitsA,
+        ip:           Math.round(p.ip),
+        p_per_ip:     p.ip>0 ? Math.round(p.pitches/p.ip*10)/10 : 0,
+        era:          p.ip>0 ? Math.round((p.er*9/p.ip)*100)/100 : 0,
+        whip:         p.ip>0 ? Math.round(((p.hitsA+p.bbA)/p.ip)*1000)/1000 : 0,
+        bf:           p.bf, wp: p.wp, isGameImport: true,
+      };
+    });
+
+    // Add to Pitch Tracker
+    ptGames.push({
+      id: Date.now(), opponent, date: gameDate,
+      result: '', score: '', isGameImport: true,
+      pitchers: namedPitchers,
+    });
+    renderPTList();
+    renderPTPitcherSelect();
+
+    // Also render our pitching breakdown in scouting report
+    scoutCSVData.ourPitchers = namedPitchers;
+    renderOurPitchingBreakdown(namedPitchers);
+
+    const statsArea = document.getElementById('scout-stats-area');
+    if (statsArea) { statsArea.style.display='block'; switchCsvTab('ours', document.getElementById('csv-tab-ours')); }
+    setStatus(`✓ ${namedPitchers.length} ${TEAM_NAME} pitchers loaded · added to Pitch Tracker`);
+  }
+}
+
+// handleScoutSeasonCSV — processes a season .csv for scouting context
+// For opponent: loads their season batting/pitching averages
+// For ours: loads our pitching season totals into Pitch Tracker
+function handleScoutSeasonCSV(lines, filename, team, setStatus) {
+  function parseRow(line) {
+    const result=[]; let cur=''; let inQ=false;
+    for (const ch of line){if(ch==='"')inQ=!inQ;else if(ch===','&&!inQ){result.push(cur);cur='';}else cur+=ch;}
+    result.push(cur); return result;
+  }
+  const toN = v => { const n=parseFloat(String(v||'0').replace(/-/g,'0').trim()); return isNaN(n)?0:n; };
+
+  const COL = {
+    last:1,first:2,pa:4,ab:5,avg:6,h:10,rbi:15,r:16,bb:17,so:18,sb:25,
+    ip:54,pitches:58,bf:57,er:67,runs:66,bb_pit:68,k:69,era:72,whip:73,
+  };
+
+  const batters=[]; const pitchers=[];
+  for (let i=2; i<lines.length; i++) {
+    const row  = parseRow(lines[i].trim());
+    if (row.length < 10) continue;
+    const last  = (row[COL.last]||'').trim().replace(/"/g,'');
+    const first = (row[COL.first]||'').trim().replace(/"/g,'');
+    if (!last || last==='Totals') continue;
+    const name = first ? `${last}, ${first[0]}.` : last;
+    const pa=toN(row[COL.pa]), ip=toN(row[COL.ip]);
+    if (pa>0) batters.push({
+      name, ab:Math.round(toN(row[COL.ab])),
+      avg:Math.round(toN(row[COL.avg])*1000)/1000,
+      h:Math.round(toN(row[COL.h])), rbi:Math.round(toN(row[COL.rbi])),
+      r:Math.round(toN(row[COL.r])), bb:Math.round(toN(row[COL.bb])),
+      so:Math.round(toN(row[COL.so])), sb:Math.round(toN(row[COL.sb])),
+    });
+    if (ip>0) pitchers.push({
+      name, ip:Math.round(ip*10)/10,
+      pitches:Math.round(toN(row[COL.pitches])),
+      er:Math.round(toN(row[COL.er])),
+      runs:Math.round(toN(row[COL.runs])),
+      bb:Math.round(toN(row[COL.bb_pit])),
+      k:Math.round(toN(row[COL.k])),
+      era:Math.round(toN(row[COL.era])*100)/100,
+      whip:Math.round(toN(row[COL.whip])*1000)/1000,
+      p_per_ip: ip>0?Math.round(toN(row[COL.pitches])/ip*10)/10:0,
+    });
+  }
+
+  if (team === 'opponent') {
+    scoutCSVData.batters  = batters;
+    scoutCSVData.pitchers = pitchers.map(p=>({...p,w:0,l:0}));
+    const batBody = document.getElementById('scout-stats-body');
+    if (batBody) batBody.innerHTML = batters.sort((a,b)=>b.avg-a.avg).map(p=>`<tr>
+      <td style="text-align:left;padding-left:8px;font-weight:600;color:#F5F0E8">${p.name}</td>
+      <td>${p.ab}</td>
+      <td>${p.avg>0?'.'+Math.round(p.avg*1000).toString().padStart(3,'0'):'.000'}</td>
+      <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+      <td>${p.bb}</td><td>${p.so}</td><td>${p.sb}</td>
+    </tr>`).join('');
+    const statsArea=document.getElementById('scout-stats-area');
+    if (statsArea){statsArea.style.display='block';switchCsvTab('opp',document.getElementById('csv-tab-opp'));}
+    setStatus(`✓ ${batters.length} batters · ${pitchers.length} pitchers (season data)`);
+  } else {
+    // Our season stats → Pitch Tracker
+    if (!pitchers.length){setStatus('No pitching data found',false);return;}
+    const year = prompt(`What season year is this?`, new Date().getFullYear());
+    if (!year){setStatus('Import cancelled');return;}
+    ptGames.push({
+      id:Date.now(), opponent:`${year} Season Summary`,
+      date:`${year}-01-01`, result:'Season',
+      score:`${pitchers.length} pitchers`, isSeasonImport:true, year:parseInt(year),
+      pitchers: pitchers.map(p=>({
+        name:p.name, innings:INNINGS.map(()=>({pitches:0,hits:0,runs:0,k:0,bb:0})),
+        totalPitches:p.pitches, totalRuns:p.runs, totalK:p.k, totalBB:p.bb,
+        totalHits:0, ip:Math.round(p.ip), p_per_ip:p.p_per_ip,
+        era:p.era, whip:p.whip, isSeasonStats:true,
+      })),
+    });
+    renderPTList(); renderPTPitcherSelect();
+    const ourPitchersForBreakdown = pitchers.map(p=>({...p,runs_allowed:p.runs,hbp:0,wp:0,p_per_bf:0}));
+    scoutCSVData.ourPitchers = ourPitchersForBreakdown;
+    renderOurPitchingBreakdown(ourPitchersForBreakdown);
+    const statsArea=document.getElementById('scout-stats-area');
+    if (statsArea){statsArea.style.display='block';switchCsvTab('ours',document.getElementById('csv-tab-ours'));}
+    setStatus(`✓ ${pitchers.length} ${TEAM_NAME} pitchers loaded · added to Pitch Tracker`);
+  }
+}
+// ── END SCOUT FILE HANDLER (UNIFIED) ─────────────────────────────────────
+
+// ── END SCOUTING REPORT CSV UPLOAD ───────────────────────────────────────
+
+
+// ── OPPONENT TEAM DATABASE ────────────────────────────────────────────────
+// getTeams — builds a team object from all saved scouting reports
+// Each team groups all reports and CSV data by opponent name
+function getTeams() {
+  const teams = {};
+  scoutReports.forEach(r => {
+    const name = r.opponent.trim();
+    if (!teams[name]) {
+      teams[name] = { name, reports: [], csvGames: [] };
+    }
+    teams[name].reports.push(r);
+    // If this report had CSV data attached, accumulate it
+    if (r.csvData && (r.csvData.batters.length || r.csvData.pitchers.length || r.csvData.ourPitchers?.length)) {
+      teams[name].csvGames.push({
+        date:     r.date,
+        score:    r.score,
+        batters:  r.csvData.batters,
+        pitchers: r.csvData.pitchers,
+      });
+    }
+  });
+  return teams;
+}
+
+// getTeamRecord — parses W/L record from score strings
+// Looks for patterns like "We won 5-3" or "They won 4-2" or "5-3 W"
+function getTeamRecord(reports) {
+  let w = 0, l = 0;
+  reports.forEach(r => {
+    const s = (r.score || '').toLowerCase();
+    if (s.includes('we won') || s.includes('w ') || s.match(/\d+-\d+ w$/)) w++;
+    else if (s.includes('they won') || s.includes('l ') || s.match(/\d+-\d+ l$/)) l++;
+  });
+  return { w, l };
+}
+
+// calcTeamAvgStats — averages batting stats across all CSV games
+function calcTeamAvgStats(csvGames) {
+  if (!csvGames.length) return null;
+  // Flatten all batters across all games, average key stats
+  const allBatters = csvGames.flatMap(g => g.batters);
+  if (!allBatters.length) return null;
+  const totalH  = allBatters.reduce((a,c)=>a+c.h,  0);
+  const totalAB = allBatters.reduce((a,c)=>a+c.ab, 0);
+  const totalBB = allBatters.reduce((a,c)=>a+c.bb, 0);
+  const totalSO = allBatters.reduce((a,c)=>a+c.so, 0);
+  const totalSB = allBatters.reduce((a,c)=>a+c.sb, 0);
+  return {
+    avg:  totalAB > 0 ? Math.round(totalH/totalAB*1000)/1000 : 0,
+    bb:   totalBB,
+    so:   totalSO,
+    sb:   totalSB,
+    games: csvGames.length,
+  };
+}
+
+// renderTeamDatabase — builds the team cards grid
+function renderTeamDatabase() {
+  const teams     = getTeams();
+  const teamNames = Object.keys(teams).sort();
+  const search    = (document.getElementById('team-search-input')?.value||'').toLowerCase().trim();
+  const filtered  = search ? teamNames.filter(n=>n.toLowerCase().includes(search)) : teamNames;
+
+  document.getElementById('teams-count').textContent = teamNames.length;
+
+  const container = document.getElementById('teams-grid-container');
+  if (!filtered.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🗂</div>
+      <div class="empty-title">${search ? 'No teams match your search' : 'No teams yet'}</div>
+      <div class="empty-sub">Save a scouting report to add a team to the database</div>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = `<div class="teams-grid">
+    ${filtered.map(name => {
+      const team    = teams[name];
+      const record  = getTeamRecord(team.reports);
+      const stats   = calcTeamAvgStats(team.csvGames);
+      const lastRpt = team.reports.sort((a,b)=>b.id-a.id)[0];
+      const grade   = lastRpt.overallGrade || '';
+      const gradeClass = grade ? `grade-${grade}` : '';
+      const recClass   = record.w > record.l ? 'record-winning' :
+                         record.l > record.w ? 'record-losing' : 'record-even';
+      return `<div class="team-card" onclick="showTeamDetail('${name.replace(/'/g,"\\'")}')">
+        <div class="team-card-name">${name}</div>
+        <div class="team-card-meta">
+          ${team.reports.length} report${team.reports.length!==1?'s':''}
+          ${team.csvGames.length ? ' · ' + team.csvGames.length + ' game CSV' + (team.csvGames.length!==1?'s':'') : ''}
+          · Last: ${lastRpt.date||'—'}
+        </div>
+        ${record.w||record.l ? `<span class="team-record ${recClass}">Our record: ${record.w}-${record.l}</span>` : ''}
+        ${grade ? `<span class="overall-grade ${gradeClass}" style="margin-left:8px">${grade}</span>` : ''}
+        ${stats ? `<div class="team-card-stats">
+          <div class="team-card-stat">
+            <div class="team-card-stat-val">${'.'+Math.round(stats.avg*1000).toString().padStart(3,'0')}</div>
+            <div class="team-card-stat-label">AVG</div>
+          </div>
+          <div class="team-card-stat">
+            <div class="team-card-stat-val">${stats.sb}</div>
+            <div class="team-card-stat-label">Total SB</div>
+          </div>
+          <div class="team-card-stat">
+            <div class="team-card-stat-val">${stats.so}</div>
+            <div class="team-card-stat-label">Total K</div>
+          </div>
+        </div>` : `<div style="font-size:11px;color:#3A2A1C;margin-top:6px">No CSV stats yet</div>`}
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// showTeamDetail — opens the detail view for one team
+function showTeamDetail(teamName) {
+  const teams  = getTeams();
+  const team   = teams[teamName];
+  if (!team) return;
+
+  document.getElementById('team-detail-name').textContent = teamName;
+  document.getElementById('scout-teams-view').style.display  = 'none';
+  document.getElementById('scout-team-detail').style.display = 'block';
+
+  const reports  = team.reports.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  const record   = getTeamRecord(reports);
+  const csvGames = team.csvGames;
+  const stats    = calcTeamAvgStats(csvGames);
+
+  // Build all batter rows across all CSV games combined
+  const combinedBatters = {};
+  csvGames.forEach(g => {
+    g.batters.forEach(p => {
+      if (!combinedBatters[p.name]) combinedBatters[p.name] = {name:p.name,ab:0,h:0,rbi:0,r:0,bb:0,so:0,sb:0,games:0};
+      const b = combinedBatters[p.name];
+      b.ab+=p.ab; b.h+=p.h; b.rbi+=p.rbi; b.r+=p.r;
+      b.bb+=p.bb; b.so+=p.so; b.sb+=p.sb; b.games++;
+    });
+  });
+  const batters = Object.values(combinedBatters).sort((a,b)=>{
+    const aAvg = a.ab>0?a.h/a.ab:0, bAvg = b.ab>0?b.h/b.ab:0;
+    return bAvg - aAvg;
+  });
+
+  // Combined pitchers
+  const combinedPitchers = {};
+  csvGames.forEach(g => {
+    (g.pitchers||[]).forEach(p => {
+      if (!combinedPitchers[p.name]) combinedPitchers[p.name] = {name:p.name,ip:0,k:0,bb:0,w:0,l:0,era_sum:0,whip_sum:0,games:0};
+      const c = combinedPitchers[p.name];
+      c.ip+=p.ip; c.k+=p.k; c.bb+=p.bb; c.w+=p.w; c.l+=p.l;
+      c.era_sum+=p.era; c.whip_sum+=p.whip; c.games++;
+    });
+  });
+  const pitchers = Object.values(combinedPitchers).sort((a,b)=>{
+    const aEra=a.games>0?a.era_sum/a.games:99, bEra=b.games>0?b.era_sum/b.games:99;
+    return aEra-bEra;
+  });
+
+  const recClass = record.w>record.l?'record-winning':record.l>record.w?'record-losing':'record-even';
+
+  document.getElementById('team-detail-content').innerHTML = `
+    <!-- Summary KPIs -->
+    <div class="kpi-row" style="margin-bottom:16px">
+      <div class="kpi" style="--accent:#C8102E">
+        <div class="kpi-label">Times scouted</div>
+        <div class="kpi-val">${reports.length}</div>
+        <div class="kpi-sub">scouting reports</div>
+      </div>
+      <div class="kpi" style="--accent:#4CAF50">
+        <div class="kpi-label">Our record</div>
+        <div class="kpi-val">${record.w}-${record.l}</div>
+        <div class="kpi-sub">vs ${teamName}</div>
+      </div>
+      ${stats ? `
+      <div class="kpi" style="--accent:#FF9800">
+        <div class="kpi-label">Their team AVG</div>
+        <div class="kpi-val">${'.'+Math.round(stats.avg*1000).toString().padStart(3,'0')}</div>
+        <div class="kpi-sub">across ${csvGames.length} game${csvGames.length!==1?'s':''}</div>
+      </div>
+      <div class="kpi" style="--accent:#9C27B0">
+        <div class="kpi-label">Total SB allowed</div>
+        <div class="kpi-val">${stats.sb}</div>
+        <div class="kpi-sub">across all games</div>
+      </div>` : ''}
+    </div>
+
+    <!-- Tabs -->
+    <div class="team-tabs">
+      <button class="team-tab active" onclick="switchTeamTab('game-log',this)">Game log</button>
+      ${batters.length?`<button class="team-tab" onclick="switchTeamTab('batting',this)">Career batting</button>`:''}
+      ${pitchers.length?`<button class="team-tab" onclick="switchTeamTab('pitching',this)">Career pitching</button>`:''}
+      <button class="team-tab" onclick="switchTeamTab('notes',this)">All notes</button>
+    </div>
+
+    <!-- GAME LOG TAB -->
+    <div class="team-panel active" id="team-panel-game-log">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Game log — ${teamName}</div>
+          <div class="card-badge">${reports.length} games</div>
+        </div>
+        <div class="card-body" style="padding:8px 16px">
+          ${reports.map(r => {
+            const grade = r.overallGrade;
+            const gradeClass = grade ? `grade-${grade}` : '';
+            return `<div class="game-log-row">
+              <div class="game-log-date">${r.date||'—'}</div>
+              <div class="game-log-score">${r.score||'Score not recorded'}</div>
+              <div class="game-log-notes">
+                ${r.overallNotes?`<div style="margin-bottom:4px">${r.overallNotes.substring(0,200)}${r.overallNotes.length>200?'…':''}</div>`:''}
+                ${r.keyPlayers?`<div style="color:#8A9BA8;font-size:11px">⚠ Key players: ${r.keyPlayers.substring(0,100)}${r.keyPlayers.length>100?'…':''}</div>`:''}
+                ${r.csvData?.batters?.length?`<div style="color:#5A4A3C;font-size:10px;margin-top:3px">📊 ${r.csvData.batters.length} player stats attached</div>`:''}
+                <button style="margin-top:6px;padding:3px 8px;background:none;border:1px solid #3A2A1C;border-radius:4px;color:#8A9BA8;font-size:10px;cursor:pointer"
+                  onclick="editScoutReport(${r.id});showScoutView('new')">Edit report</button>
+              </div>
+              <div class="game-log-grade">
+                ${grade?`<span class="overall-grade ${gradeClass}">${grade}</span>`:''}
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- CAREER BATTING TAB -->
+    ${batters.length ? `<div class="team-panel" id="team-panel-batting">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Career batting vs us — ${teamName}</div>
+          <div class="card-badge">${csvGames.length} game${csvGames.length!==1?'s':''} of data</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="stat-table" style="min-width:500px">
+            <thead><tr>
+              <th style="text-align:left;padding-left:12px">Player</th>
+              <th>Games</th><th>AB</th><th>AVG</th>
+              <th>H</th><th>RBI</th><th>R</th><th>BB</th><th>K</th><th>SB</th>
+            </tr></thead>
+            <tbody>
+              ${batters.map(p => {
+                const avg = p.ab>0 ? p.h/p.ab : 0;
+                const pill = avg>=.350?'pill-g':avg>=.250?'pill-a':'pill-r';
+                return `<tr>
+                  <td style="text-align:left;padding-left:12px;font-weight:600;color:#F5F0E8">${p.name}</td>
+                  <td>${p.games}</td><td>${p.ab}</td>
+                  <td><span class="stat-pill ${pill}">${avg>0?'.'+Math.round(avg*1000).toString().padStart(3,'0'):'.000'}</span></td>
+                  <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+                  <td>${p.bb}</td><td>${p.so}</td><td>${p.sb}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>` : ''}
+
+    <!-- CAREER PITCHING TAB -->
+    ${pitchers.length ? `<div class="team-panel" id="team-panel-pitching">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Career pitching vs us — ${teamName}</div>
+          <div class="card-badge">${csvGames.length} game${csvGames.length!==1?'s':''} of data</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="stat-table" style="min-width:400px">
+            <thead><tr>
+              <th style="text-align:left;padding-left:12px">Pitcher</th>
+              <th>Games</th><th>IP</th><th>W</th><th>L</th>
+              <th>ERA</th><th>WHIP</th><th>K</th><th>BB</th>
+            </tr></thead>
+            <tbody>
+              ${pitchers.map(p => {
+                const avgEra  = p.games>0 ? p.era_sum/p.games  : 0;
+                const avgWhip = p.games>0 ? p.whip_sum/p.games : 0;
+                const eraPillClass = avgEra<=3.5?'pill-g':avgEra<=5.5?'pill-a':'pill-r';
+                return `<tr>
+                  <td style="text-align:left;padding-left:12px;font-weight:600;color:#F5F0E8">${p.name}</td>
+                  <td>${p.games}</td><td>${p.ip.toFixed(1)}</td>
+                  <td>${p.w}</td><td>${p.l}</td>
+                  <td><span class="stat-pill ${eraPillClass}">${avgEra.toFixed(2)}</span></td>
+                  <td>${avgWhip.toFixed(3)}</td><td>${p.k}</td><td>${p.bb}</td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>` : ''}
+
+    <!-- ALL NOTES TAB -->
+    <div class="team-panel" id="team-panel-notes">
+      ${reports.map(r => `
+        <div class="card" style="margin-bottom:12px">
+          <div class="card-header">
+            <div class="card-title">${r.date||'Date unknown'} — ${r.score||'Score not recorded'}</div>
+            <div class="card-badge">${r.author||'Unknown'}</div>
+          </div>
+          <div class="card-body">
+            ${r.overallNotes?`<div style="margin-bottom:10px"><div class="scout-label" style="margin-bottom:4px">Overall</div><div style="font-size:12px;color:#D0C8BC;line-height:1.6">${r.overallNotes}</div></div>`:''}
+            ${r.offenseNotes?`<div style="margin-bottom:10px"><div class="scout-label" style="margin-bottom:4px">Offense</div><div style="font-size:12px;color:#D0C8BC;line-height:1.6">${r.offenseNotes}</div></div>`:''}
+            ${r.defenseNotes?`<div style="margin-bottom:10px"><div class="scout-label" style="margin-bottom:4px">Defense</div><div style="font-size:12px;color:#D0C8BC;line-height:1.6">${r.defenseNotes}</div></div>`:''}
+            ${r.keyPlayers?`<div style="margin-bottom:10px"><div class="scout-label" style="margin-bottom:4px">Key players</div><div style="font-size:12px;color:#D0C8BC;line-height:1.6">${r.keyPlayers}</div></div>`:''}
+            ${r.weaknesses?`<div><div class="scout-label" style="margin-bottom:4px">Weaknesses to exploit</div><div style="font-size:12px;color:#D0C8BC;line-height:1.6">${r.weaknesses}</div></div>`:''}
+          </div>
+        </div>`).join('')}
+    </div>`;
+
+  document.getElementById('team-detail-content').innerHTML =
+    document.getElementById('team-detail-content').innerHTML;
+}
+
+// switchTeamTab — handles the tabs inside a team detail view
+function switchTeamTab(name, el) {
+  document.querySelectorAll('.team-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.team-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  const panel = document.getElementById('team-panel-' + name);
+  if (panel) panel.classList.add('active');
+}
+// ── END OPPONENT TEAM DATABASE ────────────────────────────────────────────
+
+
+// ── OUR PITCHING & DEFENSE BREAKDOWN ─────────────────────────────────────
+
+// switchCsvTab — toggles between opponent and our team panels
+function switchCsvTab(tab, el) {
+  ['csv-panel-opp','csv-panel-ours'].forEach(id => {
+    document.getElementById(id).style.display = 'none';
+  });
+  document.querySelectorAll('#scout-stats-area .team-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('csv-panel-' + tab).style.display = 'block';
+  el.classList.add('active');
+}
+
+// renderOurPitchingBreakdown — builds the pitching analysis section
+// Since GameChanger doesn't export per-inning data, we calculate
+// efficiency metrics from total stats:
+// - Pitches per inning (efficiency)
+// - Pitches per batter faced (how much trouble each batter caused)
+// - Runs allowed relative to IP (when did they struggle)
+// - Warning flags when a pitcher is getting inefficient
+function renderOurPitchingBreakdown(pitchers) {
+  const el = document.getElementById('our-pitching-breakdown');
+  if (!el) return;
+
+  if (!pitchers || !pitchers.length) {
+    el.innerHTML = `<div class="breakdown-section">
+      <div class="breakdown-title">Our pitching this game</div>
+      <div style="font-size:12px;color:#5A4A3C;padding:12px 0">
+        No pitching data found in this CSV — make sure your team's export is included
+      </div>
+    </div>`;
+    return;
+  }
+
+  // Sort by innings pitched (starters first)
+  const sorted = [...pitchers].sort((a,b) => b.ip - a.ip);
+  const totalIP      = pitchers.reduce((a,c)=>a+c.ip, 0);
+  const totalPitches = pitchers.reduce((a,c)=>a+c.pitches, 0);
+  const totalER      = pitchers.reduce((a,c)=>a+c.er, 0);
+  const totalBB      = pitchers.reduce((a,c)=>a+c.bb, 0);
+  const totalK       = pitchers.reduce((a,c)=>a+c.k, 0);
+
+  // Build each pitcher's breakdown card
+  const pitcherCards = sorted.map(p => {
+    // Efficiency rating — pitches per inning
+    // Under 15 = very efficient, 15-18 = solid, 18-22 = working hard, 22+ = in trouble
+    const ppi = p.p_per_ip;
+    const effColor = ppi < 15 ? '#81C784' : ppi < 18 ? '#FFB74D' : '#EF9A9A';
+    const effLabel = ppi < 15 ? 'Very efficient' : ppi < 18 ? 'Solid' : ppi < 22 ? 'Working hard' : '⚠ Laboring';
+
+    // Pitch count progress bar — 100 pitches is a common threshold
+    const pitchPct = Math.min((p.pitches / 100) * 100, 100);
+    const pitchColor = p.pitches < 70 ? '#81C784' : p.pitches < 85 ? '#FFB74D' : '#EF9A9A';
+
+    // Strike % estimate from K and BB (proxy — not exact without pitch-by-pitch data)
+    const strikeProxy = p.bf > 0 ? Math.round(((p.k - p.bb) / p.bf + 0.65) * 100) : 0;
+
+    // Warning flags
+    const warnings = [];
+    if (p.pitches >= 85) warnings.push(`High pitch count (${p.pitches})`);
+    if (p.bb >= 3)       warnings.push(`${p.bb} walks — command issues`);
+    if (p.wp >= 2)       warnings.push(`${p.wp} wild pitches`);
+    if (p.hbp >= 2)      warnings.push(`${p.hbp} hit batters`);
+    if (ppi >= 20)       warnings.push('Averaging 20+ pitches per inning');
+
+    return `<div class="pitcher-breakdown">
+      <div class="pitcher-breakdown-header">
+        <div>
+          <div class="pitcher-breakdown-name">${p.name}</div>
+          <div class="pitcher-breakdown-meta">${p.ip.toFixed(1)} IP · ${p.pitches} pitches · ${p.bf} batters faced</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:18px;font-weight:700;color:${effColor};font-family:Georgia,serif">${ppi.toFixed(1)}</div>
+          <div style="font-size:9px;color:#8A9BA8;text-transform:uppercase;letter-spacing:.05em">P/IP · ${effLabel}</div>
+        </div>
+      </div>
+
+      <!-- Pitch count bar -->
+      <div style="margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:#5A4A3C;margin-bottom:3px">
+          <span>Pitch count</span>
+          <span style="color:${pitchColor};font-weight:600">${p.pitches} / ~100 typical limit</span>
+        </div>
+        <div class="pitch-count-bar">
+          <div style="width:${pitchPct}%;height:100%;background:${pitchColor};border-radius:4px;transition:width .4s"></div>
+        </div>
+      </div>
+
+      <!-- Efficiency stats row -->
+      <div class="efficiency-row">
+        <div class="efficiency-stat">
+          <div class="efficiency-val">${p.er}</div>
+          <div class="efficiency-label">Earned runs</div>
+        </div>
+        <div class="efficiency-stat">
+          <div class="efficiency-val">${p.runs_allowed}</div>
+          <div class="efficiency-label">Total runs</div>
+        </div>
+        <div class="efficiency-stat">
+          <div class="efficiency-val">${p.k}</div>
+          <div class="efficiency-label">Strikeouts</div>
+        </div>
+        <div class="efficiency-stat">
+          <div class="efficiency-val">${p.bb}</div>
+          <div class="efficiency-label">Walks</div>
+        </div>
+        <div class="efficiency-stat">
+          <div class="efficiency-val">${p.p_per_bf.toFixed(1)}</div>
+          <div class="efficiency-label">P / batter</div>
+        </div>
+        <div class="efficiency-stat">
+          <div class="efficiency-val">${p.era.toFixed(2)}</div>
+          <div class="efficiency-label">ERA</div>
+        </div>
+        <div class="efficiency-stat">
+          <div class="efficiency-val">${p.whip.toFixed(2)}</div>
+          <div class="efficiency-label">WHIP</div>
+        </div>
+      </div>
+
+      <!-- Warning flags -->
+      ${warnings.map(w => `<div class="warning-bubble">⚠ ${w}</div>`).join('')}
+    </div>`;
+  }).join('');
+
+  // Game totals summary
+  const gameTotalERA = totalIP > 0 ? ((totalER * 9) / totalIP).toFixed(2) : '—';
+
+  el.innerHTML = `<div class="breakdown-section">
+    <div class="breakdown-title">Our pitching this game</div>
+
+    <!-- Game totals -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-header">
+        <div class="card-title">Game totals</div>
+        <div class="card-badge">${pitchers.length} pitcher${pitchers.length!==1?'s':''}</div>
+      </div>
+      <div class="card-body">
+        <div class="efficiency-row">
+          <div class="efficiency-stat">
+            <div class="efficiency-val">${totalIP.toFixed(1)}</div>
+            <div class="efficiency-label">Total IP</div>
+          </div>
+          <div class="efficiency-stat">
+            <div class="efficiency-val">${totalPitches}</div>
+            <div class="efficiency-label">Total pitches</div>
+          </div>
+          <div class="efficiency-stat">
+            <div class="efficiency-val">${totalER}</div>
+            <div class="efficiency-label">Earned runs</div>
+          </div>
+          <div class="efficiency-stat">
+            <div class="efficiency-val">${totalK}</div>
+            <div class="efficiency-label">Strikeouts</div>
+          </div>
+          <div class="efficiency-stat">
+            <div class="efficiency-val">${totalBB}</div>
+            <div class="efficiency-label">Walks</div>
+          </div>
+          <div class="efficiency-stat">
+            <div class="efficiency-val">${gameTotalERA}</div>
+            <div class="efficiency-label">Game ERA</div>
+          </div>
+          <div class="efficiency-stat">
+            <div class="efficiency-val">${totalIP > 0 ? (totalPitches/totalIP).toFixed(1) : '—'}</div>
+            <div class="efficiency-label">P/IP avg</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Individual pitcher cards -->
+    ${pitcherCards}
+
+    <!-- Coaching insight note -->
+    <div style="background:#1C1410;border:1px solid #2E2018;border-radius:8px;padding:10px 14px;font-size:11px;color:#8A9BA8;margin-top:8px">
+      <strong style="color:#F5F0E8">📊 How to use this data:</strong> Pitches per inning (P/IP) is your key metric.
+      Under 15 means your pitcher is working efficiently and can go deeper into the game.
+      Over 20 is a sign they may be losing command — consider warming someone up.
+      Track this across multiple games in the Pitch Tracker to find each pitcher's personal patterns.
+    </div>
+  </div>`;
+}
+
+// renderOurDefenseBreakdown — builds the error and fielding section
+function renderOurDefenseBreakdown(fielders) {
+  const el = document.getElementById('our-defense-breakdown');
+  if (!el) return;
+
+  // Only show players who had errors or significant defensive action
+  const withErrors = (fielders || []).filter(f => f.errors > 0)
+                                     .sort((a,b) => b.errors - a.errors);
+  const allFielders = (fielders || []).filter(f => f.inn > 0)
+                                      .sort((a,b) => b.inn - a.inn);
+  const totalErrors = withErrors.reduce((a,c)=>a+c.errors, 0);
+
+  if (!allFielders.length) {
+    el.innerHTML = `<div class="breakdown-section" style="margin-top:16px">
+      <div class="breakdown-title">Our defense this game</div>
+      <div style="font-size:12px;color:#5A4A3C;padding:12px 0">No fielding data found in this CSV</div>
+    </div>`;
+    return;
+  }
+
+  const errorRows = withErrors.length ? withErrors.map(f => `
+    <div class="error-player-row">
+      <span class="error-player-name">${f.name}</span>
+      <span class="error-position">${f.primaryPos}</span>
+      <span class="error-count">${f.errors}</span>
+      <span style="font-size:10px;color:#5A4A3C">${f.tc > 0 ? Math.round((1-(f.errors/f.tc))*100)+'% fielding' : ''}</span>
+    </div>`).join('') :
+    '<div style="font-size:12px;color:#81C784;padding:8px 0">✓ No errors this game</div>';
+
+  // Position summary — who played where
+  const positionSummary = allFielders.map(f =>
+    `<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #1C1410;font-size:11px">
+      <span style="color:#F5F0E8;font-weight:600">${f.name}</span>
+      <span style="color:#8A9BA8">${f.primaryPos}</span>
+      <span style="color:#D0C8BC">${f.inn.toFixed(1)} inn</span>
+      <span style="color:${f.errors>0?'#EF9A9A':'#81C784'}">${f.errors > 0 ? f.errors + ' E' : '✓ Clean'}</span>
+    </div>`
+  ).join('');
+
+  el.innerHTML = `<div class="breakdown-section" style="margin-top:16px">
+    <div class="breakdown-title">Our defense this game</div>
+
+    <!-- Error summary -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-header">
+        <div class="card-title">Errors</div>
+        <div class="card-badge" style="${totalErrors>0?'color:#EF9A9A':''}">${totalErrors} total error${totalErrors!==1?'s':''}</div>
+      </div>
+      <div class="card-body">
+        ${totalErrors > 0 ? `
+        <div style="font-size:11px;color:#8A9BA8;margin-bottom:10px">
+          Players with errors — check these positions in practice
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 50px 40px auto;gap:0">
+          <div style="font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px">Player</div>
+          <div style="font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px">Pos</div>
+          <div style="font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px;text-align:center">E</div>
+          <div style="font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;padding-bottom:6px"></div>
+          ${errorRows}
+        </div>` : errorRows}
+      </div>
+    </div>
+
+    <!-- Full defensive lineup -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Defensive lineup</div>
+        <div class="card-badge">${allFielders.length} players</div>
+      </div>
+      <div class="card-body" style="padding:8px 16px">
+        ${positionSummary}
+      </div>
+    </div>
+  </div>`;
+}
+// ── END OUR PITCHING & DEFENSE BREAKDOWN ─────────────────────────────────
+
+// ── END SCOUTING REPORT SYSTEM ────────────────────────────────────────────
+
+
+// ── PITCH TRACKER ─────────────────────────────────────────────────────────
+let ptGames      = [];    // saved pitch tracker games
+let ptPitchCount = 0;     // pitcher row counter for current form
+let ptSelectedPitcherId = null;
+
+// Inning labels
+const INNINGS = ['1st','2nd','3rd','4th','5th','6th','7th'];
+
+// ptAddPitcher — adds a pitcher entry form with per-inning inputs
+function ptAddPitcher() {
+  ptPitchCount++;
+  const id  = ptPitchCount;
+  const div = document.createElement('div');
+  div.className = 'pitcher-row';
+  div.id = 'pt-pitcher-' + id;
+  div.onclick = (e) => {
+    if (e.target.closest('.remove-pitcher-btn')) return;
+    ptSelectPitcher(id);
+  };
+
+  // Build per-inning input rows
+  const inningInputs = INNINGS.map((label, i) => `
+    <div class="inning-input-row">
+      <span class="inning-num">${label}</span>
+      <span class="inning-input-label">Pitches</span>
+      <input class="inning-input" type="number" min="0" max="50"
+             id="pt-p-pitches-${id}-${i}" placeholder="0">
+      <span class="inning-input-label">H</span>
+      <input class="inning-input" type="number" min="0" max="20"
+             id="pt-p-hits-${id}-${i}" placeholder="0">
+      <span class="inning-input-label">R</span>
+      <input class="inning-input" type="number" min="0" max="20"
+             id="pt-p-runs-${id}-${i}" placeholder="0">
+      <span class="inning-input-label">K</span>
+      <input class="inning-input" type="number" min="0" max="10"
+             id="pt-p-k-${id}-${i}" placeholder="0">
+      <span class="inning-input-label">BB</span>
+      <input class="inning-input" type="number" min="0" max="10"
+             id="pt-p-bb-${id}-${i}" placeholder="0">
+    </div>`).join('');
+
+  div.innerHTML = `
+    <div class="pitcher-row-header">
+      <span style="font-size:11px;font-weight:600;color:#8A9BA8;text-transform:uppercase;letter-spacing:.06em">Pitcher ${id}</span>
+    </div>
+    <div class="scout-form-grid" style="margin-bottom:10px">
+      <div>
+        <label class="scout-label">Pitcher name</label>
+        <input class="scout-input" type="text" id="pt-p-name-${id}" placeholder="e.g. Lowe, R.">
+      </div>
+      <div>
+        <label class="scout-label">Total pitches thrown</label>
+        <input class="scout-input" type="number" id="pt-p-total-${id}" placeholder="0"
+               oninput="ptUpdateTotal(${id})">
+      </div>
+    </div>
+    <div style="font-size:10px;font-weight:600;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">
+      Per-inning breakdown (fill in what you tracked)
+    </div>
+    <div style="display:grid;grid-template-columns:50px 40px 1fr 40px 1fr 40px 1fr 40px 1fr 40px 1fr;gap:4px;font-size:9px;color:#5A4A3C;text-transform:uppercase;margin-bottom:4px">
+      <span>Inning</span><span>P#</span><span></span><span>H</span><span></span><span>R</span><span></span><span>K</span><span></span><span>BB</span><span></span>
+    </div>
+    ${inningInputs}
+    <div style="font-size:11px;color:#8A9BA8;margin-top:8px" id="pt-p-total-display-${id}"></div>`;
+
+  document.getElementById('pt-pitcher-entries').appendChild(div);
+  ptSelectPitcher(id);
+}
+
+function ptSelectPitcher(id) {
+  ptSelectedPitcherId = id;
+  document.querySelectorAll('#pt-pitcher-entries .pitcher-row').forEach(row => {
+    row.classList.toggle('selected', row.id === 'pt-pitcher-' + id);
+  });
+}
+
+function ptRemovePitcher(id) {
+  const targetId = id ?? ptSelectedPitcherId;
+  if (targetId === null || targetId === undefined) return;
+
+  const el = document.getElementById('pt-pitcher-' + targetId);
+  if (el) {
+    el.remove();
+    if (ptSelectedPitcherId === targetId) {
+      ptSelectedPitcherId = null;
+    }
+  }
+}
+
+// ptUpdateTotal — live sum of inning pitch counts
+function ptUpdateTotal(pitcherId) {
+  let sum = 0;
+  INNINGS.forEach((_, i) => {
+    const el = document.getElementById(`pt-p-pitches-${pitcherId}-${i}`);
+    if (el) sum += parseInt(el.value || '0');
+  });
+  const display = document.getElementById(`pt-p-total-display-${pitcherId}`);
+  if (display) display.textContent = sum > 0 ? `Inning total: ${sum} pitches` : '';
+}
+
+// collectPTGame — gathers all pitcher data from the form
+function collectPTGame() {
+  const pitchers = [];
+  for (let id = 1; id <= ptPitchCount + 5; id++) {
+    const nameEl = document.getElementById('pt-p-name-' + id);
+    if (!nameEl) continue;
+    const name = nameEl.value.trim();
+    if (!name) continue;
+
+    const innings = INNINGS.map((_, i) => ({
+      pitches: parseInt(document.getElementById(`pt-p-pitches-${id}-${i}`)?.value || '0'),
+      hits:    parseInt(document.getElementById(`pt-p-hits-${id}-${i}`)?.value    || '0'),
+      runs:    parseInt(document.getElementById(`pt-p-runs-${id}-${i}`)?.value    || '0'),
+      k:       parseInt(document.getElementById(`pt-p-k-${id}-${i}`)?.value       || '0'),
+      bb:      parseInt(document.getElementById(`pt-p-bb-${id}-${i}`)?.value      || '0'),
+    }));
+
+    const totalPitches = parseInt(document.getElementById('pt-p-total-' + id)?.value || '0') ||
+                         innings.reduce((a,c)=>a+c.pitches, 0);
+    const totalRuns    = innings.reduce((a,c)=>a+c.runs,    0);
+    const totalK       = innings.reduce((a,c)=>a+c.k,       0);
+    const totalBB      = innings.reduce((a,c)=>a+c.bb,      0);
+    const totalHits    = innings.reduce((a,c)=>a+c.hits,    0);
+
+    // Calculate IP from innings with data
+    const inningsWithData = innings.filter(i=>i.pitches>0||i.hits>0||i.runs>0||i.k>0||i.bb>0).length;
+
+    pitchers.push({
+      name, innings, totalPitches, totalRuns, totalK, totalBB, totalHits,
+      ip: inningsWithData,
+      p_per_ip: inningsWithData > 0 ? Math.round(totalPitches / inningsWithData * 10) / 10 : 0,
+    });
+  }
+  return pitchers;
+}
+
+// savePTGame — saves a game to ptGames
+function savePTGame() {
+  const opponent = document.getElementById('pt-opponent').value.trim();
+  if (!opponent) { showToast('Please enter an opponent name', true); return; }
+  const pitchers = collectPTGame();
+  if (!pitchers.length) { showToast('Add at least one pitcher', true); return; }
+
+  ptGames.push({
+    id:       Date.now(),
+    opponent: opponent,
+    date:     document.getElementById('pt-date').value,
+    result:   document.getElementById('pt-result').value,
+    score:    document.getElementById('pt-score').value.trim(),
+    pitchers,
+    savedAt:  new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+  });
+
+  renderPTList();
+  renderPTPitcherSelect();
+  showPTView('list');
+  showToast(`Game logged vs ${opponent}`);
+}
+
+// renderPTList — shows all logged games
+function renderPTList() {
+  document.getElementById('pt-game-count').textContent = ptGames.length;
+  const container = document.getElementById('pt-games-list');
+  if (!ptGames.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🎯</div>
+      <div class="empty-title">No games logged yet</div>
+      <div class="empty-sub">Log a game to start tracking pitcher trends</div>
+    </div>`;
+    return;
+  }
+  container.innerHTML = [...ptGames].reverse().map(g => {
+    const totalPitches = g.pitchers.reduce((a,c)=>a+c.totalPitches, 0);
+    const totalRuns    = g.pitchers.reduce((a,c)=>a+c.totalRuns,    0);
+    const highPitcher  = g.pitchers.reduce((a,c)=>c.totalPitches>a.totalPitches?c:a, g.pitchers[0]);
+    const warning      = highPitcher?.totalPitches >= 85 ? `⚠ ${highPitcher.name} at ${highPitcher.totalPitches} pitches` : '';
+    return `<div class="pt-game-row" onclick="expandPTGame(${g.id})">
+      <div class="pt-game-opponent">${g.opponent}</div>
+      <div style="font-size:11px;color:#8A9BA8">${g.date||''}${g.score?' · '+g.score:''}</div>
+      <div class="pt-game-ip">${g.pitchers.length} pitcher${g.pitchers.length!==1?'s':''}</div>
+      <div class="pt-game-pitches">${totalPitches} pitches · ${totalRuns} runs</div>
+      ${warning?`<div class="pt-warning">${warning}</div>`:''}
+      <button style="margin-left:auto;padding:3px 8px;background:none;border:1px solid #5A4A3C;border-radius:4px;color:#8A9BA8;font-size:10px;cursor:pointer"
+        onclick="event.stopPropagation();deletePTGame(${g.id})">Delete</button>
+    </div>`;
+  }).join('');
+}
+
+// expandPTGame — shows the detail view for one game
+function expandPTGame(id) {
+  const game = ptGames.find(g=>g.id===id);
+  if (!game) return;
+  showPTView('trends');
+  renderPTTrends(game);
+}
+
+function deletePTGame(id) {
+  const g = ptGames.find(x=>x.id===id);
+  if (!g || !confirm(`Delete game vs ${g.opponent}?`)) return;
+  ptGames = ptGames.filter(x=>x.id!==id);
+  renderPTList();
+  renderPTPitcherSelect();
+  showToast('Game deleted');
+}
+
+// renderPTPitcherSelect — populates pitcher dropdown in trends view
+function renderPTPitcherSelect() {
+  const names = [...new Set(ptGames.flatMap(g=>g.pitchers.map(p=>p.name)))].sort();
+  const sel = document.getElementById('pt-pitcher-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">All pitchers</option>' +
+    names.map(n=>`<option value="${n}"${n===cur?' selected':''}>${n}</option>`).join('');
+}
+
+// renderPTTrends — the main trend analysis view
+function renderPTTrends(specificGame) {
+  const container = document.getElementById('pt-trends-content');
+  const selName   = document.getElementById('pt-pitcher-select').value;
+
+  if (!ptGames.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">📈</div>
+      <div class="empty-title">No trend data yet</div>
+      <div class="empty-sub">Log at least one game to see pitcher analysis</div>
+    </div>`;
+    return;
+  }
+
+  // If a specific game was clicked, show just that game's detail
+  const gamesToShow = specificGame ? [specificGame] :
+    ptGames.filter(g => !selName || g.pitchers.some(p=>p.name===selName));
+
+  if (!gamesToShow.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-title">No games found for this pitcher</div></div>`;
+    return;
+  }
+
+  // For a single pitcher — show their inning-by-inning trend across all games
+  let html = '';
+
+  if (selName && !specificGame) {
+    // Multi-game trend for one pitcher
+    const allGamesForPitcher = ptGames.filter(g=>g.pitchers.some(p=>p.name===selName));
+    const pitcherGames = allGamesForPitcher.map(g => ({
+      game: g,
+      pitcher: g.pitchers.find(p=>p.name===selName),
+    }));
+
+    // Average pitches per inning across all games
+    const inningAverages = INNINGS.map((_, i) => {
+      const vals = pitcherGames
+        .map(pg => pg.pitcher.innings[i]?.pitches || 0)
+        .filter(v => v > 0);
+      const runsVals = pitcherGames
+        .map(pg => pg.pitcher.innings[i]?.runs || 0);
+      return {
+        avgPitches: vals.length ? Math.round(vals.reduce((a,c)=>a+c,0)/vals.length*10)/10 : 0,
+        totalRuns:  runsVals.reduce((a,c)=>a+c,0),
+        games:      vals.length,
+      };
+    });
+
+    const maxPitches = Math.max(...inningAverages.map(a=>a.avgPitches), 1);
+
+    html += `<div class="trend-chart-wrap">
+      <div class="trend-chart-title">${selName} — avg pitches per inning (${pitcherGames.length} games)</div>
+      <div class="inning-trend-bars">
+        ${inningAverages.map((inn, i) => {
+          const pct    = inn.avgPitches > 0 ? (inn.avgPitches/maxPitches*100) : 5;
+          const color  = inn.avgPitches < 14 ? '#81C784' : inn.avgPitches < 18 ? '#FFB74D' : '#EF9A9A';
+          const danger = inn.totalRuns > 2 ? '⚠' : '';
+          return `<div class="inning-trend-bar-wrap">
+            <div class="inning-trend-val">${inn.avgPitches > 0 ? inn.avgPitches.toFixed(0) : '—'}</div>
+            <div class="inning-trend-bar" style="height:${pct}%;background:${color}"></div>
+            <div class="inning-trend-label">${INNINGS[i]}${danger}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="display:flex;gap:16px;font-size:10px;color:#5A4A3C;margin-top:4px">
+        <span style="color:#81C784">■ Efficient (&lt;14)</span>
+        <span style="color:#FFB74D">■ Working (14-18)</span>
+        <span style="color:#EF9A9A">■ Laboring (18+)</span>
+        <span>⚠ = inning where runs were allowed across games</span>
+      </div>
+    </div>
+
+    <div class="trend-chart-wrap">
+      <div class="trend-chart-title">${selName} — runs allowed by inning (${pitcherGames.length} games total)</div>
+      ${(() => {
+        const maxRuns = Math.max(...inningAverages.map(a=>a.totalRuns), 1);
+        return `<div class="inning-trend-bars">
+          ${inningAverages.map((inn,i) => {
+            const pct   = inn.totalRuns > 0 ? (inn.totalRuns/maxRuns*100) : 3;
+            const color = inn.totalRuns === 0 ? '#1C1410' : inn.totalRuns < 2 ? '#FFB74D' : '#EF9A9A';
+            return `<div class="inning-trend-bar-wrap">
+              <div class="inning-trend-val" style="color:${inn.totalRuns>0?'#EF9A9A':'#3A2A1C'}">${inn.totalRuns}</div>
+              <div class="inning-trend-bar" style="height:${pct}%;background:${color}"></div>
+              <div class="inning-trend-label">${INNINGS[i]}</div>
+            </div>`;
+          }).join('')}
+        </div>`;
+      })()}
+      <div style="font-size:11px;color:#8A9BA8;margin-top:8px">
+        ${(() => {
+          const worstInning = inningAverages.reduce((a,c,i)=>c.totalRuns>inningAverages[a].totalRuns?i:a, 0);
+          const runs = inningAverages[worstInning].totalRuns;
+          if (runs === 0) return '✓ No run-scoring innings recorded yet';
+          return `⚠ ${INNINGS[worstInning]} inning is the trouble spot — ${runs} total runs allowed across ${pitcherGames.length} games. Consider earlier hook or extra bullpen prep.`;
+        })()}
+      </div>
+    </div>`;
+
+    // Game-by-game efficiency table
+    html += `<div class="card">
+      <div class="card-header">
+        <div class="card-title">${selName} — game by game</div>
+        <div class="card-badge">${pitcherGames.length} games</div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="stat-table" style="min-width:400px">
+          <thead><tr>
+            <th style="text-align:left;padding-left:12px">Game</th>
+            <th>IP</th><th>Pitches</th><th>P/IP</th><th>Runs</th><th>K</th><th>BB</th>
+          </tr></thead>
+          <tbody>
+            ${pitcherGames.map(({game,pitcher}) => {
+              const ppi = pitcher.p_per_ip;
+              const color = ppi<15?'#81C784':ppi<18?'#FFB74D':'#EF9A9A';
+              return `<tr>
+                <td style="text-align:left;padding-left:12px;font-weight:600;color:#F5F0E8">${game.opponent} ${game.date||''}</td>
+                <td>${pitcher.ip}</td>
+                <td>${pitcher.totalPitches}</td>
+                <td style="color:${color};font-weight:600">${ppi.toFixed(1)}</td>
+                <td style="color:${pitcher.totalRuns>0?'#EF9A9A':'#81C784'}">${pitcher.totalRuns}</td>
+                <td>${pitcher.totalK}</td>
+                <td>${pitcher.totalBB}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  // Show individual game breakdowns
+  gamesToShow.forEach(game => {
+    const pitchersToShow = selName ?
+      game.pitchers.filter(p=>p.name===selName) : game.pitchers;
+
+    html += `<div style="font-size:12px;font-weight:600;color:#8A9BA8;margin:16px 0 8px">
+      ${game.opponent} · ${game.date||''} · ${game.score||''} · ${game.result||''}
+    </div>`;
+
+    pitchersToShow.forEach(pitcher => {
+      const maxPitches = Math.max(...pitcher.innings.map(i=>i.pitches), 1);
+      html += `<div class="trend-chart-wrap">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div class="trend-chart-title" style="margin-bottom:0">${pitcher.name} — pitches by inning</div>
+          <div style="font-size:11px;color:#8A9BA8">${pitcher.totalPitches} total · ${pitcher.p_per_ip.toFixed(1)} P/IP</div>
+        </div>
+        <div class="inning-trend-bars">
+          ${pitcher.innings.map((inn, i) => {
+            const pct   = inn.pitches > 0 ? (inn.pitches/maxPitches*100) : 3;
+            const color = inn.pitches < 14 ? '#81C784' : inn.pitches < 18 ? '#FFB74D' : '#EF9A9A';
+            const hasRuns = inn.runs > 0;
+            return `<div class="inning-trend-bar-wrap">
+              <div class="inning-trend-val">${inn.pitches||'—'}</div>
+              <div class="inning-trend-bar" style="height:${pct}%;background:${hasRuns?'#EF9A9A':color}"></div>
+              <div class="inning-trend-label" style="${hasRuns?'color:#EF9A9A':''}">${INNINGS[i]}${hasRuns?' ('+inn.runs+'R)':''}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        ${pitcher.totalPitches >= 85 ?
+          `<div class="warning-bubble">⚠ High pitch count — ${pitcher.totalPitches} pitches thrown this game</div>` : ''}
+      </div>`;
+    });
+  });
+
+  container.innerHTML = html || `<div class="empty-state"><div class="empty-title">Select a pitcher to see trends</div></div>`;
+}
+
+// showPTView — switches between pitch tracker views
+function showPTView(view) {
+  ['pt-log-view','pt-list-view','pt-trends-view'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  if (view === 'log') {
+    document.getElementById('pt-log-view').style.display = 'block';
+    // Init form
+    document.getElementById('pt-opponent').value = '';
+    document.getElementById('pt-date').valueAsDate = new Date();
+    document.getElementById('pt-result').value = '';
+    document.getElementById('pt-score').value  = '';
+    document.getElementById('pt-pitcher-entries').innerHTML = '';
+    ptPitchCount = 0;
+    ptAddPitcher();
+  } else if (view === 'list') {
+    document.getElementById('pt-list-view').style.display = 'block';
+    renderPTList();
+  } else {
+    document.getElementById('pt-trends-view').style.display = 'block';
+    renderPTPitcherSelect();
+    renderPTTrends();
+  }
+}
+
+// ── PITCH TRACKER — CSV & GAME FILE IMPORTS ──────────────────────────────
+
+// handlePTSeasonCSV — imports a GameChanger season CSV export
+// Extracts pitcher data and adds season stats to the pitch tracker
+// This uses the same column positions as the main dashboard parser
+function handlePTSeasonCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  setPTStatus(`Reading ${file.name}...`);
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const lines = e.target.result.split('\n').map(l => l.replace(/\r/g,''));
+    if (lines.length < 3) { setPTStatus('Could not read file', true); return; }
+
+    // Ask for season year
+    const yearInput = prompt('What season year is this CSV?\n\nEnter the year (e.g. 2025):', new Date().getFullYear());
+    if (!yearInput) { setPTStatus('Import cancelled'); event.target.value=''; return; }
+    const year = parseInt(yearInput);
+    if (isNaN(year)) { setPTStatus('Invalid year', true); event.target.value=''; return; }
+
+    // Parse CSV rows — same format as main dashboard
+    function parseRow(line) {
+      const result=[]; let cur=''; let inQ=false;
+      for (const ch of line) {
+        if (ch==='"') inQ=!inQ;
+        else if (ch===','&&!inQ){result.push(cur);cur='';}
+        else cur+=ch;
+      }
+      result.push(cur);
+      return result;
+    }
+    const toN = v => { const n=parseFloat(String(v||'0').replace(/-/g,'0').trim()); return isNaN(n)?0:n; };
+
+    // Pitching columns from season CSV
+    const PIT = { last:1, first:2, ip:54, pitches:58, bf:57, er:67,
+                  runs:66, bb:68, k:69, hbp:71, wp:80, era:72, whip:73 };
+
+    const pitchers = [];
+    for (let i = 2; i < lines.length; i++) {
+      const row  = parseRow(lines[i].trim());
+      if (row.length < 10) continue;
+      const last  = (row[PIT.last]  ||'').trim().replace(/"/g,'');
+      const first = (row[PIT.first] ||'').trim().replace(/"/g,'');
+      if (!last || last==='Totals') continue;
+      const ip = toN(row[PIT.ip]);
+      if (ip <= 0) continue;  // skip non-pitchers
+
+      pitchers.push({
+        name:    first ? `${last}, ${first[0]}.` : last,
+        ip:      Math.round(ip*10)/10,
+        pitches: Math.round(toN(row[PIT.pitches])),
+        bf:      Math.round(toN(row[PIT.bf])),
+        er:      Math.round(toN(row[PIT.er])),
+        runs:    Math.round(toN(row[PIT.runs])),
+        bb:      Math.round(toN(row[PIT.bb])),
+        k:       Math.round(toN(row[PIT.k])),
+        era:     Math.round(toN(row[PIT.era])*100)/100,
+        whip:    Math.round(toN(row[PIT.whip])*1000)/1000,
+        p_per_ip: ip>0 ? Math.round(toN(row[PIT.pitches])/ip*10)/10 : 0,
+      });
+    }
+
+    if (!pitchers.length) {
+      setPTStatus('No pitching data found in this file — make sure this is a GameChanger season export', true);
+      event.target.value=''; return;
+    }
+
+    // Add as a season summary "game" entry
+    // This shows up in the game log as a season record
+    // and feeds into the pitcher trend charts
+    ptGames.push({
+      id:       Date.now(),
+      opponent: `${year} Season Summary`,
+      date:     `${year}-01-01`,
+      result:   'Season',
+      score:    `${pitchers.length} pitchers`,
+      isSeasonImport: true,
+      year,
+      pitchers: pitchers.map(p => ({
+        name:         p.name,
+        innings:      INNINGS.map(()=>({pitches:0,hits:0,runs:0,k:0,bb:0})),
+        totalPitches: p.pitches,
+        totalRuns:    p.runs,
+        totalK:       p.k,
+        totalBB:      p.bb,
+        totalHits:    0,
+        ip:           Math.round(p.ip),
+        p_per_ip:     p.p_per_ip,
+        era:          p.era,
+        whip:         p.whip,
+        isSeasonStats: true,
+      })),
+    });
+
+    renderPTList();
+    renderPTPitcherSelect();
+    showPTView('list');
+    setPTStatus(`✓ ${year} season imported — ${pitchers.length} pitchers loaded`);
+    showToast(`${year} season stats imported for ${pitchers.length} pitchers`);
+    event.target.value = '';
+  };
+  reader.onerror = () => setPTStatus('Could not read file', true);
+  reader.readAsText(file);
+}
+
+// handlePTGameFile — imports a GameChanger single-game .txt export
+// This is the pipe-delimited format with jersey numbers (no names)
+// Column positions confirmed from file inspection:
+// 0=Jersey, 1=Hits, 8=AtBats, 9=BB, 10=SO, 13=SB, 6=RBI, 7=Runs
+// 18=ER, 19=RunsAgainst, 21=BattersFaced, 22=K, 23=BB_against
+// 28=InningsPitched, 30=NumberOfPitches
+function handlePTGameFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  setPTStatus(`Reading ${file.name}...`);
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const lines = e.target.result
+      .split('\n')
+      .map(l => l.replace(/\r/g,'').trim())
+      .filter(l => l.length > 0);
+
+    if (!lines.length) { setPTStatus('File appears empty', true); event.target.value=''; return; }
+
+    // Ask for game details since the file only has jersey numbers
+    const opponent = prompt('Who was the opponent in this game?', '');
+    if (!opponent) { setPTStatus('Import cancelled'); event.target.value=''; return; }
+
+    const dateInput = prompt('What was the game date? (YYYY-MM-DD)', new Date().toISOString().split('T')[0]);
+
+    // Ask for pitcher name mapping since the file only has jersey numbers
+    // We'll parse pitchers first, then ask the coach to confirm names
+    const toN = v => { const n=parseFloat(String(v||'0').trim()); return isNaN(n)?0:n; };
+
+    // Skip header row if it exists (check if first column is 'Jersey')
+    const startLine = lines[0].split('|')[0].trim().toLowerCase()==='jersey' ? 1 : 0;
+
+    const allPlayers = [];
+    const pitcherRows = [];
+
+    for (let i = startLine; i < lines.length; i++) {
+      const row    = lines[i].split('|');
+      const jersey = row[0]?.trim();
+      if (!jersey || jersey.toLowerCase()==='jersey') continue;
+
+      const ip      = toN(row[28]);
+      const pitches = toN(row[30]);
+      const ab      = toN(row[8]);
+      const hits    = toN(row[1]);
+      const rbi     = toN(row[6]);
+      const runs    = toN(row[7]);
+      const bb      = toN(row[9]);
+      const so      = toN(row[10]);
+      const sb      = toN(row[13]);
+
+      // Player appeared as batter
+      if (ab > 0 || hits > 0 || runs > 0 || rbi > 0 || bb > 0) {
+        allPlayers.push({ jersey, ab, hits, rbi, runs, bb, so, sb });
+      }
+
+      // Player appeared as pitcher (has pitch count)
+      if (pitches > 0 || ip > 0) {
+        const er  = toN(row[18]);
+        const ra  = toN(row[19]);
+        const k   = toN(row[22]);
+        const bbA = toN(row[23]);
+        const bf  = toN(row[21]);
+        pitcherRows.push({ jersey, ip, pitches, er, ra, k, bb:bbA, bf });
+      }
+    }
+
+    if (!pitcherRows.length) {
+      setPTStatus('No pitching data found in this file', true);
+      event.target.value=''; return;
+    }
+
+    // Ask coach to map jersey numbers to player names
+    // They can leave blank to keep jersey number as the identifier
+    const namedPitchers = pitcherRows.map(p => {
+      const name = prompt(
+        `Jersey #${p.jersey} pitched ${p.ip} innings with ${p.pitches} pitches.\n\nEnter their name (or leave blank to use #${p.jersey}):`,
+        ''
+      ) || `#${p.jersey}`;
+      return {
+        name,
+        jersey: p.jersey,
+        innings: INNINGS.map(() => ({pitches:0,hits:0,runs:0,k:0,bb:0})),
+        totalPitches: p.pitches,
+        totalRuns:    p.ra,
+        totalK:       p.k,
+        totalBB:      p.bb,
+        totalHits:    0,
+        ip:           Math.round(p.ip),
+        p_per_ip:     p.ip > 0 ? Math.round(p.pitches/p.ip*10)/10 : 0,
+        era:          p.ip > 0 ? Math.round((p.er*9/p.ip)*100)/100 : 0,
+        bf:           p.bf,
+        isGameImport: true,
+      };
+    });
+
+    // Build batting summary from all players
+    const battingSummary = allPlayers.map(p => ({
+      jersey: p.jersey,
+      ab: p.ab, hits: p.hits, rbi: p.rbi,
+      runs: p.runs, bb: p.bb, so: p.so, sb: p.sb,
+      avg: p.ab > 0 ? Math.round(p.hits/p.ab*1000)/1000 : 0,
+    }));
+
+    // Total team stats
+    const teamHits = allPlayers.reduce((a,c)=>a+c.hits,0);
+    const teamRuns = allPlayers.reduce((a,c)=>a+c.runs,0);
+    const teamSB   = allPlayers.reduce((a,c)=>a+c.sb,  0);
+
+    ptGames.push({
+      id:             Date.now(),
+      opponent:       opponent,
+      date:           dateInput || '',
+      result:         '',
+      score:          `${teamRuns} runs, ${teamHits} hits`,
+      isGameImport:   true,
+      battingSummary,
+      pitchers: namedPitchers,
+    });
+
+    renderPTList();
+    renderPTPitcherSelect();
+    showPTView('list');
+    setPTStatus(`✓ Game vs ${opponent} imported — ${namedPitchers.length} pitcher${namedPitchers.length!==1?'s':''}, ${allPlayers.length} batters`);
+    showToast(`Game vs ${opponent} imported`);
+    event.target.value = '';
+  };
+  reader.onerror = () => setPTStatus('Could not read file', true);
+  reader.readAsText(file);
+}
+
+// setPTStatus — shows/hides the import status message
+function setPTStatus(msg, isError=false) {
+  const el = document.getElementById('pt-import-status');
+  if (!el) return;
+  el.style.display = msg ? 'block' : 'none';
+  el.style.color   = isError ? '#EF9A9A' : '#81C784';
+  el.textContent   = msg;
+}
+// ── END PITCH TRACKER IMPORTS ─────────────────────────────────────────────
+
+// ── END PITCH TRACKER ─────────────────────────────────────────────────────
+
+
+// ── TEAM NAME CONFIGURATION ───────────────────────────────────────────────
+// applyTeamName — updates all UI elements with the current team name.
+// Called once on init and again if the coach changes their team name
+// in the Data Manager settings.
+function applyTeamName() {
+  const full = `${TEAM_SCHOOL} ${TEAM_NAME}`;
+  const el = (id) => document.getElementById(id);
+
+  if (el('sidebar-brand-name')) el('sidebar-brand-name').textContent = `${TEAM_NAME} ${TEAM_SPORT.split(' ').pop()}`;
+  if (el('sidebar-brand-sub'))  el('sidebar-brand-sub').textContent  = 'Coach Dashboard';
+  if (el('sidebar-footer'))     el('sidebar-footer').innerHTML       = `${full} · ${TEAM_SPORT}<br>Data: GameChanger export`;
+  if (el('ticker-label'))       el('ticker-label').textContent       = TEAM_NAME;
+  if (el('page-sub-main'))      el('page-sub-main').textContent      = `${full} ${TEAM_SPORT}`;
+  document.title = `${TEAM_NAME} ${TEAM_SPORT.split(' ').pop()} — Coach Dashboard`;
+}
+// ── END TEAM NAME CONFIGURATION ───────────────────────────────────────────
+
 // ── INIT ──────────────────────────────────────────────
+applyTeamName();
 safeRenderAll();
 </script>
 </body>
