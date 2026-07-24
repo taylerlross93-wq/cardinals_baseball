@@ -682,34 +682,22 @@ reader.onload = function(e) {
       document.getElementById('season-filter').value = year;
       activeSeason = String(year);
 
-     // Refresh all dashboard sections with new data
-try {
-  renderTicker();    console.log('ticker ok');
-  renderOverview();  console.log('overview ok');
-  renderBatting();   console.log('batting ok');
-  renderPitching();  console.log('pitching ok');
-  renderTrends();    console.log('trends ok');
-  renderProfileSelect(); console.log('profiles ok');
-} catch(renderErr) {
-  console.error('Render failed:', renderErr.message);
-}
-
-// Show success messages
+     // Show success BEFORE rendering so extension
+      // interference can't block the success message
       setUploadStatus('success',
         `✓ ${year} loaded — ${players.length} players`);
       showToast(`${year} ${isJV ? 'JV' : 'Varsity'} season imported successfully`);
-
-      // Update the uploaded seasons list in the sidebar
       renderUploadedList();
-
-      // Reset the file input so the same file can be
-      // uploaded again if needed (e.g. after an edit)
       event.target.value = '';
 
     } catch(err) {
       setUploadStatus('error', 'Could not read file — is this a GameChanger export?');
       showToast('Upload failed — check the file format', true);
     }
+
+    // Render outside the try/catch so extension errors
+    // can't override the success message above
+    try { renderAll(); } catch(e) { console.warn('Render warning:', e.message); }
   };
 
   // readAsText tells FileReader to read the file as plain text
