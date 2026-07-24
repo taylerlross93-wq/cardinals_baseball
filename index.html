@@ -77,7 +77,6 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 .year-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700}
 .y2023{background:#1A2A3A;color:#90CAF9}.y2024{background:#1B3A1F;color:#81C784}
 .y2025{background:#3E2800;color:#FFB74D}.y2026{background:#3E1212;color:#EF9A9A}
-.y9999{background:#2A1A3A;color:#CE93D8}
 .trend-bars{display:flex;flex-direction:column;gap:8px;padding:4px 0}
 .trend-row{display:flex;align-items:center;gap:10px}
 .trend-year{font-size:11px;color:#8A9BA8;width:36px;flex-shrink:0;font-weight:600}
@@ -100,217 +99,44 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:#120D09}
 ::-webkit-scrollbar-thumb{background:#3A2A1C;border-radius:3px}
-
-/* =====================================================
-   ★ NEW — CSV UPLOAD STYLES
-   Everything between these comment markers is new code
-   added for the CSV upload feature
-   ===================================================== */
-
-/* Upload button in sidebar */
-.upload-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 9px 10px;
-  border-radius: 7px;
-  cursor: pointer;
-  color: #FFB74D;
-  font-size: 13px;
-  font-weight: 500;
-  border: 1px dashed #5A4A3C;
-  background: #1C1410;
-  margin-top: 6px;
-  transition: all .15s;
-  text-align: left;
-}
-.upload-btn:hover {
-  border-color: #C8102E;
-  color: #F5F0E8;
-  background: #2E1E10;
-}
-
-/* Hidden file input — we trigger it from the button */
-.file-input-hidden {
-  display: none;
-}
-
-/* Upload status bar shown below the button */
-.upload-status {
-  font-size: 11px;
-  color: #8A9BA8;
-  padding: 6px 4px 0;
-  line-height: 1.4;
-}
-.upload-status.success { color: #81C784; }
-.upload-status.error   { color: #EF9A9A; }
-.upload-status.loading { color: #FFB74D; }
-
-/* Toast notification that slides up when upload completes */
-.toast {
-  position: fixed;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1B3A1F;
-  border: 1px solid #2E7D32;
-  color: #81C784;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  transition: bottom .3s ease;
-  z-index: 9999;
-  white-space: nowrap;
-}
-.toast.show { bottom: 24px; }
-.toast.error-toast {
-  background: #3E1212;
-  border-color: #C62828;
-  color: #EF9A9A;
-}
-
-/* Uploaded seasons list in sidebar */
-.uploaded-tag {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5px 8px;
-  background: #1C1410;
-  border: 1px solid #2E2018;
-  border-radius: 6px;
-  margin-top: 5px;
-  font-size:11px;
-  color: #D0C8BC;
-}
-.uploaded-tag-remove {
-  background: none;
-  border: none;
-  color: #5A4A3C;
-  cursor: pointer;
-  font-size: 13px;
-  line-height: 1;
-  padding: 0 2px;
-}
-.uploaded-tag-remove:hover { color: #EF9A9A; }
-
-/* =====================================================
-   ★ NEW — JV STYLES
-   Controls how JV and side-by-side views look.
-   JV uses blue as its accent color throughout.
-   ===================================================== */
-
-/* Side by side wrapper — splits the page into two columns */
-.split-view {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-/* Label strip at the top of each split column */
-.split-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  padding: 6px 10px;
-  border-radius: 6px;
-  margin-bottom: 10px;
-  display: inline-block;
-}
-.split-label.varsity { background: #3E1212; color: #EF9A9A; }
-.split-label.jv      { background: #0D2744; color: #90CAF9; }
-
-/* JV KPI cards use blue accent instead of red */
-.kpi.jv-kpi::before { background: #1565C0; }
-.kpi.jv-kpi .kpi-val { color: #90CAF9; }
-
-/* JV stat pills use blue tones */
-.pill-g-jv { background: #0D2744; color: #90CAF9; }
-.pill-a-jv { background: #1A1A3A; color: #CE93D8; }
-.pill-r-jv { background: #1A0D2E; color: #EF9A9A; }
-
-/* Pipeline section on player profiles page */
-.pipeline-card {
-  background: #120D09;
-  border: 1px solid #2E2018;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-.pipeline-header {
-  padding: 12px 16px;
-  border-bottom: 1px solid #2E2018;
-  background: linear-gradient(90deg, #1a0508 0%, #051020 100%);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.pipeline-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #F5F0E8;
-}
-.pipeline-badge {
-  font-size: 10px;
-  padding: 3px 10px;
-  border-radius: 10px;
-  background: #1C1410;
-  border: 1px solid #2E2018;
-  color: #8A9BA8;
-}
-.pipeline-body { padding: 14px 16px; }
-.pipeline-player {
-  display: grid;
-  grid-template-columns: 180px 1fr 1fr auto;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #1C1410;
-}
-.pipeline-player:last-child { border-bottom: none; }
-.pp-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: #F5F0E8;
-}
-.pp-years {
-  font-size: 10px;
-  color: #8A9BA8;
-  margin-top: 2px;
-}
-.pp-stat {
-  text-align: center;
-}
-.pp-stat-label {
-  font-size: 9px;
-  color: #5A4A3C;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-bottom: 3px;
-}
-.pp-stat-val {
-  font-size: 14px;
-  font-weight: 700;
-  color: #F5F0E8;
-  font-family: Georgia, serif;
-}
-.pp-arrow {
-  font-size: 18px;
-  color: #4CAF50;
-  font-weight: 700;
-}
-.pp-arrow.down { color: #EF5350; }
-.pp-arrow.flat { color: #8A9BA8; }
-
-/* ★ END NEW JV STYLES */
+/* ── UPLOAD STYLES ── */
+.upload-btn{display:flex;align-items:center;gap:8px;width:100%;padding:9px 10px;border-radius:7px;cursor:pointer;color:#FFB74D;font-size:13px;font-weight:500;border:1px dashed #5A4A3C;background:#1C1410;margin-top:6px;transition:all .15s;text-align:left}
+.upload-btn:hover{border-color:#C8102E;color:#F5F0E8;background:#2E1E10}
+.file-input-hidden{display:none}
+.upload-status{font-size:11px;color:#8A9BA8;padding:6px 4px 0;line-height:1.4}
+.upload-status.success{color:#81C784}
+.upload-status.error{color:#EF9A9A}
+.upload-status.loading{color:#FFB74D}
+.toast{position:fixed;bottom:-60px;left:50%;transform:translateX(-50%);background:#1B3A1F;border:1px solid #2E7D32;color:#81C784;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:500;transition:bottom .3s ease;z-index:9999;white-space:nowrap}
+.toast.show{bottom:24px}
+.toast.error-toast{background:#3E1212;border-color:#C62828;color:#EF9A9A}
+.uploaded-tag{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;background:#1C1410;border:1px solid #2E2018;border-radius:6px;margin-top:5px;font-size:11px;color:#D0C8BC}
+.uploaded-tag-remove{background:none;border:none;color:#5A4A3C;cursor:pointer;font-size:13px;line-height:1;padding:0 2px}
+.uploaded-tag-remove:hover{color:#EF9A9A}
+/* ── JV STYLES ── */
+.team-divider{background:#051020;color:#90CAF9;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:6px 12px}
+.team-divider.varsity-div{background:#1a0508;color:#EF9A9A}
+.split-view{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.split-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:5px 8px;border-radius:5px;margin-bottom:8px;display:inline-block}
+.split-label.v{background:#3E1212;color:#EF9A9A}
+.split-label.j{background:#0D2744;color:#90CAF9}
+.pipeline-card{background:#120D09;border:1px solid #2E2018;border-radius:10px;overflow:hidden;margin-bottom:16px}
+.pipeline-header{padding:12px 16px;border-bottom:1px solid #2E2018;background:linear-gradient(90deg,#1a0508,#051020);display:flex;align-items:center;justify-content:space-between}
+.pipeline-title{font-size:13px;font-weight:600;color:#F5F0E8}
+.pipeline-badge{font-size:10px;padding:3px 10px;border-radius:10px;background:#1C1410;border:1px solid #2E2018;color:#8A9BA8}
+.pipeline-body{padding:14px 16px}
+.pipeline-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1C1410}
+.pipeline-row:last-child{border-bottom:none}
+.pp-name{font-size:13px;font-weight:600;color:#F5F0E8;min-width:140px}
+.pp-years{font-size:10px;color:#8A9BA8;margin-top:2px}
+.pp-stat{text-align:center;min-width:70px}
+.pp-stat-label{font-size:9px;color:#5A4A3C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.pp-stat-val{font-size:15px;font-weight:700;font-family:Georgia,serif}
+.pp-arrow{font-size:18px;font-weight:700;flex:1;text-align:center}
 </style>
 </head>
 <body>
 <div class="shell">
-
   <div class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-name">Cardinals Baseball</div>
@@ -318,18 +144,12 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
     </div>
 
     <div class="sidebar-section">
-      <!-- ★ NEW — TEAM SELECTOR
-           Controls whether Varsity, JV, or Both are shown.
-           applyFilters() reads this value the same way it
-           reads the season filter — one function handles both. -->
       <div class="sidebar-label">Team</div>
       <select class="filter-select" id="team-filter" onchange="applyFilters()">
         <option value="varsity" selected>Varsity</option>
         <option value="jv">JV</option>
         <option value="both">Both — side by side</option>
       </select>
-      <!-- ★ END NEW TEAM SELECTOR -->
-
       <div class="sidebar-label" style="margin-top:10px">Season</div>
       <select class="filter-select" id="season-filter" onchange="applyFilters()">
         <option value="all">All seasons</option>
@@ -339,131 +159,67 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
         <option value="2023">2023</option>
       </select>
       <div class="sidebar-label" style="margin-top:10px">Player</div>
-      <input class="filter-input" type="text" id="player-filter"
-             placeholder="Search by name..." oninput="applyFilters()">
+      <input class="filter-input" type="text" id="player-filter" placeholder="Search by name..." oninput="applyFilters()">
     </div>
 
-    <!-- =====================================================
-         ★ NEW — UPLOAD SECTION IN SIDEBAR
-         This whole sidebar-section block is new.
-         It contains the upload button, hidden file input,
-         status message, and list of uploaded seasons.
-         ===================================================== -->
     <div class="sidebar-section">
       <div class="sidebar-label">Import GameChanger CSV</div>
-
-      <!-- Clicking this button triggers the hidden file input below -->
       <button class="upload-btn" onclick="document.getElementById('csv-file-input').click()">
         <span>⬆</span> Upload CSV
       </button>
-
-      <!-- Hidden input — accepts .csv files only -->
-      <!-- onchange fires as soon as the coach picks a file -->
-      <input
-        class="file-input-hidden"
-        type="file"
-        id="csv-file-input"
-        accept=".csv"
-        onchange="handleFileUpload(event)"
-      >
-
-      <!-- Status message updates as the file loads -->
-      <div class="upload-status" id="upload-status">
-        Drop your GameChanger season export here
-      </div>
-
-      <!-- List of seasons that have been uploaded this session -->
+      <input class="file-input-hidden" type="file" id="csv-file-input" accept=".csv" onchange="handleFileUpload(event)">
+      <div class="upload-status" id="upload-status">Drop your GameChanger season export here</div>
       <div id="uploaded-seasons-list"></div>
     </div>
-    <!-- ★ END NEW UPLOAD SECTION -->
 
     <nav class="sidebar-nav">
       <div class="nav-label">Dashboard</div>
-      <button class="nav-item active" onclick="showPage('overview',this)">
-        <span class="nav-icon">⚾</span> Overview
-      </button>
-      <button class="nav-item" onclick="showPage('batting',this)">
-        <span class="nav-icon">🏏</span> Batting
-      </button>
-      <button class="nav-item" onclick="showPage('pitching',this)">
-        <span class="nav-icon">💪</span> Pitching
-      </button>
+      <button class="nav-item active" onclick="showPage('overview',this)"><span class="nav-icon">⚾</span> Overview</button>
+      <button class="nav-item" onclick="showPage('batting',this)"><span class="nav-icon">🏏</span> Batting</button>
+      <button class="nav-item" onclick="showPage('pitching',this)"><span class="nav-icon">💪</span> Pitching</button>
       <div class="nav-label" style="margin-top:8px">Analysis</div>
-      <button class="nav-item" onclick="showPage('trends',this)">
-        <span class="nav-icon">📈</span> Season Trends
-      </button>
-      <button class="nav-item" onclick="showPage('players',this)">
-        <span class="nav-icon">👤</span> Player Profiles
-      </button>
+      <button class="nav-item" onclick="showPage('trends',this)"><span class="nav-icon">📈</span> Season Trends</button>
+      <button class="nav-item" onclick="showPage('players',this)"><span class="nav-icon">👤</span> Player Profiles</button>
     </nav>
 
-    <div class="sidebar-footer">
-      Clinton Cardinals Varsity<br>
-      Data: 2023–2026 · GameChanger
-    </div>
+    <div class="sidebar-footer">Clinton Cardinals Varsity Baseball<br>Data: GameChanger export</div>
   </div>
 
   <div class="main">
     <div class="ticker">
       <div class="ticker-label">Cardinals</div>
-      <div class="ticker-track">
-        <div class="ticker-inner" id="ticker-inner"></div>
-      </div>
+      <div class="ticker-track"><div class="ticker-inner" id="ticker-inner"></div></div>
     </div>
-
     <div class="page-header">
       <div>
         <div class="page-title" id="page-title">Season Overview</div>
-        <div class="page-sub">Clinton Cardinals Varsity Baseball</div>
+        <div class="page-sub">Clinton Cardinals Baseball</div>
       </div>
-      <div class="header-badge" id="header-badge">2025 Season</div>
+      <div class="header-badge" id="header-badge">2025 Season · Varsity</div>
     </div>
-
     <div class="content">
 
       <div class="page active" id="page-overview">
         <div class="kpi-row" id="kpi-row"></div>
         <div class="overview-grid">
           <div class="card">
-            <div class="card-header">
-              <div class="card-title">Top batters</div>
-              <div class="card-badge">by AVG</div>
-            </div>
-            <div class="card-body">
-              <table class="mini-table">
-                <thead><tr><th>Player</th><th>AVG</th><th>OBP</th><th>RBI</th><th>SB</th></tr></thead>
-                <tbody id="top-batters"></tbody>
-              </table>
-            </div>
+            <div class="card-header"><div class="card-title">Top batters</div><div class="card-badge">by AVG</div></div>
+            <div class="card-body"><table class="mini-table"><thead><tr><th>Player</th><th>AVG</th><th>OBP</th><th>RBI</th><th>SB</th></tr></thead><tbody id="top-batters"></tbody></table></div>
           </div>
           <div class="card">
-            <div class="card-header">
-              <div class="card-title">Pitching leaders</div>
-              <div class="card-badge">by ERA</div>
-            </div>
-            <div class="card-body">
-              <table class="mini-table">
-                <thead><tr><th>Player</th><th>ERA</th><th>IP</th><th>W</th><th>WHIP</th></tr></thead>
-                <tbody id="top-pitchers"></tbody>
-              </table>
-            </div>
+            <div class="card-header"><div class="card-title">Pitching leaders</div><div class="card-badge">by ERA</div></div>
+            <div class="card-body"><table class="mini-table"><thead><tr><th>Player</th><th>ERA</th><th>IP</th><th>W</th><th>WHIP</th></tr></thead><tbody id="top-pitchers"></tbody></table></div>
           </div>
         </div>
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">Year-over-year — Team AVG</div>
-            <div class="card-badge">all seasons</div>
-          </div>
+          <div class="card-header"><div class="card-title">Year-over-year — Team AVG</div><div class="card-badge" id="yoy-badge">all seasons</div></div>
           <div class="card-body" id="yoy-chart"></div>
         </div>
       </div>
 
       <div class="page" id="page-batting">
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">Batting statistics</div>
-            <div class="card-badge" id="bat-count"></div>
-          </div>
+          <div class="card-header"><div class="card-title">Batting statistics</div><div class="card-badge" id="bat-count"></div></div>
           <div class="table-wrap">
             <table class="stat-table">
               <thead><tr>
@@ -489,10 +245,7 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
 
       <div class="page" id="page-pitching">
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">Pitching statistics</div>
-            <div class="card-badge" id="pitch-count"></div>
-          </div>
+          <div class="card-header"><div class="card-title">Pitching statistics</div><div class="card-badge" id="pitch-count"></div></div>
           <div class="table-wrap">
             <table class="stat-table">
               <thead><tr>
@@ -523,10 +276,10 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
       </div>
 
       <div class="page" id="page-players">
+        <div id="pipeline-section"></div>
         <div class="card" style="margin-bottom:16px">
           <div class="card-body" style="padding:10px 16px">
-            <select class="filter-select" style="width:auto;min-width:200px"
-                    id="profile-select" onchange="renderProfile()">
+            <select class="filter-select" style="width:auto;min-width:200px" id="profile-select" onchange="renderProfile()">
               <option value="">Select a player...</option>
             </select>
           </div>
@@ -543,15 +296,11 @@ html,body{height:100%;background:#1C1410;font-family:system-ui,-apple-system,'Se
     </div>
   </div>
 </div>
-
-<!-- Toast notification element -->
-<!-- ★ NEW — toast lives outside the shell so it floats over everything -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── BUILT-IN DATA (pre-loaded seasons) ──────────────────
-// This data is baked in by the Python generator script.
-// Uploaded CSVs get ADDED to this array at runtime.
+// ── DATA ─────────────────────────────────────────────
+// Varsity data — baked in, also grows via CSV upload
 let RAW = [
   {year:2026,name:'Mitchell, C.',num:'3',gp:22,pa:108,ab:88,avg:.352,obp:.430,ops:.820,h:31,rbi:38,r:28,sb:12,bb:16,so:8,ip:0,era:0,whip:0,w:0,l:0,k:0},
   {year:2026,name:'Martin, M.',num:'5',gp:22,pa:109,ab:92,avg:.306,obp:.390,ops:.740,h:28,rbi:32,r:22,sb:15,bb:12,so:14,ip:24.1,era:3.16,whip:1.21,w:3,l:1,k:18},
@@ -572,32 +321,10 @@ let RAW = [
   {year:2023,name:'Martin, M.',num:'5',gp:21,pa:76,ab:70,avg:.314,obp:.382,ops:.760,h:22,rbi:24,r:18,sb:14,bb:5,so:10,ip:20.0,era:3.60,whip:1.30,w:3,l:2,k:16},
 ];
 
-// =====================================================
-// ★ NEW — JV DATA
-// Same structure as RAW but for Junior Varsity players.
-// Add your JV GameChanger exports here the same way
-// you add varsity seasons — upload via the CSV button
-// or paste data directly in this array.
-// =====================================================
-let RAW_JV = [
-  // 2026 JV — placeholder data, replace with real CSV upload
-  {year:2026,name:'Adams, T.',num:'3',gp:18,pa:65,ab:55,avg:.327,obp:.415,ops:.780,h:18,rbi:14,r:16,sb:8,bb:8,so:10,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2026,name:'Brown, K.',num:'7',gp:18,pa:60,ab:52,avg:.288,obp:.367,ops:.690,h:15,rbi:10,r:12,sb:6,bb:6,so:12,ip:14.0,era:3.86,whip:1.29,w:2,l:1,k:12},
-  {year:2026,name:'Davis, M.',num:'12',gp:18,pa:58,ab:50,avg:.260,obp:.345,ops:.640,h:13,rbi:8,r:10,sb:4,bb:7,so:14,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2026,name:'Wilson, J.',num:'15',gp:18,pa:55,ab:48,avg:.250,obp:.327,ops:.610,h:12,rbi:9,r:8,sb:5,bb:5,so:11,ip:18.1,era:4.42,whip:1.47,w:1,l:2,k:14},
-  {year:2025,name:'Adams, T.',num:'3',gp:18,pa:58,ab:50,avg:.280,obp:.362,ops:.680,h:14,rbi:10,r:12,sb:5,bb:7,so:12,ip:0,era:0,whip:0,w:0,l:0,k:0},
-  {year:2025,name:'Brown, K.',num:'7',gp:18,pa:55,ab:48,avg:.250,obp:.327,ops:.630,h:12,rbi:8,r:9,sb:4,bb:6,so:13,ip:12.0,era:4.50,whip:1.50,w:1,l:2,k:10},
-  {year:2025,name:'Thompson, R.',num:'9',gp:18,pa:62,ab:54,avg:.296,obp:.387,ops:.720,h:16,rbi:12,r:14,sb:7,bb:7,so:9,ip:0,era:0,whip:0,w:0,l:0,k:0},
-];
+// JV data — starts empty, grows via CSV upload
+let RAW_JV = [];
 
-// JV team totals for trends comparison
-let TEAM_JV = {
-  2025:{avg:.275,obp:.358,ops:.675,era:4.35,whip:1.48,r:98,sb:32,k:58,ip:96},
-  2026:{avg:.281,obp:.365,ops:.690,era:4.12,whip:1.40,r:105,sb:38,k:66,ip:102},
-};
-// ★ END NEW JV DATA
-
-// Team totals by year for trends page
+// Varsity team totals by year for trends
 let TEAM = {
   2023:{avg:.298,obp:.390,ops:.752,era:4.20,whip:1.58,r:158,sb:62,k:88,ip:132},
   2024:{avg:.303,obp:.413,ops:.776,era:5.12,whip:1.65,r:171,sb:68,k:95,ip:138},
@@ -605,396 +332,338 @@ let TEAM = {
   2026:{avg:.271,obp:.382,ops:.720,era:3.89,whip:1.42,r:162,sb:60,k:130,ip:152},
 };
 
-// ── STATE ───────────────────────────────────────────────
+// JV team totals — built automatically when JV CSV is uploaded
+let TEAM_JV = {};
+
+// ── STATE ─────────────────────────────────────────────
 let sortState = {batting:{col:'avg',dir:-1}, pitching:{col:'era',dir:1}};
 let activeSeason = '2025';
+let activeTeam   = 'varsity';
 let playerFilter = '';
-// ★ NEW — tracks which team is selected: 'varsity', 'jv', or 'both'
-let activeTeam = 'varsity';
-
-// =====================================================
-// ★ NEW — CSV UPLOAD FUNCTIONS
-// Everything in this block handles reading, parsing,
-// and loading a GameChanger CSV into the dashboard
-// =====================================================
-
-// uploadedYears tracks which years came from file uploads
-// so we can show a remove button next to them
 let uploadedYears = {};
 
-// handleFileUpload fires when the coach picks a file
-// event.target.files[0] is the file they selected
+// ── UPLOAD ────────────────────────────────────────────
 function handleFileUpload(event) {
   const file = event.target.files[0];
-
-  // Make sure they actually picked a file
   if (!file) return;
-
-  // Show loading message while we read the file
   setUploadStatus('loading', `Reading ${file.name}...`);
 
-  // FileReader is a built-in browser tool that reads files
-  // It works asynchronously — meaning it reads in the
-  // background and calls onload when it's done
   const reader = new FileReader();
-
-  // onload fires when the file has been fully read
-reader.onload = function(e) {
-  try {
-    // e.target.result contains the full file text
+  reader.onload = function(e) {
+    // Parse is completely separate from rendering
+    // so a render error can never show a false failure
     const csvText = e.target.result;
-
-    // These logs now work because csvText is already defined
-    console.log('File read OK, length:', csvText.length);
-    console.log('First 200 chars:', csvText.substring(0, 200));
-
-    // Parse the CSV and get players back
-    const result = parseGameChangerCSV(csvText);
-    console.log('Parse result:', result.error || 'success, players: ' + result.players?.length);
+    const result  = parseGameChangerCSV(csvText);
 
     if (result.error) {
       setUploadStatus('error', result.error);
       showToast(result.error, true);
+      event.target.value = '';
       return;
     }
 
-      const { players, year, teamTotals } = result;
+    const { players, year, teamTotals, isJV } = result;
 
-      // ★ NEW — route data to the correct array based on team level
-      // Varsity goes into RAW, JV goes into RAW_JV
-      if (isJV) {
-        RAW_JV = RAW_JV.filter(r => r.year !== year);
-        RAW_JV = RAW_JV.concat(players);
-        TEAM_JV[year] = teamTotals;
-      } else {
-        RAW = RAW.filter(r => r.year !== year);
-        RAW = RAW.concat(players);
-        TEAM[year] = teamTotals;
-      }
-
-      // Track this as an uploaded year
-      uploadedYears[year] = `${file.name} (${isJV ? 'JV' : 'Varsity'})`;
-
-      // Update the season dropdown to include this year
-      updateSeasonDropdown();
-
-      // Switch the filter to show the newly uploaded year
-      document.getElementById('season-filter').value = year;
-      activeSeason = String(year);
-
-     // Show success BEFORE rendering so extension
-      // interference can't block the success message
-      setUploadStatus('success',
-        `✓ ${year} loaded — ${players.length} players`);
-      showToast(`${year} ${isJV ? 'JV' : 'Varsity'} season imported successfully`);
-      renderUploadedList();
-      event.target.value = '';
-
-    } catch(err) {
-      setUploadStatus('error', 'Could not read file — is this a GameChanger export?');
-      showToast('Upload failed — check the file format', true);
+    // Route to correct data array
+    if (isJV) {
+      RAW_JV = RAW_JV.filter(r => r.year !== year).concat(players);
+      TEAM_JV[year] = teamTotals;
+    } else {
+      RAW = RAW.filter(r => r.year !== year).concat(players);
+      TEAM[year] = teamTotals;
     }
 
-    // Render outside the try/catch so extension errors
-    // can't override the success message above
-    try { renderAll(); } catch(e) { console.warn('Render warning:', e.message); }
+    const label = `${year} ${isJV ? 'JV' : 'Varsity'}`;
+    uploadedYears[label] = true;
+
+    // Show success immediately — before any rendering
+    setUploadStatus('success', `✓ ${label} loaded — ${players.length} players`);
+    showToast(`${label} imported — ${players.length} players`);
+    renderUploadedList();
+    updateSeasonDropdown(year);
+    event.target.value = '';
+
+    // Render after success message is already shown
+    // Wrapped so any render issue stays silent in console
+    setTimeout(function() {
+      activeSeason = String(year);
+      activeTeam   = isJV ? 'jv' : 'varsity';
+      document.getElementById('season-filter').value = year;
+      document.getElementById('team-filter').value   = activeTeam;
+      document.getElementById('header-badge').textContent =
+        `${year} Season · ${isJV ? 'JV' : 'Varsity'}`;
+      safeRenderAll();
+    }, 100);
   };
 
-  // readAsText tells FileReader to read the file as plain text
-  // This triggers the onload function above when done
+  reader.onerror = function() {
+    setUploadStatus('error', 'Could not read file');
+    showToast('Could not read file', true);
+  };
+
   reader.readAsText(file);
 }
 
-// parseGameChangerCSV takes the raw CSV text and returns
-// an array of player objects in the same format as RAW
+// safeRenderAll wraps each render in its own try/catch
+// so one broken section never kills the whole dashboard
+function safeRenderAll() {
+  try { renderTicker();       } catch(e) { console.warn('ticker:', e.message); }
+  try { renderOverview();     } catch(e) { console.warn('overview:', e.message); }
+  try { renderBatting();      } catch(e) { console.warn('batting:', e.message); }
+  try { renderPitching();     } catch(e) { console.warn('pitching:', e.message); }
+  try { renderTrends();       } catch(e) { console.warn('trends:', e.message); }
+  try { renderProfileSelect();} catch(e) { console.warn('profiles:', e.message); }
+}
+
 function parseGameChangerCSV(csvText) {
-
-  // Split the text into individual lines
   const lines = csvText.split('\n').map(l => l.replace(/\r/g, ''));
+  if (lines.length < 3) return { error: 'File appears empty or invalid' };
 
-  // We need at least 3 lines (blank, headers, one player)
-  if (lines.length < 3) {
-    return { error: 'File appears empty or invalid' };
-  }
-
-  // Parse row index 1 as headers (same as Python script)
-  // We remove the BOM character (\uFEFF) that GameChanger adds
   const headerLine = lines[1].replace(/^\uFEFF/, '');
-  const headers = parseCSVRow(headerLine);
+  const headers    = parseCSVRow(headerLine);
+  if (headers.length < 10) return { error: 'Could not read column headers' };
 
-  // Try to detect the season year from the filename or data
-  // GameChanger filenames usually contain the year
-  let year = new Date().getFullYear(); // default to current year
-
-  // Look for a 4-digit year in the first few lines
-  for (let i = 0; i < Math.min(5, lines.length); i++) {
-    const match = lines[i].match(/20(2[0-9])/);
-    if (match) { year = parseInt(match[0]); break; }
-  }
-
-  // Ask the coach to confirm the year
-  const inputYear = prompt(
-    `What season year is this file?\n\nEnter the year (e.g. 2025):`,
-    year
-  );
+  // Ask year
+  let year = new Date().getFullYear();
+  const inputYear = prompt('What season year is this file?\n\nEnter the year (e.g. 2025):', year);
   if (inputYear === null) return { error: 'Upload cancelled' };
   year = parseInt(inputYear);
-  if (isNaN(year) || year < 2000 || year > 2050) {
-    return { error: 'Invalid year entered' };
-  }
+  if (isNaN(year) || year < 2000 || year > 2050) return { error: 'Invalid year entered' };
 
-  // ★ NEW — ask whether this is a Varsity or JV export
-  // This determines which data array it gets added to
-  const teamLevel = prompt(
-    `Is this a Varsity or JV export?\n\nType V for Varsity or JV for Junior Varsity:`,
-    'V'
-  );
-  if (teamLevel === null) return { error: 'Upload cancelled' };
-  const isJV = teamLevel.trim().toUpperCase() === 'JV';
+  // Ask team level
+  const teamInput = prompt('Varsity or JV?\n\nType V for Varsity or JV for Junior Varsity:', 'V');
+  if (teamInput === null) return { error: 'Upload cancelled' };
+  const isJV = teamInput.trim().toUpperCase() === 'JV';
 
-  // These are the column positions GameChanger uses
-  // We confirmed these by running our Python inspection script
-  // Batting stats use the first occurrence of duplicate names
-  // Pitching stats use specific index positions
   const COL = {
-    number: 0, last: 1,  first: 2,
-    gp:     3, pa:  4,   ab:   5,
-    avg:    6, obp: 7,   ops:  8,
-    h:     10, rbi: 15,  r:   16,
-    bb:    17, so:  18,  sb:  25,
-    // Pitching columns use index not name (duplicate headers)
-    ip:    54, k:   69,  era: 72,
-    whip:  73, w:   59,  l:   60,
+    number:0, last:1, first:2, gp:3, pa:4, ab:5,
+    avg:6, obp:7, ops:8, h:10, rbi:15, r:16,
+    bb:17, so:18, sb:25, ip:54, k:69, era:72,
+    whip:73, w:59, l:60,
   };
 
   const players = [];
-
-  // Loop through every line after the header row
   for (let i = 2; i < lines.length; i++) {
     const line = lines[i].trim();
-    if (!line) continue; // skip blank lines
-
+    if (!line) continue;
     const row = parseCSVRow(line);
-    if (row.length < 10) continue; // skip short/bad rows
-
+    if (row.length < 10) continue;
     const last  = (row[COL.last]  || '').trim().replace(/"/g, '');
     const first = (row[COL.first] || '').trim().replace(/"/g, '');
-
-    // Skip the Totals row and any blank name rows
     if (!last || last === 'Totals') continue;
-
-    const name = first ? `${last}, ${first[0]}.` : last;
-
-    // toN safely converts a value to a number
-    // handles GameChanger's use of "-" for zero
-    const toN = (v) => {
-      const n = parseFloat(String(v || '0').replace(/-/g, '0').trim());
-      return isNaN(n) ? 0 : n;
-    };
-
+    const toN = v => { const n = parseFloat(String(v||'0').replace(/-/g,'0').trim()); return isNaN(n)?0:n; };
     players.push({
-      year: year,
-      name: name,
-      num:  (row[COL.number] || '').trim(),
+      year, isJV,
+      name: first ? `${last}, ${first[0]}.` : last,
+      num:  (row[COL.number]||'').trim().replace(/"/g,''),
       gp:   Math.round(toN(row[COL.gp])),
       pa:   Math.round(toN(row[COL.pa])),
       ab:   Math.round(toN(row[COL.ab])),
-      avg:  Math.round(toN(row[COL.avg])  * 1000) / 1000,
-      obp:  Math.round(toN(row[COL.obp])  * 1000) / 1000,
-      ops:  Math.round(toN(row[COL.ops])  * 1000) / 1000,
+      avg:  Math.round(toN(row[COL.avg])*1000)/1000,
+      obp:  Math.round(toN(row[COL.obp])*1000)/1000,
+      ops:  Math.round(toN(row[COL.ops])*1000)/1000,
       h:    Math.round(toN(row[COL.h])),
       rbi:  Math.round(toN(row[COL.rbi])),
       r:    Math.round(toN(row[COL.r])),
       bb:   Math.round(toN(row[COL.bb])),
       so:   Math.round(toN(row[COL.so])),
       sb:   Math.round(toN(row[COL.sb])),
-      ip:   Math.round(toN(row[COL.ip])   * 10)  / 10,
-      era:  Math.round(toN(row[COL.era])  * 100) / 100,
-      whip: Math.round(toN(row[COL.whip]) * 1000) / 1000,
+      ip:   Math.round(toN(row[COL.ip])*10)/10,
+      era:  Math.round(toN(row[COL.era])*100)/100,
+      whip: Math.round(toN(row[COL.whip])*1000)/1000,
       w:    Math.round(toN(row[COL.w])),
       l:    Math.round(toN(row[COL.l])),
       k:    Math.round(toN(row[COL.k])),
     });
   }
+  if (!players.length) return { error: 'No player data found in this file' };
 
-  if (!players.length) {
-    return { error: 'No player data found in this file' };
-  }
-
-  // Calculate team totals from the uploaded players
-  // so the trends page updates automatically
-  const b = players.filter(p => p.pa > 0);
-  const p = players.filter(p => p.ip > 0);
-  const totalH  = b.reduce((a,c) => a+c.h,  0);
-  const totalAB = b.reduce((a,c) => a+c.ab, 0);
+  const b = players.filter(p=>p.pa>0), p = players.filter(p=>p.ip>0);
+  const tH = b.reduce((a,c)=>a+c.h,0), tAB = b.reduce((a,c)=>a+c.ab,0);
   const teamTotals = {
-    avg:  totalAB > 0 ? Math.round(totalH/totalAB*1000)/1000 : 0,
+    avg:  tAB>0 ? Math.round(tH/tAB*1000)/1000 : 0,
     obp:  b.length ? Math.round(b.reduce((a,c)=>a+c.obp,0)/b.length*1000)/1000 : 0,
     ops:  b.length ? Math.round(b.reduce((a,c)=>a+c.ops,0)/b.length*1000)/1000 : 0,
-    r:    b.reduce((a,c) => a+c.r,   0),
-    rbi:  b.reduce((a,c) => a+c.rbi, 0),
-    sb:   b.reduce((a,c) => a+c.sb,  0),
-    bb:   b.reduce((a,c) => a+c.bb,  0),
+    r:    b.reduce((a,c)=>a+c.r,0),
+    rbi:  b.reduce((a,c)=>a+c.rbi,0),
+    sb:   b.reduce((a,c)=>a+c.sb,0),
+    bb:   b.reduce((a,c)=>a+c.bb,0),
     era:  p.length ? Math.round(p.reduce((a,c)=>a+c.era,0)/p.length*100)/100 : 0,
     whip: p.length ? Math.round(p.reduce((a,c)=>a+c.whip,0)/p.length*1000)/1000 : 0,
-    ip:   Math.round(p.reduce((a,c) => a+c.ip, 0) * 10) / 10,
-    k:    p.reduce((a,c) => a+c.k, 0),
+    ip:   Math.round(p.reduce((a,c)=>a+c.ip,0)*10)/10,
+    k:    p.reduce((a,c)=>a+c.k,0),
   };
-
-  return { players, year, teamTotals };
+  return { players, year, teamTotals, isJV };
 }
 
-// parseCSVRow handles quoted fields and commas inside quotes
-// Standard CSV parsing — GameChanger sometimes quotes fields
 function parseCSVRow(line) {
-  const result = [];
-  let current  = '';
-  let inQuotes = false;
-
+  const result = []; let current = ''; let inQuotes = false;
   for (let i = 0; i < line.length; i++) {
     const ch = line[i];
-    if (ch === '"') {
-      inQuotes = !inQuotes;
-    } else if (ch === ',' && !inQuotes) {
-      result.push(current);
-      current = '';
-    } else {
-      current += ch;
-    }
+    if (ch === '"') { inQuotes = !inQuotes; }
+    else if (ch === ',' && !inQuotes) { result.push(current); current = ''; }
+    else { current += ch; }
   }
-  result.push(current); // push the last field
+  result.push(current);
   return result;
 }
 
-// removeUploadedYear removes a season the coach uploaded
-// and puts the built-in data back
-function removeUploadedYear(year) {
-  RAW = RAW.filter(r => r.year !== year);
-  delete TEAM[year];
-  delete uploadedYears[year];
-  updateSeasonDropdown();
-  renderUploadedList();
-  applyFilters();
-  setUploadStatus('', 'Drop your GameChanger season export here');
-}
-
-// updateSeasonDropdown rebuilds the year filter dropdown
-// to include both built-in years and any uploaded years
-function updateSeasonDropdown() {
-  const allYears = [...new Set([
-    ...Object.keys(TEAM).map(Number),
-    ...Object.keys(uploadedYears).map(Number)
-  ])].sort((a,b) => b-a); // newest first
-
+function updateSeasonDropdown(newYear) {
   const sel = document.getElementById('season-filter');
-  const cur = sel.value;
-  sel.innerHTML = '<option value="all">All seasons</option>' +
-    allYears.map(y =>
-      `<option value="${y}"${String(y)===cur?' selected':''}>${y}</option>`
-    ).join('');
+  const existing = Array.from(sel.options).map(o=>o.value);
+  if (newYear && !existing.includes(String(newYear))) {
+    const opt = document.createElement('option');
+    opt.value = newYear; opt.text = newYear;
+    // Insert after "All seasons"
+    sel.insertBefore(opt, sel.options[1]);
+  }
 }
 
-// renderUploadedList shows uploaded seasons in the sidebar
-// with a remove button next to each one
 function renderUploadedList() {
-  const container = document.getElementById('uploaded-seasons-list');
-  const years = Object.keys(uploadedYears);
-  if (!years.length) { container.innerHTML = ''; return; }
-  container.innerHTML = years.map(y => `
+  const keys = Object.keys(uploadedYears);
+  const el = document.getElementById('uploaded-seasons-list');
+  el.innerHTML = keys.map(k => `
     <div class="uploaded-tag">
-      <span>📁 ${y} uploaded</span>
-      <button class="uploaded-tag-remove"
-              onclick="removeUploadedYear(${y})"
-              title="Remove this season">✕</button>
+      <span>📁 ${k}</span>
+      <button class="uploaded-tag-remove" onclick="removeUploaded('${k}')">✕</button>
     </div>`).join('');
 }
 
-// setUploadStatus updates the small status line below the button
-function setUploadStatus(type, message) {
+function removeUploaded(label) {
+  const parts = label.split(' ');
+  const year  = parseInt(parts[0]);
+  const isJV  = parts[1] === 'JV';
+  if (isJV) { RAW_JV = RAW_JV.filter(r=>r.year!==year); delete TEAM_JV[year]; }
+  else       { RAW    = RAW.filter(r=>r.year!==year);    delete TEAM[year]; }
+  delete uploadedYears[label];
+  renderUploadedList();
+  safeRenderAll();
+}
+
+function setUploadStatus(type, msg) {
   const el = document.getElementById('upload-status');
-  el.className = 'upload-status' + (type ? ' ' + type : '');
-  el.textContent = message;
+  el.className = 'upload-status' + (type ? ' '+type : '');
+  el.textContent = msg;
 }
 
-// showToast shows a brief notification at the bottom of the screen
-function showToast(message, isError = false) {
+function showToast(msg, isError=false) {
   const t = document.getElementById('toast');
-  t.textContent = message;
+  t.textContent = msg;
   t.className = 'toast' + (isError ? ' error-toast' : '');
-  // Add 'show' class to slide it up
-  setTimeout(() => t.classList.add('show'), 10);
-  // Remove 'show' after 3 seconds to slide it back down
-  setTimeout(() => t.classList.remove('show'), 3000);
+  setTimeout(()=>t.classList.add('show'), 10);
+  setTimeout(()=>t.classList.remove('show'), 3500);
 }
 
-// =====================================================
-// ★ END NEW CSV UPLOAD FUNCTIONS
-// =====================================================
-
-
-// ── EXISTING DASHBOARD FUNCTIONS (unchanged) ─────────
-function applyFilters(){
+// ── FILTERS ───────────────────────────────────────────
+function applyFilters() {
   activeSeason = document.getElementById('season-filter').value;
-  playerFilter = document.getElementById('player-filter').value.toLowerCase().trim();
-  // ★ NEW — read the team dropdown value
   activeTeam   = document.getElementById('team-filter').value;
-  const teamLabel = activeTeam==='both' ? 'Varsity + JV' :
-                    activeTeam==='jv'   ? 'JV' : 'Varsity';
+  playerFilter = document.getElementById('player-filter').value.toLowerCase().trim();
+  const tLabel = activeTeam==='both'?'Varsity + JV':activeTeam==='jv'?'JV':'Varsity';
   document.getElementById('header-badge').textContent =
-    `${activeSeason==='all'?'All seasons':activeSeason} · ${teamLabel}`;
-  renderAll();
+    `${activeSeason==='all'?'All seasons':activeSeason} · ${tLabel}`;
+  safeRenderAll();
 }
 
-// Returns varsity data matching current filters
-function filtered(){
-  return RAW.filter(r=>{
-    const seasonOk = activeSeason==='all'||r.year===+activeSeason;
-    const playerOk = !playerFilter||r.name.toLowerCase().includes(playerFilter);
-    return seasonOk&&playerOk;
+function filtered(src) {
+  const data = src || (activeTeam==='jv' ? RAW_JV : RAW);
+  return data.filter(r => {
+    const sOk = activeSeason==='all' || r.year===+activeSeason;
+    const pOk = !playerFilter || r.name.toLowerCase().includes(playerFilter);
+    return sOk && pOk;
   });
 }
 
-// ★ NEW — returns JV data matching the same filters
-function filteredJV(){
-  return RAW_JV.filter(r=>{
-    const seasonOk = activeSeason==='all'||r.year===+activeSeason;
-    const playerOk = !playerFilter||r.name.toLowerCase().includes(playerFilter);
-    return seasonOk&&playerOk;
-  });
-}
+function batters(data)  { return data.filter(r=>r.pa>0); }
+function pitchers(data) { return data.filter(r=>r.ip>0); }
 
-function batters(data){ return data.filter(r=>r.pa>0); }
-function pitchers(data){ return data.filter(r=>r.ip>0); }
-
-function showPage(name,el){
+// ── NAVIGATION ────────────────────────────────────────
+function showPage(name, el) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   el.classList.add('active');
-  const titles={overview:'Season Overview',batting:'Batting Statistics',
+  const titles = {overview:'Season Overview',batting:'Batting Statistics',
     pitching:'Pitching Statistics',trends:'Season Trends',players:'Player Profiles'};
-  document.getElementById('page-title').textContent=titles[name];
-  renderAll();
+  document.getElementById('page-title').textContent = titles[name];
+  safeRenderAll();
 }
 
-function renderAll(){
-  renderTicker();
-  // ★ NEW — pass team mode to each render function
-  // 'both' mode shows two columns side by side
-  // 'varsity' and 'jv' show a single set of stats
-  renderOverview();
-  renderBatting();
-  renderPitching();
-  renderTrends();
-  renderProfileSelect();
+// ── HELPERS ───────────────────────────────────────────
+function fmtAvg(v) { return v>0?'.'+Math.round(v*1000).toString().padStart(3,'0'):'—'; }
+function avgPill(v) {
+  if(!v&&v!==0) return '—';
+  const c = v>=.350?'pill-g':v>=.250?'pill-a':'pill-r';
+  return `<span class="stat-pill ${c}">${fmtAvg(v)}</span>`;
+}
+function eraPill(v) {
+  if(!v&&v!==0) return '—';
+  const c = v<=3.5?'pill-g':v<=5.5?'pill-a':'pill-r';
+  return `<span class="stat-pill ${c}">${v.toFixed(2)}</span>`;
 }
 
-function renderTicker(){
-  const data=filtered(),b=batters(data),p=pitchers(data);
+// ── KPI BUILDER ───────────────────────────────────────
+function buildKPIs(data, accentColor, prevT, currT) {
+  const b=batters(data), p=pitchers(data);
+  const tH=b.reduce((a,c)=>a+c.h,0), tAB=b.reduce((a,c)=>a+c.ab,0);
+  const avg = tAB>0?tH/tAB:0;
+  const obp = b.length?b.reduce((a,c)=>a+c.obp,0)/b.length:0;
+  const r   = b.reduce((a,c)=>a+c.r,0);
+  const sb  = b.reduce((a,c)=>a+c.sb,0);
+  const era = p.length?p.reduce((a,c)=>a+c.era,0)/p.length:0;
+  const k   = p.reduce((a,c)=>a+c.k,0);
+  function tr(c,pv,hi=true){
+    if(!pv||!c) return '';
+    const better=hi?c>pv:c<pv;
+    return Math.abs(c-pv)<0.005?'<span class="trend-fl">→ flat</span>':
+           better?'<span class="trend-up">▲ improved</span>':
+                  '<span class="trend-dn">▼ declined</span>';
+  }
+  const showTrend = activeSeason!=='all' && prevT && currT;
+  return `
+    <div class="kpi" style="--accent:${accentColor}">
+      <div class="kpi-label">Team AVG</div>
+      <div class="kpi-val">${fmtAvg(avg)}</div>
+      <div class="kpi-sub">Batting average</div>
+      <div class="kpi-trend">${showTrend?tr(currT.avg,prevT.avg):''}</div>
+    </div>
+    <div class="kpi" style="--accent:#8A9BA8">
+      <div class="kpi-label">Team OBP</div>
+      <div class="kpi-val">${fmtAvg(obp)}</div>
+      <div class="kpi-sub">On base %</div>
+    </div>
+    <div class="kpi" style="--accent:#4CAF50">
+      <div class="kpi-label">Runs scored</div>
+      <div class="kpi-val">${r||'—'}</div>
+      <div class="kpi-sub">Total runs</div>
+      <div class="kpi-trend">${showTrend?tr(currT.r,prevT.r):''}</div>
+    </div>
+    <div class="kpi" style="--accent:#FF9800">
+      <div class="kpi-label">Stolen bases</div>
+      <div class="kpi-val">${sb||'—'}</div>
+      <div class="kpi-sub">Total SB</div>
+    </div>
+    <div class="kpi" style="--accent:${accentColor}">
+      <div class="kpi-label">Team ERA</div>
+      <div class="kpi-val">${era>0?era.toFixed(2):'—'}</div>
+      <div class="kpi-sub">Earned run avg</div>
+      <div class="kpi-trend">${showTrend?tr(currT.era,prevT.era,false):''}</div>
+    </div>
+    <div class="kpi" style="--accent:#9C27B0">
+      <div class="kpi-label">Strikeouts</div>
+      <div class="kpi-val">${k||'—'}</div>
+      <div class="kpi-sub">Pitching K's</div>
+    </div>`;
+}
+
+// ── RENDER TICKER ─────────────────────────────────────
+function renderTicker() {
+  const vData = filtered(RAW);
+  const b=batters(vData), p=pitchers(vData);
   const items=[];
   if(b.length){
     const ba=b.reduce((a,c)=>c.avg>a.avg?c:a);
-    items.push(`<span>Top AVG</span>${ba.name} — .${Math.round(ba.avg*1000).toString().padStart(3,'0')}`);
+    items.push(`<span>Top AVG</span>${ba.name} — ${fmtAvg(ba.avg)}`);
     const rb=b.reduce((a,c)=>c.rbi>a.rbi?c:a);
     items.push(`<span>RBI leader</span>${rb.name} — ${rb.rbi}`);
     const sb=b.reduce((a,c)=>c.sb>a.sb?c:a);
@@ -1006,352 +675,430 @@ function renderTicker(){
       items.push(`<span>Best ERA (5+ IP)</span>${er.name} — ${er.era.toFixed(2)}`);}
     items.push(`<span>Total K's</span>${p.reduce((a,c)=>a+c.k,0)} strikeouts`);
   }
-  const yr=activeSeason==='all'?'all seasons':activeSeason;
-  items.push(`<span>Season</span>Clinton Cardinals — ${yr}`);
-  document.getElementById('ticker-inner').innerHTML=
+  items.push(`<span>Season</span>Cardinals — ${activeSeason==='all'?'All seasons':activeSeason}`);
+  document.getElementById('ticker-inner').innerHTML =
     [...items,...items].map(t=>`<div class="ticker-item">${t}</div>`).join('');
 }
 
-// ★ NEW — buildKPIs generates the 6 stat bubbles for any dataset
-// Takes the player array, a color accent, and an optional
-// previous year's TEAM object for trend arrows
-function buildKPIs(data, accent, prevTeam, currTeam, cssClass=''){
-  const b=batters(data),p=pitchers(data);
-  const totalH=b.reduce((a,c)=>a+c.h,0),totalAB=b.reduce((a,c)=>a+c.ab,0);
-  const teamAvg=totalAB>0?totalH/totalAB:0;
-  const teamOBP=b.length?b.reduce((a,c)=>a+c.obp,0)/b.length:0;
-  const totalR=b.reduce((a,c)=>a+c.r,0),totalSB=b.reduce((a,c)=>a+c.sb,0);
-  const teamERA=p.length?p.reduce((a,c)=>a+c.era,0)/p.length:0;
-  const totalK=p.reduce((a,c)=>a+c.k,0);
-  function tr(c,p,hi=true){if(!p||!c)return'';const b=hi?c>p:c<p;return Math.abs(c-p)<0.005?'<span class="trend-fl">→ flat</span>':b?'<span class="trend-up">▲ improved</span>':'<span class="trend-dn">▼ declined</span>';}
-  const fmtAvg=v=>v>0?'.'+Math.round(v*1000).toString().padStart(3,'0'):'—';
-  return `
-    <div class="kpi ${cssClass}" style="--accent:${accent}"><div class="kpi-label">Team AVG</div><div class="kpi-val">${fmtAvg(teamAvg)}</div><div class="kpi-sub">Batting average</div><div class="kpi-trend">${activeSeason!=='all'&&prevTeam?tr(currTeam?.avg,prevTeam?.avg):''}</div></div>
-    <div class="kpi ${cssClass}" style="--accent:#8A9BA8"><div class="kpi-label">Team OBP</div><div class="kpi-val">${fmtAvg(teamOBP)}</div><div class="kpi-sub">On base %</div></div>
-    <div class="kpi ${cssClass}" style="--accent:#4CAF50"><div class="kpi-label">Runs scored</div><div class="kpi-val">${totalR||'—'}</div><div class="kpi-sub">Total runs</div><div class="kpi-trend">${activeSeason!=='all'&&prevTeam?tr(currTeam?.r,prevTeam?.r):''}</div></div>
-    <div class="kpi ${cssClass}" style="--accent:#FF9800"><div class="kpi-label">Stolen bases</div><div class="kpi-val">${totalSB||'—'}</div><div class="kpi-sub">Total SB</div></div>
-    <div class="kpi ${cssClass}" style="--accent:${accent}"><div class="kpi-label">Team ERA</div><div class="kpi-val">${teamERA>0?teamERA.toFixed(2):'—'}</div><div class="kpi-sub">Earned run avg</div><div class="kpi-trend">${activeSeason!=='all'&&prevTeam?tr(currTeam?.era,prevTeam?.era,false):''}</div></div>
-    <div class="kpi ${cssClass}" style="--accent:#9C27B0"><div class="kpi-label">Strikeouts</div><div class="kpi-val">${totalK||'—'}</div><div class="kpi-sub">Pitching K's</div></div>`;
-}
+// ── RENDER OVERVIEW ───────────────────────────────────
+function renderOverview() {
+  const yr = +activeSeason;
 
-// ★ NEW — buildTopTables generates the top batters/pitchers
-// mini-tables for any dataset
-function buildTopBatters(data){
-  const b=batters(data);
-  const top=[...b].sort((a,z)=>z.avg-a.avg).slice(0,6);
-  return top.length?top.map(p=>`<tr><td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td><td>${avgPill(p.avg)}</td><td>${p.obp.toFixed(3)}</td><td>${p.rbi}</td><td>${p.sb}</td></tr>`).join(''):`<tr><td colspan="5" class="no-results">No data</td></tr>`;
-}
-function buildTopPitchers(data){
-  const p=pitchers(data).filter(x=>x.ip>=3).sort((a,z)=>a.era-z.era).slice(0,6);
-  return p.length?p.map(p=>`<tr><td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td><td>${eraPill(p.era)}</td><td>${p.ip.toFixed(1)}</td><td>${p.w}</td><td>${p.whip.toFixed(3)}</td></tr>`).join(''):`<tr><td colspan="5" class="no-results">No data</td></tr>`;
-}
-
-function renderOverview(){
-  const yr=+activeSeason;
-  const vData=filtered(), jvData=filteredJV();
-
-  // ★ NEW — render KPIs based on which team is selected
-  if(activeTeam==='both'){
-    // Side by side — varsity left, JV right
-    document.getElementById('kpi-row').innerHTML=`
+  if (activeTeam === 'both') {
+    // Side by side — varsity red, JV blue
+    const vData  = filtered(RAW);
+    const jvData = filtered(RAW_JV);
+    document.getElementById('kpi-row').innerHTML = `
       <div style="grid-column:1/-1">
         <div class="split-view">
           <div>
-            <span class="split-label varsity">Varsity</span>
-            <div class="kpi-row" style="margin-bottom:0">${buildKPIs(vData,'#C8102E',TEAM[yr-1],TEAM[yr])}</div>
+            <span class="split-label v">Varsity</span>
+            <div class="kpi-row" style="margin-bottom:0">
+              ${buildKPIs(vData,'#C8102E',TEAM[yr-1],TEAM[yr])}
+            </div>
           </div>
           <div>
-            <span class="split-label jv">Junior Varsity</span>
-            <div class="kpi-row" style="margin-bottom:0">${buildKPIs(jvData,'#1565C0',TEAM_JV[yr-1],TEAM_JV[yr],'jv-kpi')}</div>
+            <span class="split-label j">Junior Varsity</span>
+            <div class="kpi-row" style="margin-bottom:0">
+              ${buildKPIs(jvData,'#1565C0',TEAM_JV[yr-1],TEAM_JV[yr])}
+            </div>
           </div>
         </div>
       </div>`;
-    document.getElementById('top-batters').innerHTML=
-      `<tr><td colspan="5"><div class="split-view" style="gap:8px">
-        <div><div style="font-size:10px;color:#EF9A9A;margin-bottom:4px;font-weight:600">VARSITY</div>${buildTopBatters(vData)}</div>
-        <div><div style="font-size:10px;color:#90CAF9;margin-bottom:4px;font-weight:600">JV</div>${buildTopBatters(jvData)}</div>
-      </div></td></tr>`;
-    document.getElementById('top-pitchers').innerHTML=
-      `<tr><td colspan="5"><div class="split-view" style="gap:8px">
-        <div><div style="font-size:10px;color:#EF9A9A;margin-bottom:4px;font-weight:600">VARSITY</div>${buildTopPitchers(vData)}</div>
-        <div><div style="font-size:10px;color:#90CAF9;margin-bottom:4px;font-weight:600">JV</div>${buildTopPitchers(jvData)}</div>
-      </div></td></tr>`;
+    document.getElementById('top-batters').innerHTML =
+      buildTopBattersHTML(vData, jvData);
+    document.getElementById('top-pitchers').innerHTML =
+      buildTopPitchersHTML(vData, jvData);
   } else {
-    // Single team view
-    const data  = activeTeam==='jv' ? jvData : vData;
+    // Single team
+    const data  = filtered();
     const TDATA = activeTeam==='jv' ? TEAM_JV : TEAM;
     const color = activeTeam==='jv' ? '#1565C0' : '#C8102E';
-    const css   = activeTeam==='jv' ? 'jv-kpi' : '';
     document.getElementById('kpi-row').innerHTML =
-      buildKPIs(data, color, TDATA[yr-1], TDATA[yr], css);
-    document.getElementById('top-batters').innerHTML  = buildTopBatters(data);
-    document.getElementById('top-pitchers').innerHTML = buildTopPitchers(data);
+      buildKPIs(data, color, TDATA[yr-1], TDATA[yr]);
+    document.getElementById('top-batters').innerHTML =
+      buildTopBattersHTML(data, null);
+    document.getElementById('top-pitchers').innerHTML =
+      buildTopPitchersHTML(data, null);
   }
 
-  // Year over year chart — shows both teams when Both is selected
-  const allYears=Object.keys(TEAM).map(Number).sort();
-  const maxAvg=Math.max(...allYears.map(y=>TEAM[y]?.avg||0),
-                        ...allYears.map(y=>TEAM_JV[y]?.avg||0));
-  document.getElementById('yoy-chart').innerHTML=`<div class="trend-bars">
+  // YOY chart — always shows varsity years plus any JV years
+  const vYears  = Object.keys(TEAM).map(Number).sort();
+  const jvYears = Object.keys(TEAM_JV).map(Number).sort();
+  const allYears = [...new Set([...vYears,...jvYears])].sort();
+  const maxAvg = Math.max(
+    ...vYears.map(y=>TEAM[y]?.avg||0),
+    ...jvYears.map(y=>TEAM_JV[y]?.avg||0),
+    .001
+  );
+  document.getElementById('yoy-chart').innerHTML = `<div class="trend-bars">
     ${allYears.map(y=>{
-      const v=TEAM[y],jv=TEAM_JV[y];
-      const showV  = activeTeam!=='jv';
-      const showJV = activeTeam!=='varsity';
-      return`<div class="trend-row">
+      const v  = TEAM[y];
+      const jv = TEAM_JV[y];
+      return `<div class="trend-row">
         <div class="trend-year">${y}</div>
         <div style="flex:1;display:flex;flex-direction:column;gap:3px">
-          ${showV&&v?`<div class="trend-bar-wrap"><div class="trend-fill" style="width:${(v.avg/maxAvg*100).toFixed(1)}%;background:${y===yr?'#C8102E':'#3A2A1C'}"><span class="trend-fill-label">${activeTeam==='both'?'V ':''}${'.'+Math.round(v.avg*1000).toString().padStart(3,'0')}</span></div></div>`:''}
-          ${showJV&&jv?`<div class="trend-bar-wrap"><div class="trend-fill" style="width:${(jv.avg/maxAvg*100).toFixed(1)}%;background:${y===yr?'#1565C0':'#0D2744'}"><span class="trend-fill-label">${activeTeam==='both'?'JV ':''}${'.'+Math.round(jv.avg*1000).toString().padStart(3,'0')}</span></div></div>`:''}
+          ${v&&activeTeam!=='jv'?`<div class="trend-bar-wrap"><div class="trend-fill" style="width:${(v.avg/maxAvg*100).toFixed(1)}%;background:${y===+activeSeason?'#C8102E':'#3A2A1C'}"><span class="trend-fill-label">${activeTeam==='both'?'V ':''}${fmtAvg(v.avg)}</span></div></div>`:''}
+          ${jv&&activeTeam!=='varsity'?`<div class="trend-bar-wrap"><div class="trend-fill" style="width:${(jv.avg/maxAvg*100).toFixed(1)}%;background:${y===+activeSeason?'#1565C0':'#0D2744'}"><span class="trend-fill-label">${activeTeam==='both'?'JV ':''}${fmtAvg(jv.avg)}</span></div></div>`:''}
         </div>
       </div>`;
     }).join('')}
   </div>`;
 }
-// ★ END NEW renderOverview
 
-// ★ NEW — buildBattingRows generates table rows for any dataset
-function buildBattingRows(data, s){
-  const sorted=[...batters(data)].sort((a,b)=>{
-    const av=a[s.col]??0,bv=b[s.col]??0;
-    return typeof av==='string'?av.localeCompare(bv)*s.dir:(av-bv)*s.dir;
-  });
-  return sorted.length?sorted.map(p=>`<tr><td>${p.name}</td><td><span class="year-tag y${p.year}">${p.year}</span></td><td>${p.gp}</td><td>${p.pa}</td><td>${avgPill(p.avg)}</td><td>${p.obp.toFixed(3)}</td><td>${p.ops.toFixed(3)}</td><td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td><td>${p.sb}</td><td>${p.bb}</td><td>${p.so}</td></tr>`).join(''):`<tr><td colspan="13" class="no-results">No players match filter</td></tr>`;
+function buildTopBattersHTML(vData, jvData) {
+  function rows(data) {
+    const top = [...batters(data)].sort((a,z)=>z.avg-a.avg).slice(0,6);
+    return top.length ? top.map(p=>`<tr>
+      <td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${avgPill(p.avg)}</td><td>${p.obp.toFixed(3)}</td>
+      <td>${p.rbi}</td><td>${p.sb}</td>
+    </tr>`).join('') : '<tr><td colspan="5" class="no-results">No data</td></tr>';
+  }
+  if (!jvData) return rows(vData);
+  return `<tr><td colspan="5"><div class="split-view" style="gap:8px">
+    <div><div style="font-size:10px;color:#EF9A9A;font-weight:700;margin-bottom:4px">VARSITY</div><table class="mini-table"><tbody>${rows(vData)}</tbody></table></div>
+    <div><div style="font-size:10px;color:#90CAF9;font-weight:700;margin-bottom:4px">JV</div><table class="mini-table"><tbody>${rows(jvData)}</tbody></table></div>
+  </div></td></tr>`;
 }
 
-function renderBatting(){
-  const s=sortState.batting;
-  // ★ NEW — combine varsity and JV rows when Both is selected,
-  // with a divider row between them so coaches can tell them apart
-  if(activeTeam==='both'){
-    const vRows  = buildBattingRows(filtered(),   s);
-    const jvRows = buildBattingRows(filteredJV(),  s);
-    document.getElementById('bat-count').textContent=
-      `${batters(filtered()).length}V + ${batters(filteredJV()).length}JV players`;
-    document.getElementById('batting-body').innerHTML=
-      `<tr><td colspan="13" style="background:#1a0508;color:#EF9A9A;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:6px 12px">Varsity</td></tr>
-      ${vRows}
-      <tr><td colspan="13" style="background:#051020;color:#90CAF9;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:6px 12px">Junior Varsity</td></tr>
-      ${jvRows}`;
+function buildTopPitchersHTML(vData, jvData) {
+  function rows(data) {
+    const top = [...pitchers(data)].filter(x=>x.ip>=3).sort((a,z)=>a.era-z.era).slice(0,6);
+    return top.length ? top.map(p=>`<tr>
+      <td><span class="player-name">${p.name}</span> <span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${eraPill(p.era)}</td><td>${p.ip.toFixed(1)}</td>
+      <td>${p.w}</td><td>${p.whip.toFixed(3)}</td>
+    </tr>`).join('') : '<tr><td colspan="5" class="no-results">No data</td></tr>';
+  }
+  if (!jvData) return rows(vData);
+  return `<tr><td colspan="5"><div class="split-view" style="gap:8px">
+    <div><div style="font-size:10px;color:#EF9A9A;font-weight:700;margin-bottom:4px">VARSITY</div><table class="mini-table"><tbody>${rows(vData)}</tbody></table></div>
+    <div><div style="font-size:10px;color:#90CAF9;font-weight:700;margin-bottom:4px">JV</div><table class="mini-table"><tbody>${rows(jvData)}</tbody></table></div>
+  </div></td></tr>`;
+}
+
+// ── RENDER BATTING ────────────────────────────────────
+function renderBatting() {
+  const s = sortState.batting;
+  function sortedRows(data) {
+    return [...batters(data)].sort((a,b)=>{
+      const av=a[s.col]??0,bv=b[s.col]??0;
+      return typeof av==='string'?av.localeCompare(bv)*s.dir:(av-bv)*s.dir;
+    }).map(p=>`<tr>
+      <td>${p.name}</td>
+      <td><span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${p.gp}</td><td>${p.pa}</td>
+      <td>${avgPill(p.avg)}</td>
+      <td>${p.obp.toFixed(3)}</td><td>${p.ops.toFixed(3)}</td>
+      <td>${p.h}</td><td>${p.rbi}</td><td>${p.r}</td>
+      <td>${p.sb}</td><td>${p.bb}</td><td>${p.so}</td>
+    </tr>`).join('');
+  }
+  if (activeTeam === 'both') {
+    const vRows  = sortedRows(filtered(RAW))   || '<tr><td colspan="13" class="no-results">No data</td></tr>';
+    const jvRows = sortedRows(filtered(RAW_JV)) || '<tr><td colspan="13" class="no-results">No data</td></tr>';
+    document.getElementById('bat-count').textContent =
+      `${batters(filtered(RAW)).length}V + ${batters(filtered(RAW_JV)).length}JV`;
+    document.getElementById('batting-body').innerHTML =
+      `<tr><td colspan="13" class="team-divider varsity-div">Varsity</td></tr>${vRows}` +
+      `<tr><td colspan="13" class="team-divider">Junior Varsity</td></tr>${jvRows}`;
   } else {
-    const data = activeTeam==='jv' ? filteredJV() : filtered();
-    const rows = buildBattingRows(data, s);
-    document.getElementById('bat-count').textContent=
-      `${batters(data).length} players`;
+    const data = filtered();
+    const rows = sortedRows(data) || '<tr><td colspan="13" class="no-results">No players match filter</td></tr>';
+    document.getElementById('bat-count').textContent = `${batters(data).length} players`;
     document.getElementById('batting-body').innerHTML = rows;
   }
 }
 
-function sortTable(table,col){
-  const s=sortState[table];
-  if(s.col===col)s.dir*=-1;else{s.col=col;s.dir=-1;}
-  table==='batting'?renderBatting():renderPitching();
+function sortTable(table, col) {
+  const s = sortState[table];
+  if (s.col===col) s.dir*=-1; else { s.col=col; s.dir=-1; }
+  table==='batting' ? renderBatting() : renderPitching();
 }
 
-// ★ NEW — buildPitchingRows generates pitching table rows
-function buildPitchingRows(data, s){
-  const sorted=[...pitchers(data)].sort((a,b)=>{
-    const av=a[s.col]??0,bv=b[s.col]??0;
-    return typeof av==='string'?av.localeCompare(bv)*s.dir:(av-bv)*s.dir;
-  });
-  return sorted.length?sorted.map(p=>`<tr><td>${p.name}</td><td><span class="year-tag y${p.year}">${p.year}</span></td><td>${p.ip.toFixed(1)}</td><td>${p.w}</td><td>${p.l}</td><td>${eraPill(p.era)}</td><td>${p.whip.toFixed(3)}</td><td>${p.k}</td><td>${p.bb}</td></tr>`).join(''):`<tr><td colspan="9" class="no-results">No pitchers match filter</td></tr>`;
-}
-
-function renderPitching(){
-  const s=sortState.pitching;
-  // ★ NEW — same split pattern as batting
-  if(activeTeam==='both'){
-    const vRows  = buildPitchingRows(filtered(),  s);
-    const jvRows = buildPitchingRows(filteredJV(), s);
-    document.getElementById('pitch-count').textContent=
-      `${pitchers(filtered()).length}V + ${pitchers(filteredJV()).length}JV pitchers`;
-    document.getElementById('pitching-body').innerHTML=
-      `<tr><td colspan="9" style="background:#1a0508;color:#EF9A9A;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:6px 12px">Varsity</td></tr>
-      ${vRows}
-      <tr><td colspan="9" style="background:#051020;color:#90CAF9;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:6px 12px">Junior Varsity</td></tr>
-      ${jvRows}`;
+// ── RENDER PITCHING ───────────────────────────────────
+function renderPitching() {
+  const s = sortState.pitching;
+  function sortedRows(data) {
+    return [...pitchers(data)].sort((a,b)=>{
+      const av=a[s.col]??0,bv=b[s.col]??0;
+      return typeof av==='string'?av.localeCompare(bv)*s.dir:(av-bv)*s.dir;
+    }).map(p=>`<tr>
+      <td>${p.name}</td>
+      <td><span class="year-tag y${p.year}">${p.year}</span></td>
+      <td>${p.ip.toFixed(1)}</td><td>${p.w}</td><td>${p.l}</td>
+      <td>${eraPill(p.era)}</td><td>${p.whip.toFixed(3)}</td>
+      <td>${p.k}</td><td>${p.bb}</td>
+    </tr>`).join('');
+  }
+  if (activeTeam === 'both') {
+    const vRows  = sortedRows(filtered(RAW))   || '<tr><td colspan="9" class="no-results">No data</td></tr>';
+    const jvRows = sortedRows(filtered(RAW_JV)) || '<tr><td colspan="9" class="no-results">No data</td></tr>';
+    document.getElementById('pitch-count').textContent =
+      `${pitchers(filtered(RAW)).length}V + ${pitchers(filtered(RAW_JV)).length}JV`;
+    document.getElementById('pitching-body').innerHTML =
+      `<tr><td colspan="9" class="team-divider varsity-div">Varsity</td></tr>${vRows}` +
+      `<tr><td colspan="9" class="team-divider">Junior Varsity</td></tr>${jvRows}`;
   } else {
-    const data = activeTeam==='jv' ? filteredJV() : filtered();
-    document.getElementById('pitch-count').textContent=
-      `${pitchers(data).length} pitchers`;
-    document.getElementById('pitching-body').innerHTML = buildPitchingRows(data, s);
+    const data = filtered();
+    const rows = sortedRows(data) || '<tr><td colspan="9" class="no-results">No pitchers match filter</td></tr>';
+    document.getElementById('pitch-count').textContent = `${pitchers(data).length} pitchers`;
+    document.getElementById('pitching-body').innerHTML = rows;
   }
 }
 
-function renderTrends(){
-  const allYears=Object.keys(TEAM).map(Number).sort();
-  const kpis=allYears.map(y=>TEAM[y]);
-  document.getElementById('trends-kpi').innerHTML=`
-    <div class="kpi" style="--accent:#C8102E"><div class="kpi-label">Best team AVG</div><div class="kpi-val">.${Math.round(Math.max(...kpis.map(t=>t.avg))*1000).toString().padStart(3,'0')}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.avg>a.avg?b:a))]} season</div></div>
-    <div class="kpi" style="--accent:#2196F3"><div class="kpi-label">Best team ERA</div><div class="kpi-val">${Math.min(...kpis.map(t=>t.era)).toFixed(2)}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.era<a.era?b:a))]} season</div></div>
-    <div class="kpi" style="--accent:#9C27B0"><div class="kpi-label">Most K's</div><div class="kpi-val">${Math.max(...kpis.map(t=>t.k))}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.k>a.k?b:a))]} season</div></div>
-    <div class="kpi" style="--accent:#FF9800"><div class="kpi-label">Most SB</div><div class="kpi-val">${Math.max(...kpis.map(t=>t.sb))}</div><div class="kpi-sub">${allYears[kpis.indexOf(kpis.reduce((a,b)=>b.sb>a.sb?b:a))]} season</div></div>`;
-  function barChart(id,vals,labels,fmt){
-    const max=Math.max(...vals);
-    document.getElementById(id).innerHTML=`<div class="trend-bars">${vals.map((v,i)=>`<div class="trend-row"><div class="trend-year">${labels[i]}</div><div class="trend-bar-wrap"><div class="trend-fill" style="width:${(v/max*100).toFixed(1)}%;background:#C8102E"><span class="trend-fill-label">${fmt(v)}</span></div></div></div>`).join('')}</div>`;
+// ── RENDER TRENDS ─────────────────────────────────────
+function renderTrends() {
+  const vYears  = Object.keys(TEAM).map(Number).sort();
+  const jvYears = Object.keys(TEAM_JV).map(Number).sort();
+
+  // Trends KPIs — always use varsity data for headline numbers
+  if (vYears.length > 0) {
+    const kpis = vYears.map(y=>TEAM[y]);
+    const bestAvg = kpis.reduce((a,b)=>b.avg>a.avg?b:a);
+    const bestEra = kpis.reduce((a,b)=>b.era<a.era?b:a);
+    const bestK   = kpis.reduce((a,b)=>b.k>a.k?b:a);
+    const bestSB  = kpis.reduce((a,b)=>b.sb>a.sb?b:a);
+    document.getElementById('trends-kpi').innerHTML = `
+      <div class="kpi" style="--accent:#C8102E">
+        <div class="kpi-label">Best team AVG</div>
+        <div class="kpi-val">${fmtAvg(bestAvg.avg)}</div>
+        <div class="kpi-sub">${vYears[kpis.indexOf(bestAvg)]} season</div>
+      </div>
+      <div class="kpi" style="--accent:#2196F3">
+        <div class="kpi-label">Best team ERA</div>
+        <div class="kpi-val">${bestEra.era.toFixed(2)}</div>
+        <div class="kpi-sub">${vYears[kpis.indexOf(bestEra)]} season</div>
+      </div>
+      <div class="kpi" style="--accent:#9C27B0">
+        <div class="kpi-label">Most K's</div>
+        <div class="kpi-val">${bestK.k}</div>
+        <div class="kpi-sub">${vYears[kpis.indexOf(bestK)]} season</div>
+      </div>
+      <div class="kpi" style="--accent:#FF9800">
+        <div class="kpi-label">Most SB</div>
+        <div class="kpi-val">${bestSB.sb}</div>
+        <div class="kpi-sub">${vYears[kpis.indexOf(bestSB)]} season</div>
+      </div>`;
+  } else {
+    document.getElementById('trends-kpi').innerHTML = '';
   }
-  barChart('trend-avg-chart',allYears.map(y=>TEAM[y].avg),allYears,v=>'.'+Math.round(v*1000).toString().padStart(3,'0'));
-  barChart('trend-era-chart',allYears.map(y=>TEAM[y].era),allYears,v=>v.toFixed(2));
-  barChart('trend-sb-chart', allYears.map(y=>TEAM[y].sb), allYears,v=>v);
-  barChart('trend-k-chart',  allYears.map(y=>TEAM[y].k),  allYears,v=>v);
+
+  function barChart(id, years, teamData, fmt, color='#C8102E') {
+    if (!years.length) { document.getElementById(id).innerHTML='<div class="no-results">No data yet</div>'; return; }
+    const vals = years.map(y=>teamData[y]?.[fmt]||0);
+    const max  = Math.max(...vals, .001);
+    document.getElementById(id).innerHTML = `<div class="trend-bars">
+      ${years.map((y,i)=>`<div class="trend-row">
+        <div class="trend-year">${y}</div>
+        <div class="trend-bar-wrap">
+          <div class="trend-fill" style="width:${(vals[i]/max*100).toFixed(1)}%;background:${color}">
+            <span class="trend-fill-label">${typeof vals[i]==='number'&&vals[i]%1!==0?vals[i].toFixed(2):vals[i]}</span>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  // Show varsity, JV, or both depending on team filter
+  const showV  = activeTeam !== 'jv';
+  const showJV = activeTeam !== 'varsity';
+  const allY   = [...new Set([...vYears,...jvYears])].sort();
+
+  if (activeTeam === 'both' && jvYears.length > 0) {
+    // Side by side trend charts
+    ['trend-avg-chart','trend-era-chart','trend-sb-chart','trend-k-chart'].forEach(id=>{
+      const stat  = {avg:'avg',era:'era',sb:'sb',k:'k'}[id.replace('trend-','').replace('-chart','')];
+      const fmtFn = (v) => stat==='avg'?fmtAvg(v):stat==='era'?v.toFixed(2):v;
+      const vVals = vYears.map(y=>TEAM[y]?.[stat]||0);
+      const jVals = jvYears.map(y=>TEAM_JV[y]?.[stat]||0);
+      const max   = Math.max(...vVals,...jVals,.001);
+      document.getElementById(id).innerHTML = `<div class="trend-bars">
+        ${allY.map(y=>{
+          const vv = TEAM[y]?.[stat]; const jv = TEAM_JV[y]?.[stat];
+          return `<div class="trend-row"><div class="trend-year">${y}</div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:3px">
+              ${vv!=null?`<div class="trend-bar-wrap"><div class="trend-fill" style="width:${(vv/max*100).toFixed(1)}%;background:#C8102E"><span class="trend-fill-label">V ${fmtFn(vv)}</span></div></div>`:''}
+              ${jv!=null?`<div class="trend-bar-wrap"><div class="trend-fill" style="width:${(jv/max*100).toFixed(1)}%;background:#1565C0"><span class="trend-fill-label">JV ${fmtFn(jv)}</span></div></div>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>`;
+    });
+  } else {
+    const years = showJV ? jvYears : vYears;
+    const tdata = showJV ? TEAM_JV : TEAM;
+    const color = showJV ? '#1565C0' : '#C8102E';
+    barChart('trend-avg-chart', years, tdata, 'avg', color);
+    barChart('trend-era-chart', years, tdata, 'era', color);
+    barChart('trend-sb-chart',  years, tdata, 'sb',  color);
+    barChart('trend-k-chart',   years, tdata, 'k',   color);
+  }
 }
 
-function renderProfileSelect(){
-  // Combine names from both varsity and JV rosters
-  const names=[...new Set([...RAW,...RAW_JV].map(r=>r.name))].sort();
-  const sel=document.getElementById('profile-select');
-  const cur=sel.value;
-  sel.innerHTML='<option value="">Select a player...</option>'+
+// ── RENDER PROFILES ───────────────────────────────────
+function renderProfileSelect() {
+  const allData = [...RAW, ...RAW_JV];
+  const names   = [...new Set(allData.map(r=>r.name))].sort();
+  const sel = document.getElementById('profile-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Select a player...</option>' +
     names.map(n=>`<option value="${n}"${n===cur?' selected':''}>${n}</option>`).join('');
 
-  // ★ NEW — when Both is selected, show the JV→Varsity
-  // pipeline section above the individual player lookup
-  if(activeTeam==='both'){
-    renderPipeline();
-  } else {
-    // Hide pipeline when not in both mode
-    const existing=document.getElementById('pipeline-section');
-    if(existing) existing.remove();
-  }
-
-  if(cur) renderProfile();
+  // Pipeline section — only when Both is selected
+  renderPipeline();
+  if (cur) renderProfile();
 }
 
-// ★ NEW — renderPipeline finds players who appear in BOTH
-// JV and Varsity data and shows their progression side by side.
-// This is the foundation of the projection feature.
-function renderPipeline(){
+function renderPipeline() {
+  const section = document.getElementById('pipeline-section');
+  if (activeTeam !== 'both' || !RAW_JV.length) {
+    section.innerHTML = ''; return;
+  }
   const jvNames  = new Set(RAW_JV.map(r=>r.name));
   const varNames = new Set(RAW.map(r=>r.name));
+  const shared   = [...jvNames].filter(n=>varNames.has(n));
 
-  // Find players who appear in both datasets
-  const pipeline = [...jvNames].filter(n=>varNames.has(n));
-
-  // Remove existing pipeline section if it's there
-  const existing=document.getElementById('pipeline-section');
-  if(existing) existing.remove();
-
-  if(!pipeline.length){
-    // No overlap found — show a helpful message
-    const area=document.getElementById('profile-area');
-    const msg=document.createElement('div');
-    msg.id='pipeline-section';
-    msg.innerHTML=`<div class="pipeline-card" style="margin-bottom:16px">
+  if (!shared.length) {
+    section.innerHTML = `<div class="pipeline-card">
       <div class="pipeline-header">
-        <div class="pipeline-title">JV → Varsity Pipeline</div>
-        <div class="pipeline-badge">0 players found</div>
+        <div class="pipeline-title">⬆ JV → Varsity Pipeline</div>
+        <div class="pipeline-badge">0 players tracked</div>
       </div>
       <div class="pipeline-body">
-        <div class="empty-state" style="padding:20px">
+        <div class="empty-state" style="padding:16px">
           <div class="empty-title">No shared players yet</div>
-          <div class="empty-sub">Players who appeared in JV data and later moved to Varsity will show here automatically</div>
+          <div class="empty-sub">Players who appeared in both JV and Varsity data will show here automatically</div>
         </div>
       </div>
     </div>`;
-    area.insertAdjacentElement('beforebegin', msg);
     return;
   }
 
-  // Build a row for each pipeline player showing
-  // their best JV stats vs their Varsity stats
-  const rows = pipeline.map(name=>{
-    const jvSeasons  = RAW_JV.filter(r=>r.name===name && r.pa>0)
-                              .sort((a,b)=>a.year-b.year);
-    const varSeasons = RAW.filter(r=>r.name===name && r.pa>0)
-                          .sort((a,b)=>a.year-b.year);
-
-    if(!jvSeasons.length || !varSeasons.length) return '';
-
-    const jvLast  = jvSeasons[jvSeasons.length-1];
-    const varFirst = varSeasons[0];
-
-    // Compare JV avg to first Varsity avg to show improvement
+  const rows = shared.map(name => {
+    const jvS  = RAW_JV.filter(r=>r.name===name&&r.pa>0).sort((a,b)=>a.year-b.year);
+    const varS = RAW.filter(r=>r.name===name&&r.pa>0).sort((a,b)=>a.year-b.year);
+    if (!jvS.length||!varS.length) return '';
+    const jvLast   = jvS[jvS.length-1];
+    const varFirst = varS[0];
     const diff = varFirst.avg - jvLast.avg;
-    const arrow = diff > .015 ? '<span class="pp-arrow">▲</span>' :
-                  diff < -.015 ? '<span class="pp-arrow down">▼</span>' :
-                  '<span class="pp-arrow flat">→</span>';
-
-    return `<div class="pipeline-player">
+    const arrow = diff>.015?`<div class="pp-arrow" style="color:#4CAF50">▲</div>`:
+                  diff<-.015?`<div class="pp-arrow" style="color:#EF5350">▼</div>`:
+                  `<div class="pp-arrow" style="color:#8A9BA8">→</div>`;
+    return `<div class="pipeline-row">
       <div>
         <div class="pp-name">${name}</div>
-        <div class="pp-years">
-          JV ${jvSeasons.map(s=>s.year).join(',')}
-          → Varsity ${varSeasons.map(s=>s.year).join(',')}
-        </div>
+        <div class="pp-years">JV ${jvS.map(s=>s.year).join(',')} → Varsity ${varS.map(s=>s.year).join(',')}</div>
       </div>
       <div class="pp-stat">
         <div class="pp-stat-label">Best JV AVG</div>
-        <div class="pp-stat-val" style="color:#90CAF9">
-          .${Math.round(jvLast.avg*1000).toString().padStart(3,'0')}
-        </div>
+        <div class="pp-stat-val" style="color:#90CAF9">${fmtAvg(jvLast.avg)}</div>
       </div>
       ${arrow}
       <div class="pp-stat">
         <div class="pp-stat-label">1st Varsity AVG</div>
-        <div class="pp-stat-val" style="color:#EF9A9A">
-          .${Math.round(varFirst.avg*1000).toString().padStart(3,'0')}
-        </div>
+        <div class="pp-stat-val" style="color:#EF9A9A">${fmtAvg(varFirst.avg)}</div>
       </div>
     </div>`;
   }).join('');
 
-  const section=document.createElement('div');
-  section.id='pipeline-section';
-  section.innerHTML=`<div class="pipeline-card" style="margin-bottom:16px">
+  section.innerHTML = `<div class="pipeline-card">
     <div class="pipeline-header">
       <div class="pipeline-title">⬆ JV → Varsity Pipeline</div>
-      <div class="pipeline-badge">${pipeline.length} players tracked</div>
+      <div class="pipeline-badge">${shared.length} players tracked</div>
     </div>
-    <div class="pipeline-body">${rows||'<div class="empty-state"><div class="empty-sub">No matching players found</div></div>'}</div>
+    <div class="pipeline-body">${rows}</div>
   </div>`;
-  document.getElementById('profile-area').insertAdjacentElement('beforebegin', section);
 }
-// ★ END NEW PIPELINE FUNCTIONS
 
-function renderProfile(){
-  const name=document.getElementById('profile-select').value;
-  if(!name){document.getElementById('profile-area').innerHTML='<div class="empty-state"><div class="empty-icon">👤</div><div class="empty-title">Select a player above</div><div class="empty-sub">See their full career stats across all seasons</div></div>';return;}
-  const seasons=RAW.filter(r=>r.name===name).sort((a,b)=>a.year-b.year);
-  const p=seasons[seasons.length-1];
-  const cPA=seasons.reduce((a,c)=>a+c.pa,0),cH=seasons.reduce((a,c)=>a+c.h,0),cAB=seasons.reduce((a,c)=>a+c.ab,0);
-  const cRBI=seasons.reduce((a,c)=>a+c.rbi,0),cSB=seasons.reduce((a,c)=>a+c.sb,0);
-  const cAvg=cAB>0?cH/cAB:0;
-  const isPitcher=seasons.some(s=>s.ip>0);
-  const cIP=seasons.reduce((a,c)=>a+c.ip,0),cW=seasons.reduce((a,c)=>a+c.w,0);
-  const maxAvg=Math.max(...seasons.map(s=>s.avg));
-  document.getElementById('profile-area').innerHTML=`
+function renderProfile() {
+  const name = document.getElementById('profile-select').value;
+  const area = document.getElementById('profile-area');
+  if (!name) {
+    area.innerHTML = `<div class="empty-state"><div class="empty-icon">👤</div>
+      <div class="empty-title">Select a player above</div>
+      <div class="empty-sub">See their full career stats across all seasons</div></div>`;
+    return;
+  }
+  const allData = [...RAW,...RAW_JV];
+  const seasons = allData.filter(r=>r.name===name).sort((a,b)=>a.year-b.year);
+  const p       = seasons[seasons.length-1];
+  const cPA     = seasons.reduce((a,c)=>a+c.pa,0);
+  const cH      = seasons.reduce((a,c)=>a+c.h,0);
+  const cAB     = seasons.reduce((a,c)=>a+c.ab,0);
+  const cRBI    = seasons.reduce((a,c)=>a+c.rbi,0);
+  const cSB     = seasons.reduce((a,c)=>a+c.sb,0);
+  const cAvg    = cAB>0?cH/cAB:0;
+  const isPitch = seasons.some(s=>s.ip>0);
+  const cIP     = seasons.reduce((a,c)=>a+c.ip,0);
+  const cW      = seasons.reduce((a,c)=>a+c.w,0);
+  const maxAvg  = Math.max(...seasons.map(s=>s.avg),.001);
+
+  area.innerHTML = `
     <div class="profile-grid">
       <div class="profile-card">
-        <div class="profile-num">#${p.num}</div>
+        <div class="profile-num">#${p.num||'—'}</div>
         <div class="profile-name">${name}</div>
-        <div class="profile-years">${seasons.map(s=>s.year).join(' · ')}</div>
+        <div class="profile-years">${seasons.map(s=>`${s.isJV?'JV ':' '}${s.year}`).join(' · ')}</div>
         <div class="profile-stat-row">
-          <div class="ps-item"><div class="ps-val">.${Math.round(cAvg*1000).toString().padStart(3,'0')}</div><div class="ps-label">Career AVG</div></div>
+          <div class="ps-item"><div class="ps-val">${fmtAvg(cAvg)}</div><div class="ps-label">Career AVG</div></div>
           <div class="ps-item"><div class="ps-val">${cRBI}</div><div class="ps-label">Career RBI</div></div>
           <div class="ps-item"><div class="ps-val">${cSB}</div><div class="ps-label">Career SB</div></div>
-          ${isPitcher?`<div class="ps-item"><div class="ps-val">${cIP.toFixed(0)}</div><div class="ps-label">Career IP</div></div>`:''}
+          ${isPitch?`<div class="ps-item"><div class="ps-val">${cIP.toFixed(0)}</div><div class="ps-label">Career IP</div></div>`:''}
         </div>
       </div>
       <div class="card">
         <div class="card-header"><div class="card-title">Batting AVG by season</div></div>
-        <div class="card-body"><div class="trend-bars">${seasons.map(s=>`<div class="trend-row"><div class="trend-year">${s.year}</div><div class="trend-bar-wrap"><div class="trend-fill" style="width:${(s.avg/Math.max(maxAvg,.001)*100).toFixed(1)}%;background:#C8102E"><span class="trend-fill-label">.${Math.round(s.avg*1000).toString().padStart(3,'0')}</span></div></div></div>`).join('')}</div></div>
+        <div class="card-body"><div class="trend-bars">
+          ${seasons.map(s=>`<div class="trend-row">
+            <div class="trend-year">${s.isJV?'JV':'V'} ${s.year}</div>
+            <div class="trend-bar-wrap">
+              <div class="trend-fill" style="width:${(s.avg/maxAvg*100).toFixed(1)}%;background:${s.isJV?'#1565C0':'#C8102E'}">
+                <span class="trend-fill-label">${fmtAvg(s.avg)}</span>
+              </div>
+            </div>
+          </div>`).join('')}
+        </div></div>
       </div>
     </div>
     <div class="card">
       <div class="card-header"><div class="card-title">Season-by-season stats</div></div>
       <div class="table-wrap"><table class="stat-table">
-        <thead><tr><th>Year</th><th>GP</th><th>PA</th><th>AVG</th><th>OBP</th><th>OPS</th><th>H</th><th>RBI</th><th>R</th><th>SB</th><th>BB</th><th>K</th>${isPitcher?'<th>IP</th><th>W</th><th>L</th><th>ERA</th><th>WHIP</th>':''}</tr></thead>
+        <thead><tr>
+          <th>Year</th><th>Team</th><th>GP</th><th>PA</th>
+          <th>AVG</th><th>OBP</th><th>OPS</th>
+          <th>H</th><th>RBI</th><th>R</th><th>SB</th><th>BB</th><th>K</th>
+          ${isPitch?'<th>IP</th><th>W</th><th>L</th><th>ERA</th><th>WHIP</th>':''}
+        </tr></thead>
         <tbody>
-          ${seasons.map(s=>`<tr><td><span class="year-tag y${s.year}">${s.year}</span></td><td>${s.gp}</td><td>${s.pa}</td><td>${avgPill(s.avg)}</td><td>${s.obp.toFixed(3)}</td><td>${s.ops.toFixed(3)}</td><td>${s.h}</td><td>${s.rbi}</td><td>${s.r}</td><td>${s.sb}</td><td>${s.bb}</td><td>${s.so}</td>${isPitcher?`<td>${s.ip>0?s.ip.toFixed(1):'—'}</td><td>${s.w||'—'}</td><td>${s.l||'—'}</td><td>${s.era>0?eraPill(s.era):'—'}</td><td>${s.whip>0?s.whip.toFixed(3):'—'}</td>`:''}</tr>`).join('')}
-          <tr class="totals"><td>Career</td><td>—</td><td>${cPA}</td><td>${avgPill(cAvg)}</td><td>—</td><td>—</td><td>${cH}</td><td>${cRBI}</td><td>${seasons.reduce((a,c)=>a+c.r,0)}</td><td>${cSB}</td><td>${seasons.reduce((a,c)=>a+c.bb,0)}</td><td>${seasons.reduce((a,c)=>a+c.so,0)}</td>${isPitcher?`<td>${cIP.toFixed(1)}</td><td>${cW}</td><td>${seasons.reduce((a,c)=>a+c.l,0)}</td><td>—</td><td>—</td>`:''}</tr>
+          ${seasons.map(s=>`<tr>
+            <td><span class="year-tag y${s.year}">${s.year}</span></td>
+            <td style="font-size:10px;color:${s.isJV?'#90CAF9':'#EF9A9A'}">${s.isJV?'JV':'V'}</td>
+            <td>${s.gp}</td><td>${s.pa}</td>
+            <td>${avgPill(s.avg)}</td>
+            <td>${s.obp.toFixed(3)}</td><td>${s.ops.toFixed(3)}</td>
+            <td>${s.h}</td><td>${s.rbi}</td><td>${s.r}</td>
+            <td>${s.sb}</td><td>${s.bb}</td><td>${s.so}</td>
+            ${isPitch?`<td>${s.ip>0?s.ip.toFixed(1):'—'}</td><td>${s.w||'—'}</td><td>${s.l||'—'}</td><td>${s.era>0?eraPill(s.era):'—'}</td><td>${s.whip>0?s.whip.toFixed(3):'—'}</td>`:''}
+          </tr>`).join('')}
+          <tr class="totals">
+            <td>Career</td><td>—</td><td>—</td><td>${cPA}</td>
+            <td>${avgPill(cAvg)}</td><td>—</td><td>—</td>
+            <td>${cH}</td><td>${cRBI}</td>
+            <td>${seasons.reduce((a,c)=>a+c.r,0)}</td>
+            <td>${cSB}</td>
+            <td>${seasons.reduce((a,c)=>a+c.bb,0)}</td>
+            <td>${seasons.reduce((a,c)=>a+c.so,0)}</td>
+            ${isPitch?`<td>${cIP.toFixed(1)}</td><td>${cW}</td><td>${seasons.reduce((a,c)=>a+c.l,0)}</td><td>—</td><td>—</td>`:''}
+          </tr>
         </tbody>
       </table></div>
     </div>`;
 }
 
-function avgPill(v){if(!v&&v!==0)return'—';const c=v>=.350?'pill-g':v>=.250?'pill-a':'pill-r';return`<span class="stat-pill ${c}">.${Math.round(v*1000).toString().padStart(3,'0')}</span>`;}
-function eraPill(v){if(!v&&v!==0)return'—';const c=v<=3.5?'pill-g':v<=5.5?'pill-a':'pill-r';return`<span class="stat-pill ${c}">${v.toFixed(2)}</span>`;}
-
-renderAll();
+// ── INIT ──────────────────────────────────────────────
+safeRenderAll();
 </script>
 </body>
 </html>
