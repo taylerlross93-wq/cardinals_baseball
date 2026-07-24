@@ -708,7 +708,7 @@ function handleFileUpload(event) {
 function parseGameChangerCSV(csvText) {
 
   // Split the text into individual lines
-  const lines = csvText.split('\n');
+  const lines = csvText.split('\n').map(l => l.replace(/\r/g, ''));
 
   // We need at least 3 lines (blank, headers, one player)
   if (lines.length < 3) {
