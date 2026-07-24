@@ -644,13 +644,8 @@ reader.onload = function(e) {
     // e.target.result contains the full file text
     const csvText = e.target.result;
 
-    // These logs now work because csvText is already defined
-    console.log('File read OK, length:', csvText.length);
-    console.log('First 200 chars:', csvText.substring(0, 200));
-
     // Parse the CSV and get players back
     const result = parseGameChangerCSV(csvText);
-    console.log('Parse result:', result.error || 'success, players: ' + result.players?.length);
 
     if (result.error) {
       setUploadStatus('error', result.error);
@@ -682,10 +677,19 @@ reader.onload = function(e) {
       document.getElementById('season-filter').value = year;
       activeSeason = String(year);
 
-      // Refresh all dashboard sections with new data
-      renderAll();
+     // Refresh all dashboard sections with new data
+try {
+  renderTicker();    console.log('ticker ok');
+  renderOverview();  console.log('overview ok');
+  renderBatting();   console.log('batting ok');
+  renderPitching();  console.log('pitching ok');
+  renderTrends();    console.log('trends ok');
+  renderProfileSelect(); console.log('profiles ok');
+} catch(renderErr) {
+  console.error('Render failed:', renderErr.message);
+}
 
-      // Show success messages
+// Show success messages
       setUploadStatus('success',
         `✓ ${year} loaded — ${players.length} players`);
       showToast(`${year} ${isJV ? 'JV' : 'Varsity'} season imported successfully`);
